@@ -1,0 +1,7 @@
+miniRT
+*.o
+obj/
+*.d
+*.a
+.vscode/
+*.txt
