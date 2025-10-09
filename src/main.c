@@ -1,8 +1,9 @@
 #include "miniRT.h"
 #include <fcntl.h>
 #include "libft.h"
+#include "get_next_line.h"
 
-int check_input(int argc, char **argv)
+int check_args(int argc, char **argv)
 {
     int len;
     if (argc != 2)
@@ -23,16 +24,64 @@ int check_input(int argc, char **argv)
     }
     return (0);
 }
+char *get_token(char **str, const char *delim)
+{
+    char *start;
+    char *end;
+    char *token;
+    size_t len;
+
+    if (!str || !*str)
+        return (NULL);
+    while (**str && ft_strchr(delim, **str))
+        (*str)++;
+    if (**str == '\0')
+        return (NULL);
+    start = *str;
+    end = start;
+    while (*end && !ft_strchr(delim, *end))
+        end++;
+    len = end - start;
+    token = (char *)malloc(len + 1);
+    if (!token)
+        return (NULL);
+    ft_strlcpy(token, start, len + 1);
+    *str = end;
+    return (token);
+}
+
+int check_parse_file(int fd)
+{
+    char *line;
+    char *trimmed_line;
+
+    while ((line = get_next_line(fd)))
+    {
+        trimmed_line = ft_strtrim(line, " \t\r\n");
+        free(line);
+        printf("Read line: %s", trimmed_line);
+        free(trimmed_line);
+    }
+    return (0);
+}
 
 int main(int argc, char **argv)
 {
-    if (check_input(argc, argv) != 0)
+    int fd;
+
+    if (check_args(argc, argv) != 0)
         return (1);
-    if (open(argv[1], O_RDONLY) == -1)
+    fd = open(argv[1], O_RDONLY);
+    if (fd == -1)
     {
         perror("Error opening file");
         return (1);
     }
-    printf("Hello, miniRT!\n");
+    if (check_parse_file(fd) != 0)
+    {
+        close(fd);
+        return (1);
+    }
+    close(fd);
     return (0);
 }
