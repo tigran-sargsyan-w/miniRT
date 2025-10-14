@@ -19,7 +19,7 @@ LIBFT_DIR = libft/
 #   Source for miniRT
 # -------------------------------
 
-SRCS = main.c
+SRCS = main.c parse.c vector.c
 
 # -------------------------------
 #   Object & Dependency Files
@@ -40,7 +40,7 @@ libs:
 	@$(MAKE) -s -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS) | libs
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -lm $(LIBFT) -o $(NAME)
 	@echo "✅ miniRT object files compiled."
 	@echo "🚀 $(NAME) created!"
 

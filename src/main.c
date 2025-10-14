@@ -6,77 +6,14 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 22:08:04 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/14 01:58:49 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/14 05:47:42 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include "libft.h"
-#include "get_next_line.h"
-
-int check_args(int argc, char **argv)
-{
-    int len;
-    if (argc != 2)
-    {
-        printf("Usage: %s <scene_file>\n", argv[0]);
-        return (1);
-    }
-    if (argv[1][0] == '\0')
-    {
-        printf("Error: Empty filename\n");
-        return (1);
-    }
-    len = ft_strlen(argv[1]);
-    if (len < 4 || argv[1][len - 3] != '.' || argv[1][len - 2] != 'r' || argv[1][len - 1] != 't')
-    {
-        printf("Error: Filename must end with .rt\n");
-        return (1);
-    }
-    return (0);
-}
-char *get_token(char **str, const char *delim)
-{
-    char *start;
-    char *end;
-    char *token;
-    size_t len;
-
-    if (!str || !*str)
-        return (NULL);
-    while (**str && ft_strchr(delim, **str))
-        (*str)++;
-    if (**str == '\0')
-        return (NULL);
-    start = *str;
-    end = start;
-    while (*end && !ft_strchr(delim, *end))
-        end++;
-    len = end - start;
-    token = malloc(len + 1);
-    if (!token)
-        return (NULL);
-    ft_strlcpy(token, start, len + 1);
-    *str = end;
-    return (token);
-}
-
-int check_parse_file(int fd)
-{
-    char *line;
-    char *trimmed_line;
-
-    while ((line = get_next_line(fd)))
-    {
-        trimmed_line = ft_strtrim(line, " \t\r\n");
-        free(line);
-        printf("Read line: %s", trimmed_line);
-        free(trimmed_line);
-    }
-    return (0);
-}
+#include <unistd.h>
+#include "miniRT.h"
 
 int main(int argc, char **argv)
 {
