@@ -3,6 +3,7 @@
 #include "libft.h"
 #include "get_next_line.h"
 #include <stdio.h>
+#include "types.h"
 
 int check_args(int argc, char **argv)
 {
@@ -51,17 +52,47 @@ char *get_token(char **str, const char *delim)
     return (token);
 }
 
+int identify_object(const char *token)
+{
+    if (ft_strcmp(token, "A") == 0)
+        return (AMBIENT);
+    else if (ft_strcmp(token, "C") == 0)
+        return (CAMERA);
+    else if (ft_strcmp(token, "L") == 0)
+        return (LIGHT);
+    else if (ft_strcmp(token, "sp") == 0)
+        return (SPHERE);
+    else if (ft_strcmp(token, "pl") == 0)
+        return (PLANE);
+    else if (ft_strcmp(token, "cy") == 0)
+        return (CYLINDER);
+    else
+        return (-1);
+}
+
 int check_parse_file(int fd)
 {
     char *line;
     char *trimmed_line;
+    char *token;
 
     while ((line = get_next_line(fd)))
     {
         trimmed_line = ft_strtrim(line, " \t\r\n");
+        token = get_token(&trimmed_line, " ");
+        if (token)
+        {
+            int obj_type = identify_object(token);
+            if (obj_type != -1)
+            {
+                printf("Object type: %d\n", obj_type);
+                // Call the appropriate parsing function based on obj_type
+            }
+            free(token);
+        }
         free(line);
         printf("Read line: %s", trimmed_line);
-        free(trimmed_line);
+        //free(trimmed_line);
     }
     return (0);
 }
