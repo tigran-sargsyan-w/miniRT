@@ -1,5 +1,18 @@
-#include "miniRT.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/13 22:08:04 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/10/14 01:58:49 by dsemenov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "libft.h"
 #include "get_next_line.h"
 
@@ -42,7 +55,7 @@ char *get_token(char **str, const char *delim)
     while (*end && !ft_strchr(delim, *end))
         end++;
     len = end - start;
-    token = (char *)malloc(len + 1);
+    token = malloc(len + 1);
     if (!token)
         return (NULL);
     ft_strlcpy(token, start, len + 1);

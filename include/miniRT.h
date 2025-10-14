@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 15:36:20 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/07/06 15:36:47 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/10/14 01:58:44 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_RT_H
 # define MINI_RT_H
-
-# include <stdio.h>
 
 #endif
