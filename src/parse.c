@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/10/15 04:31:41 by dsemenov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include <stdlib.h>
 #include "libft.h"
@@ -26,6 +38,7 @@ int check_args(int argc, char **argv)
     }
     return (0);
 }
+
 char *get_token(char **str, const char *delim)
 {
     char *start;
@@ -70,6 +83,14 @@ int identify_object(const char *token)
         return (-1);
 }
 
+void parse_obj_data(char *line, char *token)
+{
+    // This function should handle parsing the object data based on the token
+    // For now, it just prints the line and token
+    printf("Parsing object data for token: %s\n", token);
+    printf("Data: %s\n", line);
+}
+
 int check_parse_file(int fd)
 {
     char *line;
@@ -86,12 +107,16 @@ int check_parse_file(int fd)
             if (obj_type != -1)
             {
                 printf("Object type: %d\n", obj_type);
+                printf("Read line: %s\n", trimmed_line);
+                parse_obj_data(trimmed_line, token);
+            }
+            else {
                 // Call the appropriate parsing function based on obj_type
+                printf("Unknown object type: %s\n", token);
             }
             free(token);
         }
         free(line);
-        printf("Read line: %s", trimmed_line);
         //free(trimmed_line);
     }
     return (0);

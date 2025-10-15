@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 22:08:04 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/14 05:47:42 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/15 04:32:04 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "miniRT.h"
+#include "types.h"
 
 int main(int argc, char **argv)
 {
     int fd;
+    //t_scene scene;
 
     if (check_args(argc, argv) != 0)
         return (1);
