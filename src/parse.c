@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/10/15 04:31:41 by dsemenov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include <stdlib.h>
 #include "libft.h"
 #include "get_next_line.h"
 #include <stdio.h>
+#include "types.h"
 
 int check_args(int argc, char **argv)
 {
@@ -25,6 +38,7 @@ int check_args(int argc, char **argv)
     }
     return (0);
 }
+
 char *get_token(char **str, const char *delim)
 {
     char *start;
@@ -51,17 +65,59 @@ char *get_token(char **str, const char *delim)
     return (token);
 }
 
+int identify_object(const char *token)
+{
+    if (ft_strcmp(token, "A") == 0)
+        return (AMBIENT);
+    else if (ft_strcmp(token, "C") == 0)
+        return (CAMERA);
+    else if (ft_strcmp(token, "L") == 0)
+        return (LIGHT);
+    else if (ft_strcmp(token, "sp") == 0)
+        return (SPHERE);
+    else if (ft_strcmp(token, "pl") == 0)
+        return (PLANE);
+    else if (ft_strcmp(token, "cy") == 0)
+        return (CYLINDER);
+    else
+        return (-1);
+}
+
+void parse_obj_data(char *line, char *token)
+{
+    // This function should handle parsing the object data based on the token
+    // For now, it just prints the line and token
+    printf("Parsing object data for token: %s\n", token);
+    printf("Data: %s\n", line);
+}
+
 int check_parse_file(int fd)
 {
     char *line;
     char *trimmed_line;
+    char *token;
 
     while ((line = get_next_line(fd)))
     {
         trimmed_line = ft_strtrim(line, " \t\r\n");
+        token = get_token(&trimmed_line, " ");
+        if (token)
+        {
+            int obj_type = identify_object(token);
+            if (obj_type != -1)
+            {
+                printf("Object type: %d\n", obj_type);
+                printf("Read line: %s\n", trimmed_line);
+                parse_obj_data(trimmed_line, token);
+            }
+            else {
+                // Call the appropriate parsing function based on obj_type
+                printf("Unknown object type: %s\n", token);
+            }
+            free(token);
+        }
         free(line);
-        printf("Read line: %s", trimmed_line);
-        free(trimmed_line);
+        //free(trimmed_line);
     }
     return (0);
 }
