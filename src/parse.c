@@ -6,10 +6,9 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/15 04:31:41 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/16 02:07:36 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <stdlib.h>
 #include "libft.h"
@@ -91,7 +90,36 @@ void parse_obj_data(char *line, char *token)
     printf("Data: %s\n", line);
 }
 
-int check_parse_file(int fd)
+int obj_count(t_scene *scene, int obj_type)
+{
+    int ambient_count;
+    int camera_count;
+    int light_count;
+
+    ambient_count = 0;
+    camera_count = 0;
+    light_count = 0;
+    if (obj_type == AMBIENT)
+        ambient_count++;
+    else if (obj_type == CAMERA)
+        camera_count++;
+    else if (obj_type == LIGHT)
+        light_count++;
+    else if (obj_type == SPHERE)
+        scene->sphere_count++;
+    else if (obj_type == PLANE)
+        scene->plane_count++;
+    else if (obj_type == CYLINDER)
+        scene->cylinder_count++;
+    if (ambient_count > 1 || camera_count > 1 || light_count > 1)
+    {
+        printf("Error: Multiple definitions of unique object type\n");
+        return (1);
+    }
+    return (0);
+}
+
+int check_parse_file(int fd, t_scene *scene)
 {
     char *line;
     char *trimmed_line;
@@ -108,6 +136,13 @@ int check_parse_file(int fd)
             {
                 printf("Object type: %d\n", obj_type);
                 printf("Read line: %s\n", trimmed_line);
+                if (obj_count(scene, obj_type))
+                {
+                    free(token);
+                    free(line);
+                    free(trimmed_line);
+                    return (1);
+                }
                 parse_obj_data(trimmed_line, token);
             }
             else {
