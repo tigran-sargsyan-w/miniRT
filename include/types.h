@@ -59,7 +59,6 @@ typedef struct s_scene
     t_ambient ambient;
     t_camera camera;
     t_light *lights;
-    int light_count;
     t_sphere *spheres;
     int sphere_count;
     t_plane *planes;
