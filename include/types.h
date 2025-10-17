@@ -21,7 +21,7 @@ typedef struct s_camera
 {
     float position[3];
     float orientation[3];
-    float fov;
+    int fov;
 }   t_camera;
 
 typedef struct s_light

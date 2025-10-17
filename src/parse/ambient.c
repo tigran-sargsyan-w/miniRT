@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void ft_free_tab(char **tab)
+void ft_free_tab(char **tab)
 {
     int i = 0;
     if (!tab)
@@ -28,24 +28,6 @@ int parse_ratio(char *str, float *ratio)
         return (1);
     }
     *ratio = value;
-    return (0);
-}
-
-int parse_color(char *line, int color[3])
-{
-    char **tab;
-    int i;
-
-    tab = ft_split(line, ',');
-    if (!tab)
-        return (1);
-    i = 0;
-    while (tab[i])
-    {
-        color[i] = atoi(tab[i]);
-        i++;
-    }
-    ft_free_tab(tab);
     return (0);
 }
 
@@ -78,8 +60,6 @@ int parse_ambient(char *line, t_scene *scene)
         ft_free_tab(tab);
         return (1);
     }
-    printf("ratio: %f\n", scene->ambient.intensity);
-    printf("color: [%d, %d, %d]\n", scene->ambient.color[0], scene->ambient.color[1], scene->ambient.color[2]);
     ft_free_tab(tab);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/17 06:38:49 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/17 07:11:46 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,41 +83,39 @@ int identify_object(const char *token)
         return (-1);
 }
 
-int parse_vec3(char **line, float vec[3])
+int parse_color(char *line, int color[3])
 {
-    char *token;
-    
-    token = get_token(line, " ");
-    if (token)
+    char **tab;
+    int i;
+
+    tab = ft_split(line, ',');
+    if (!tab)
+        return (1);
+    i = 0;
+    while (tab[i])
     {
-        vec[0] = atof(token);
-        token = get_token(line, ",");
+        color[i] = ft_atoi(tab[i]);
+        i++;
     }
-    if (token)
-    {
-        vec[1] = atof(token);
-        token = get_token(line, ",");
-    }
-    if (token)
-        vec[2] = atof(token);
-    free(token);
+    ft_free_tab(tab);
     return (0);
 }
 
-int parse_camera(char *line, t_scene *scene)
+int parse_vec3(char *line, float vec[3])
 {
-    // This function should handle parsing the camera data
-    while (*line && ft_strchr(" \t\r\n", *line))
-        line++;
-    if (*line)
+    char **tab;
+    int i;
+
+    tab = ft_split(line, ',');
+    if (!tab)
+        return (1);
+    i = 0;
+    while (tab[i])
     {
-        parse_vec3(&line, scene->camera.position);
-        parse_vec3(&line, scene->camera.orientation);
-        scene->camera.fov = atof(line);
+        vec[i] = atof(tab[i]);
+        i++;
     }
-    printf("Camera Position: (%f, %f, %f)\n", scene->camera.position[0], scene->camera.position[1], scene->camera.position[2]);
-    printf("Camera Orientation: (%f, %f, %f)\n", scene->camera.orientation[0], scene->camera.orientation[1], scene->camera.orientation[2]);
-    printf("Camera FOV: %f\n", scene->camera.fov);
+    ft_free_tab(tab);
     return (0);
 }
 
