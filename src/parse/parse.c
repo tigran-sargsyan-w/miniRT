@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/16 02:07:36 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/17 06:38:49 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "get_next_line.h"
 #include <stdio.h>
 #include "types.h"
+#include "parse.h"
 
 int check_args(int argc, char **argv)
 {
@@ -82,36 +83,76 @@ int identify_object(const char *token)
         return (-1);
 }
 
-void parse_obj_data(char *line, char *token)
+int parse_vec3(char **line, float vec[3])
+{
+    char *token;
+    
+    token = get_token(line, " ");
+    if (token)
+    {
+        vec[0] = atof(token);
+        token = get_token(line, ",");
+    }
+    if (token)
+    {
+        vec[1] = atof(token);
+        token = get_token(line, ",");
+    }
+    if (token)
+        vec[2] = atof(token);
+    free(token);
+    return (0);
+}
+
+int parse_camera(char *line, t_scene *scene)
+{
+    // This function should handle parsing the camera data
+    while (*line && ft_strchr(" \t\r\n", *line))
+        line++;
+    if (*line)
+    {
+        parse_vec3(&line, scene->camera.position);
+        parse_vec3(&line, scene->camera.orientation);
+        scene->camera.fov = atof(line);
+    }
+    printf("Camera Position: (%f, %f, %f)\n", scene->camera.position[0], scene->camera.position[1], scene->camera.position[2]);
+    printf("Camera Orientation: (%f, %f, %f)\n", scene->camera.orientation[0], scene->camera.orientation[1], scene->camera.orientation[2]);
+    printf("Camera FOV: %f\n", scene->camera.fov);
+    return (0);
+}
+
+void parse_obj_data(char *line, int type, t_scene *scene)
 {
     // This function should handle parsing the object data based on the token
-    // For now, it just prints the line and token
-    printf("Parsing object data for token: %s\n", token);
-    printf("Data: %s\n", line);
+    if (type == AMBIENT)
+        parse_ambient(line, scene);
+    else if (type == CAMERA)
+        parse_camera(line, scene);
+    else if (type == LIGHT)
+        ; // parse_light(line, scene);
+    else if (type == SPHERE)
+        ; // parse_sphere(line, scene);
+    else if (type == PLANE)
+        ; // parse_plane(line, scene);
+    else if (type == CYLINDER)
+        ; // parse_cylinder(line, scene);
 }
 
 int obj_count(t_scene *scene, int obj_type)
 {
-    int ambient_count;
-    int camera_count;
-    int light_count;
-
-    ambient_count = 0;
-    camera_count = 0;
-    light_count = 0;
     if (obj_type == AMBIENT)
-        ambient_count++;
+        scene->has_ambient++;
     else if (obj_type == CAMERA)
-        camera_count++;
+        scene->has_camera++;
     else if (obj_type == LIGHT)
-        light_count++;
+        scene->has_light++;
     else if (obj_type == SPHERE)
         scene->sphere_count++;
     else if (obj_type == PLANE)
         scene->plane_count++;
     else if (obj_type == CYLINDER)
         scene->cylinder_count++;
-    if (ambient_count > 1 || camera_count > 1 || light_count > 1)
+    if (scene->has_ambient > 1 || scene->has_camera > 1 || scene->has_light > 1)
     {
         printf("Error: Multiple definitions of unique object type\n");
         return (1);
@@ -123,27 +164,27 @@ int check_parse_file(int fd, t_scene *scene)
 {
     char *line;
     char *trimmed_line;
+    char *original_trimmed_line;
     char *token;
 
     while ((line = get_next_line(fd)))
     {
         trimmed_line = ft_strtrim(line, " \t\r\n");
+        original_trimmed_line = trimmed_line;
+        free(line);
         token = get_token(&trimmed_line, " ");
         if (token)
         {
             int obj_type = identify_object(token);
             if (obj_type != -1)
             {
-                printf("Object type: %d\n", obj_type);
-                printf("Read line: %s\n", trimmed_line);
                 if (obj_count(scene, obj_type))
                 {
                     free(token);
-                    free(line);
-                    free(trimmed_line);
+                    free(original_trimmed_line);
                     return (1);
                 }
-                parse_obj_data(trimmed_line, token);
+                parse_obj_data(trimmed_line, obj_type, scene);
             }
             else {
                 // Call the appropriate parsing function based on obj_type
@@ -151,8 +192,7 @@ int check_parse_file(int fd, t_scene *scene)
             }
             free(token);
         }
-        free(line);
-        //free(trimmed_line);
+        free(original_trimmed_line);
     }
     return (0);
 }

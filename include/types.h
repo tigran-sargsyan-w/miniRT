@@ -56,9 +56,12 @@ typedef struct s_cylinder
 
 typedef struct s_scene
 {
+    int has_ambient;
     t_ambient ambient;
+    int has_camera;
     t_camera camera;
-    t_light *lights;
+    int has_light;
+    t_light light;
     t_sphere *spheres;
     int sphere_count;
     t_plane *planes;
