@@ -6,72 +6,72 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:16 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/17 18:45:46 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/10/17 20:31:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include <math.h>
 
-t_vector3 vec_create(double x, double y, double z)
+t_vector3 vector3_create(double x, double y, double z)
 {
     return (t_vector3){x, y, z};
 }
 
-t_vector3 vec_add(t_vector3 a, t_vector3 b)
+t_vector3 vector3_add(t_vector3 a, t_vector3 b)
 {
     return (t_vector3){a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
-t_vector3 vec_sub(t_vector3 a, t_vector3 b)
+t_vector3 vector3_sub(t_vector3 a, t_vector3 b)
 {
     return (t_vector3){a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
-t_vector3 vec_scale(t_vector3 v, double s)
+t_vector3 vector3_scale(t_vector3 v, double s)
 {
     return (t_vector3){v.x * s, v.y * s, v.z * s};
 }
 
-double vec_dot(t_vector3 a, t_vector3 b)
+double vector3_dot(t_vector3 a, t_vector3 b)
 {
     return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-double vec_length(t_vector3 v)
+double vector3_length(t_vector3 v)
 {
     return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-t_vector3 vec_normalize(t_vector3 v)
+t_vector3 vector3_normalize(t_vector3 v)
 {
     double length;
     
-    length = vec_length(v);
+    length = vector3_length(v);
     if (length == 0)
         return (t_vector3){0, 0, 0};
-    return vec_scale(v, 1.0 / length);
+    return vector3_scale(v, 1.0 / length);
 }
 
 /* additional utilities */
-t_vector3 vec_mul(t_vector3 a, t_vector3 b)
+t_vector3 vector3_mul(t_vector3 a, t_vector3 b)
 {
     return (t_vector3){a.x * b.x, a.y * b.y, a.z * b.z};
 }
 
-t_vector3 vec_div_s(t_vector3 v, double s)
+t_vector3 vector3_div_s(t_vector3 v, double s)
 {
     if (s == 0.0)
         return (t_vector3){0, 0, 0};
-    return vec_scale(v, 1.0 / s);
+    return vector3_scale(v, 1.0 / s);
 }
 
-double vec_len2(t_vector3 v)
+double vector3_len2(t_vector3 v)
 {
     return (v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
-t_vector3 vec_cross(t_vector3 a, t_vector3 b)
+t_vector3 vector3_cross(t_vector3 a, t_vector3 b)
 {
     return (t_vector3){
         a.y * b.z - a.z * b.y,
@@ -80,17 +80,17 @@ t_vector3 vec_cross(t_vector3 a, t_vector3 b)
     };
 }
 
-int vec_near_zero(t_vector3 v)
+int vector3_near_zero(t_vector3 v)
 {
     const double s = 1e-12;
     return (fabs(v.x) < s && fabs(v.y) < s && fabs(v.z) < s);
 }
 
-t_vector3 vec_reflect(t_vector3 v, t_vector3 n)
+t_vector3 vector3_reflect(t_vector3 v, t_vector3 n)
 {
     // reflect v around normal n: v - 2*dot(v,n)*n
-    double d = vec_dot(v, n);
-    return vec_sub(v, vec_scale(n, 2.0 * d));
+    double d = vector3_dot(v, n);
+    return vector3_sub(v, vector3_scale(n, 2.0 * d));
 }
 
 /* math helpers */
