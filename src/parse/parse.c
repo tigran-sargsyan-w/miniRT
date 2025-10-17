@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/17 08:16:03 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/17 10:37:57 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,5 +192,13 @@ int check_parse_file(int fd, t_scene *scene)
         }
         free(original_trimmed_line);
     }
+    // Print parsed scene for debugging
+    printf("Ambient intensity: %f\n", scene->ambient.intensity);
+    printf("Ambient color: %d, %d, %d\n", scene->ambient.color[0], scene->ambient.color[1], scene->ambient.color[2]);
+    printf("Camera position: %f, %f, %f\n", scene->camera.position[0], scene->camera.position[1], scene->camera.position[2]);
+    printf("Camera orientation: %f, %f, %f\n", scene->camera.orientation[0], scene->camera.orientation[1], scene->camera.orientation[2]);
+    printf("Camera FOV: %d\n", scene->camera.fov);
+    printf("Light position: %f, %f, %f\n", scene->light.position[0], scene->light.position[1], scene->light.position[2]);
+    printf("Light brightness: %f\n", scene->light.brightness);
     return (0);
 }
