@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/17 07:11:46 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/17 08:16:03 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void parse_obj_data(char *line, int type, t_scene *scene)
     else if (type == CAMERA)
         parse_camera(line, scene);
     else if (type == LIGHT)
-        ; // parse_light(line, scene);
+        parse_light(line, scene);
     else if (type == SPHERE)
         ; // parse_sphere(line, scene);
     else if (type == PLANE)
