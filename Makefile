@@ -4,7 +4,7 @@
 
 NAME = miniRT
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -g
 
 # -------------------------------
 #  		  Directories 
@@ -19,7 +19,7 @@ LIBFT_DIR = libft/
 #   Source for miniRT
 # -------------------------------
 
-SRCS = main.c parse/parse.c vector.c
+SRCS = main.c parse/parse.c parse/ambient.c parse/camera.c parse/light.c vector.c
 
 # -------------------------------
 #   Object & Dependency Files
