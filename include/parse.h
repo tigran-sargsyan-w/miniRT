@@ -32,6 +32,7 @@ int							parse_ambient(char *line, t_scene *scene);
 int							parse_camera(char *line, t_scene *scene);
 int							parse_light(char *line, t_scene *scene);
 int							parse_sphere(char *line, t_scene *scene);
+int							parse_plane(char *line, t_scene *scene);
 void						ft_free_tab(char **tab);
 char						*get_token(char **str, const char *delim);
 t_object					*node_create(t_object_data data);

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 03:22:32 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 04:35:16 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,19 @@ static void	debug_print_scene(t_scene *scene)
 	printf("Number of Spheres: %d\n", scene->sphere_count);
 	for (int i = 0; i < scene->sphere_count; ++i)
 	{
-		sp = scene->spheres[i];
+		sp = &scene->spheres[i];
 		printf(" Sphere %d: Center(%.2f, %.2f, %.2f), Diameter: %.2f, Color(%d, \
 			%d, %d)\n", i, sp->center[0], sp->center[1], sp->center[2],
 			sp->diameter, sp->color[0], sp->color[1], sp->color[2]);
 	}
+    for (int i = 0; i < scene->plane_count; ++i)
+    {
+        t_plane *pl = &scene->planes[i];
+        printf(" Plane %d: Point(%.2f, %.2f, %.2f), Normal(%.2f, %.2f, %.2f), \
+            Color(%d, %d, %d)\n", i, pl->point[0], pl->point[1], pl->point[2],
+            pl->normal[0], pl->normal[1], pl->normal[2],
+            pl->color[0], pl->color[1], pl->color[2]);
+    }
 }
 
 int	check_args(int argc, char **argv)
@@ -74,7 +82,7 @@ int	parse_obj_data(char *line, int type, t_scene *scene)
 	else if (type == SPHERE)
 		return (parse_sphere(line, scene));
 	else if (type == PLANE)
-		return (0); // parse_plane(line, scene);
+		return (parse_plane(line, scene));
 	else if (type == CYLINDER)
 		return (0); // parse_cylinder(line, scene);
 	return (0);

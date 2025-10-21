@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 03:20:43 by dsemenov         ###   ########lyon.fr   */
+/*   Updated: 2025/10/21 04:01:40 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,19 @@
 
 static int	spheres_push(t_scene *s, t_sphere *sp)
 {
-	t_sphere	**arr;
+	t_sphere	*arr;
+    int         i;
 
 	arr = malloc(sizeof(*arr) * (s->sphere_count + 1));
 	if (!arr)
 		return (1);
-	for (int i = 0; i < s->sphere_count; ++i)
-		arr[i] = s->spheres[i];
-	arr[s->sphere_count] = sp;
+    i = 0;
+    while (i < s->sphere_count)
+    {
+        arr[i] = s->spheres[i];
+        i++;
+    }
+	arr[s->sphere_count] = *sp;
 	free(s->spheres);
 	s->spheres = arr;
 	s->sphere_count++;
@@ -36,7 +41,6 @@ int	parse_sphere(char *line, t_scene *scene)
 	int			n;
 	char		**tab;
 	t_sphere	*sp;
-	float		second;
 
 	tab = ft_split(line, ' ');
 	if (!tab)
@@ -54,6 +58,7 @@ int	parse_sphere(char *line, t_scene *scene)
 	if (!sp)
 	{
 		ft_free_tab(tab);
+        printf("Error: Memory allocation failed for sphere\n");
 		return (1);
 	}
 	if (parse_vec3(tab[0], sp->center) || parse_color(tab[2], sp->color))
@@ -62,8 +67,7 @@ int	parse_sphere(char *line, t_scene *scene)
 		ft_free_tab(tab);
 		return (1);
 	}
-	second = atof(tab[1]);
-	sp->diameter = second;
+	sp->diameter = atof(tab[1]);
 	if (spheres_push(scene, sp))
 	{
 		free(sp);
