@@ -1,60 +1,69 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ambient.c                                          :+:      :+:    :+:   */
+/*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/21 03:20:12 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 03:21:35 by dsemenov         ###   ########.fr       */
+/*   Created: 2025/10/21 04:14:54 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/10/21 05:03:47 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parse.h"
+#include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int	parse_ratio(char *str, float *ratio)
+static int	push_plane(t_scene *s, t_plane *pl)
 {
-	char	*endptr;
-	float	value;
+	t_plane	*arr;
+	int		i;
 
-	value = strtof(str, &endptr);
-	if (endptr == str)
-	{
-		printf("Error: Invalid float value for ambient ratio\n");
+	arr = malloc(sizeof(*arr) * (s->plane_count + 1));
+	if (!arr)
 		return (1);
+	i = 0;
+	while (i < s->plane_count)
+	{
+		arr[i] = s->planes[i];
+		i++;
 	}
-	*ratio = value;
+	arr[s->plane_count] = *pl;
+	free(s->planes);
+	s->planes = arr;
+	s->plane_count++;
 	return (0);
 }
 
-int	parse_ambient(char *line, t_scene *scene)
+int	parse_plane(char *line, t_scene *scene)
 {
 	char	**tab;
-	int		i;
+	t_plane	plane;
+	int		n;
 
-	while (*line && ft_strchr(" \t\r\n", *line))
-		line++;
 	tab = ft_split(line, ' ');
 	if (!tab)
-		return (1);
-	i = 0;
-	while (tab[i])
-		i++;
-	if (i != 2)
 	{
-		printf("Error: Ambient light requires 2 parameters\n");
+		printf("Error: Memory allocation failed\n");
+		return (1);
+	}
+	n = 0;
+	while (tab[n])
+		n++;
+	if (n != 3)
+	{
+		printf("Error: Invalid number of arguments for plane\n");
+		return (1);
+	}
+	if (parse_vec3(tab[0], plane.point) || parse_vec3(tab[1], plane.normal)
+		|| parse_color(tab[2], plane.color))
+	{
 		ft_free_tab(tab);
 		return (1);
 	}
-	if (parse_ratio(tab[0], &scene->ambient.intensity))
-	{
-		ft_free_tab(tab);
-		return (1);
-	}
-	if (parse_color(tab[1], scene->ambient.color))
+	if (push_plane(scene, &plane))
 	{
 		ft_free_tab(tab);
 		return (1);

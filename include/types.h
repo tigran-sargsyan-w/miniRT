@@ -33,7 +33,7 @@ typedef struct s_light
 typedef struct s_sphere
 {
     float center[3];
-    float radius;
+    float diameter;
     int color[3];
 }   t_sphere;
 
