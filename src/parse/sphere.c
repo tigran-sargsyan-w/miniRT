@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 04:01:40 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 04:51:35 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	parse_sphere(char *line, t_scene *scene)
 {
 	int			n;
 	char		**tab;
-	t_sphere	*sp;
+	t_sphere	sp;
 
 	tab = ft_split(line, ' ');
 	if (!tab)
@@ -54,23 +54,14 @@ int	parse_sphere(char *line, t_scene *scene)
 		printf("Error: Invalid number of parameters for sphere\n");
 		return (1);
 	}
-	sp = malloc(sizeof(*sp));
-	if (!sp)
+	if (parse_vec3(tab[0], sp.center) || parse_color(tab[2], sp.color))
 	{
-		ft_free_tab(tab);
-        printf("Error: Memory allocation failed for sphere\n");
-		return (1);
-	}
-	if (parse_vec3(tab[0], sp->center) || parse_color(tab[2], sp->color))
-	{
-		free(sp);
 		ft_free_tab(tab);
 		return (1);
 	}
-	sp->diameter = atof(tab[1]);
-	if (spheres_push(scene, sp))
+	sp.diameter = atof(tab[1]);
+	if (spheres_push(scene, &sp))
 	{
-		free(sp);
 		ft_free_tab(tab);
 		return (1);
 	}

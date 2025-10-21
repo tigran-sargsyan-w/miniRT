@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 04:35:16 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 04:48:06 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,16 @@ static void	debug_print_scene(t_scene *scene)
             Color(%d, %d, %d)\n", i, pl->point[0], pl->point[1], pl->point[2],
             pl->normal[0], pl->normal[1], pl->normal[2],
             pl->color[0], pl->color[1], pl->color[2]);
+    }
+    for (int i = 0; i < scene->cylinder_count; ++i)
+    {
+        t_cylinder *cy = &scene->cylinders[i];
+        printf(" Cylinder %d: Center(%.2f, %.2f, %.2f), Orientation(%.2f, %.2f, \
+            %.2f), Diameter: %.2f, Height: %.2f, Color(%d, %d, %d)\n", i,
+            cy->center[0], cy->center[1], cy->center[2],
+            cy->orientation[0], cy->orientation[1], cy->orientation[2],
+            cy->diameter, cy->height,
+            cy->color[0], cy->color[1], cy->color[2]);
     }
 }
 
@@ -84,7 +94,7 @@ int	parse_obj_data(char *line, int type, t_scene *scene)
 	else if (type == PLANE)
 		return (parse_plane(line, scene));
 	else if (type == CYLINDER)
-		return (0); // parse_cylinder(line, scene);
+		return (parse_cylinder(line, scene));
 	return (0);
 }
 
