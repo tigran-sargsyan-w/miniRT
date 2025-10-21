@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 22:08:04 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 05:34:43 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 05:35:39 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+
+void	free_scene(t_scene *scene)
+{
+	free(scene->spheres);
+	free(scene->planes);
+	free(scene->cylinders);
+}
 
 int	main(int argc, char **argv)
 {
@@ -39,5 +47,6 @@ int	main(int argc, char **argv)
 	close(fd);
 	validate_input_range(&scene);
 	debug_print_scene(&scene); // For debugging purposes
+	free_scene(&scene);
 	return (0);
 }
