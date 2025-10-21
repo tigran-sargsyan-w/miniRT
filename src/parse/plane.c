@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 04:14:54 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 04:36:32 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 05:03:47 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ int	parse_plane(char *line, t_scene *scene)
 		ft_free_tab(tab);
 		return (1);
 	}
+	ft_free_tab(tab);
 	return (0);
 }

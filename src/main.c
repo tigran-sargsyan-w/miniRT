@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 22:08:04 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/16 02:03:28 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 05:34:43 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	close(fd);
+	validate_input_range(&scene);
+	debug_print_scene(&scene); // For debugging purposes
 	return (0);
 }

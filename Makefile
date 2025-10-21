@@ -21,7 +21,8 @@ LIBFT_DIR = libft/
 
 SRCS = main.c parse/parse.c parse/parse_utils.c parse/ambient.c \
 parse/camera.c parse/light.c \
-parse/sphere.c parse/plane.c parse/cylinder.c vector.c
+parse/sphere.c parse/plane.c parse/cylinder.c parse/validate_range.c vector.c \
+debug_print_scene.c
 
 # -------------------------------
 #   Object & Dependency Files
