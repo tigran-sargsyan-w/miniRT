@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:37 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 03:20:38 by dsemenov         ###   ########lyon.fr   */
+/*   Updated: 2025/10/21 06:18:47 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	parse_color(char *line, int color[3])
 {
 	char	**tab;
 	int		n;
-	int		v;
+	int		i;
 
 	tab = ft_split(line, ',');
 	n = 0;
@@ -73,15 +73,11 @@ int	parse_color(char *line, int color[3])
 		ft_free_tab(tab);
 		return (1);
 	}
-	for (int i = 0; i < 3; ++i)
+	i = 0;
+	while (i < 3)
 	{
-		v = ft_atoi(tab[i]);
-		if (v < 0 || v > 255)
-		{
-			ft_free_tab(tab);
-			return (1);
-		}
-		color[i] = v;
+		color[i] = ft_atoi(tab[i]);
+		i++;
 	}
 	ft_free_tab(tab);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 05:33:51 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 06:16:00 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	check_args(int argc, char **argv)
 
 int	parse_obj_data(char *line, int type, t_scene *scene)
 {
-	// This function should handle parsing the object data based on the token
 	if (type == AMBIENT)
 		return (parse_ambient(line, scene));
 	else if (type == CAMERA)
