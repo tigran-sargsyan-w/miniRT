@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 22:08:04 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 05:35:39 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 05:42:06 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int argc, char **argv)
 	}
 	if (check_parse_file(fd, &scene) != 0)
 	{
+		free_scene(&scene);
 		close(fd);
 		return (1);
 	}
