@@ -19,7 +19,9 @@ LIBFT_DIR = libft/
 #   Source for miniRT
 # -------------------------------
 
-SRCS = main.c parse/parse.c parse/ambient.c parse/camera.c parse/light.c vector.c
+SRCS = main.c parse/parse.c parse/parse_utils.c parse/ambient.c \
+parse/camera.c parse/light.c \
+parse/sphere.c vector.c
 
 # -------------------------------
 #   Object & Dependency Files

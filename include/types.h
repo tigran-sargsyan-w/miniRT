@@ -33,7 +33,7 @@ typedef struct s_light
 typedef struct s_sphere
 {
     float center[3];
-    float radius;
+    float diameter;
     int color[3];
 }   t_sphere;
 
@@ -61,11 +61,11 @@ typedef struct s_scene
     t_camera camera;
     int has_light;
     t_light light;
-    t_sphere *spheres;
+    t_sphere **spheres;
     int sphere_count;
-    t_plane *planes;
+    t_plane **planes;
     int plane_count;
-    t_cylinder *cylinders;
+    t_cylinder **cylinders;
     int cylinder_count;
 }   t_scene;
 

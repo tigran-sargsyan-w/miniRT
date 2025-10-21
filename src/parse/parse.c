@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/17 10:37:57 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/21 03:09:45 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,24 @@
 #include <stdio.h>
 #include "types.h"
 #include "parse.h"
+
+static void debug_print_scene(t_scene *scene)
+{
+    printf("Scene Debug Info:\n");
+    printf("Ambient Light: %d\n", scene->has_ambient);
+    printf("Ambient Ratio: %.2f\n", scene->ambient.intensity);
+    printf("Ambient Color: (%d, %d, %d)\n", scene->ambient.color[0],
+           scene->ambient.color[1], scene->ambient.color[2]);
+    printf("Camera: %d\n", scene->has_camera);
+    printf("Light: %d\n", scene->has_light);
+    printf("Number of Spheres: %d\n", scene->sphere_count);
+    for (int i = 0; i < scene->sphere_count; ++i) {
+        t_sphere *sp = scene->spheres[i];
+        printf(" Sphere %d: Center(%.2f, %.2f, %.2f), Diameter: %.2f, Color(%d, %d, %d)\n",
+               i, sp->center[0], sp->center[1], sp->center[2],
+               sp->diameter, sp->color[0], sp->color[1], sp->color[2]);
+    }
+}
 
 int check_args(int argc, char **argv)
 {
@@ -39,101 +57,22 @@ int check_args(int argc, char **argv)
     return (0);
 }
 
-char *get_token(char **str, const char *delim)
-{
-    char *start;
-    char *end;
-    char *token;
-    size_t len;
-
-    if (!str || !*str)
-        return (NULL);
-    while (**str && ft_strchr(delim, **str))
-        (*str)++;
-    if (**str == '\0')
-        return (NULL);
-    start = *str;
-    end = start;
-    while (*end && !ft_strchr(delim, *end))
-        end++;
-    len = end - start;
-    token = malloc(len + 1);
-    if (!token)
-        return (NULL);
-    ft_strlcpy(token, start, len + 1);
-    *str = end;
-    return (token);
-}
-
-int identify_object(const char *token)
-{
-    if (ft_strcmp(token, "A") == 0)
-        return (AMBIENT);
-    else if (ft_strcmp(token, "C") == 0)
-        return (CAMERA);
-    else if (ft_strcmp(token, "L") == 0)
-        return (LIGHT);
-    else if (ft_strcmp(token, "sp") == 0)
-        return (SPHERE);
-    else if (ft_strcmp(token, "pl") == 0)
-        return (PLANE);
-    else if (ft_strcmp(token, "cy") == 0)
-        return (CYLINDER);
-    else
-        return (-1);
-}
-
-int parse_color(char *line, int color[3])
-{
-    char **tab;
-    int i;
-
-    tab = ft_split(line, ',');
-    if (!tab)
-        return (1);
-    i = 0;
-    while (tab[i])
-    {
-        color[i] = ft_atoi(tab[i]);
-        i++;
-    }
-    ft_free_tab(tab);
-    return (0);
-}
-
-int parse_vec3(char *line, float vec[3])
-{
-    char **tab;
-    int i;
-
-    tab = ft_split(line, ',');
-    if (!tab)
-        return (1);
-    i = 0;
-    while (tab[i])
-    {
-        vec[i] = atof(tab[i]);
-        i++;
-    }
-    ft_free_tab(tab);
-    return (0);
-}
-
-void parse_obj_data(char *line, int type, t_scene *scene)
+int parse_obj_data(char *line, int type, t_scene *scene)
 {
     // This function should handle parsing the object data based on the token
     if (type == AMBIENT)
-        parse_ambient(line, scene);
+        return (parse_ambient(line, scene));
     else if (type == CAMERA)
-        parse_camera(line, scene);
+        return (parse_camera(line, scene));
     else if (type == LIGHT)
-        parse_light(line, scene);
+        return (parse_light(line, scene));
     else if (type == SPHERE)
-        ; // parse_sphere(line, scene);
+        return (parse_sphere(line, scene));
     else if (type == PLANE)
-        ; // parse_plane(line, scene);
+        return (0); // parse_plane(line, scene);
     else if (type == CYLINDER)
-        ; // parse_cylinder(line, scene);
+        return (0); // parse_cylinder(line, scene);
+    return (0);
 }
 
 int obj_count(t_scene *scene, int obj_type)
@@ -144,12 +83,6 @@ int obj_count(t_scene *scene, int obj_type)
         scene->has_camera++;
     else if (obj_type == LIGHT)
         scene->has_light++;
-    else if (obj_type == SPHERE)
-        scene->sphere_count++;
-    else if (obj_type == PLANE)
-        scene->plane_count++;
-    else if (obj_type == CYLINDER)
-        scene->cylinder_count++;
     if (scene->has_ambient > 1 || scene->has_camera > 1 || scene->has_light > 1)
     {
         printf("Error: Multiple definitions of unique object type\n");
@@ -158,47 +91,34 @@ int obj_count(t_scene *scene, int obj_type)
     return (0);
 }
 
+
 int check_parse_file(int fd, t_scene *scene)
 {
     char *line;
-    char *trimmed_line;
-    char *original_trimmed_line;
-    char *token;
-
     while ((line = get_next_line(fd)))
     {
-        trimmed_line = ft_strtrim(line, " \t\r\n");
-        original_trimmed_line = trimmed_line;
+        char *trimmed = ft_strtrim(line, " \t\r\n");
+        char *p = trimmed;
         free(line);
-        token = get_token(&trimmed_line, " ");
-        if (token)
-        {
+
+        char *token = get_token(&p, " ");
+        if (token) {
             int obj_type = identify_object(token);
-            if (obj_type != -1)
-            {
-                if (obj_count(scene, obj_type))
+            if (obj_type != -1) {
+                if (obj_count(scene, obj_type) ||
+                    parse_obj_data(p, obj_type, scene))
                 {
                     free(token);
-                    free(original_trimmed_line);
-                    return (1);
+                    free(trimmed);
+                    return 1;
                 }
-                parse_obj_data(trimmed_line, obj_type, scene);
-            }
-            else {
-                // Call the appropriate parsing function based on obj_type
+            } else {
                 printf("Unknown object type: %s\n", token);
             }
             free(token);
         }
-        free(original_trimmed_line);
+        free(trimmed);
     }
-    // Print parsed scene for debugging
-    printf("Ambient intensity: %f\n", scene->ambient.intensity);
-    printf("Ambient color: %d, %d, %d\n", scene->ambient.color[0], scene->ambient.color[1], scene->ambient.color[2]);
-    printf("Camera position: %f, %f, %f\n", scene->camera.position[0], scene->camera.position[1], scene->camera.position[2]);
-    printf("Camera orientation: %f, %f, %f\n", scene->camera.orientation[0], scene->camera.orientation[1], scene->camera.orientation[2]);
-    printf("Camera FOV: %d\n", scene->camera.fov);
-    printf("Light position: %f, %f, %f\n", scene->light.position[0], scene->light.position[1], scene->light.position[2]);
-    printf("Light brightness: %f\n", scene->light.brightness);
+    debug_print_scene(scene);
     return (0);
 }
