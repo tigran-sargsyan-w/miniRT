@@ -4,20 +4,6 @@
 # include "types.h"
 # include <stdint.h>
 
-typedef union u_object_data
-{
-	t_sphere				sphere;
-	t_plane					plane;
-	t_cylinder				cylinder;
-}							t_object_data;
-
-typedef struct s_object
-{
-	int						type;
-	t_object_data			data;
-	struct s_object			*next;
-}							t_object;
-
 int							check_args(int argc, char **argv);
 char						*get_token(char **str, const char *delim);
 int							identify_object(const char *token);
@@ -37,6 +23,5 @@ int							parse_cylinder(char *line, t_scene *scene);
 int							validate_input_range(t_scene *scene);
 void						ft_free_tab(char **tab);
 char						*get_token(char **str, const char *delim);
-t_object					*node_create(t_object_data data);
 
 #endif
