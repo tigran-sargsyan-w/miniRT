@@ -1,8 +1,7 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
-# define M_PI 3.14159265358979323846
-# define RT_EPS 1e-9
+# include "constants.h"
 
 // 3D vector structure
 typedef struct s_vector3
