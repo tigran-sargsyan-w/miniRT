@@ -8,19 +8,19 @@ static double	clamp01(double x)
 	return x;
 }
 
-/* IEC 61966-2-1: sRGB gamma */
-static double	srgb_to_linear01(double cs) /* cs in 0..1 */
+// IEC 61966-2-1: sRGB gamma
+static double srgb_to_linear01(double colorSRGB) // cs in 0..1
 {
-	if (cs <= 0.04045)
-		return (cs / 12.92);
-	return (pow((cs + 0.055) / 1.055, 2.4));
+    if (colorSRGB <= SRGB_K0)              
+        return colorSRGB / SRGB_PHI;
+    return pow((colorSRGB + SRGB_A) / SRGB_APLUS1, SRGB_GAMMA);
 }
 
-static double	linear01_to_srgb(double cl) /* cl in 0..1 */
+static double linear01_to_srgb(double colorLinear) // cl in 0..1
 {
-	if (cl <= 0.0031308)
-		return (cl * 12.92);
-	return (1.055 * pow(cl, 1.0 / 2.4) - 0.055);
+    if (colorLinear <= SRGB_K0_LINEAR)
+        return (colorLinear * SRGB_PHI);
+    return (SRGB_APLUS1 * pow(colorLinear, 1.0 / SRGB_GAMMA) - SRGB_A);
 }
 
 static uint8_t	to_u8(double x)
