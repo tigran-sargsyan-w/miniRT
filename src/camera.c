@@ -51,8 +51,8 @@ int	camera_init(t_camera *camera, t_vector3 position,
 t_ray	camera_ray(const t_camera *camera, int pixel_x, int pixel_y,
 				 int img_width, int img_height)
 {
-	double		u; /* NDC x in [-1,1] */
-	double		v; /* NDC y in [-1,1], +y up */
+	double		u; /* NDC x in [-1,1] Normalized Device Coordinates */
+	double		v; /* NDC y in [-1,1] Normalized Device Coordinates */
 	double		x;
 	double		y;
 	t_vector3	dir;
