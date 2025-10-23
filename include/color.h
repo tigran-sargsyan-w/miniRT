@@ -2,9 +2,6 @@
 # define COLOR_H
 # include <stdint.h>
 
-# define COLOR_BLACK   ((t_color){0.0, 0.0, 0.0})
-# define COLOR_WHITE   ((t_color){1.0, 1.0, 1.0})
-
 // sRGB color 0..255
 typedef struct s_color8
 {
@@ -20,6 +17,9 @@ typedef struct s_color
 	double	g;
 	double	b;
 }	t_color;
+
+# define COLOR_BLACK   ((t_color){0.0, 0.0, 0.0})
+# define COLOR_WHITE   ((t_color){1.0, 1.0, 1.0})
 
 // Color constructors
 t_color		color_make(double r, double g, double b);
