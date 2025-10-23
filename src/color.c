@@ -1,0 +1,99 @@
+#include <math.h>
+#include "color.h"
+
+static double	clamp01(double x)
+{
+	if (x < 0.0) return 0.0;
+	if (x > 1.0) return 1.0;
+	return x;
+}
+
+/* IEC 61966-2-1: sRGB gamma */
+static double	srgb_to_linear01(double cs) /* cs in 0..1 */
+{
+	if (cs <= 0.04045)
+		return (cs / 12.92);
+	return (pow((cs + 0.055) / 1.055, 2.4));
+}
+
+static double	linear01_to_srgb(double cl) /* cl in 0..1 */
+{
+	if (cl <= 0.0031308)
+		return (cl * 12.92);
+	return (1.055 * pow(cl, 1.0 / 2.4) - 0.055);
+}
+
+static uint8_t	to_u8(double x)
+{
+	int v;
+
+	v = (int)floor(x * 255.0 + 0.5); /* round */
+	if (v < 0) v = 0;
+	if (v > 255) v = 255;
+	return ((uint8_t)v);
+}
+
+t_color	color_make(double r, double g, double b)
+{
+	t_color c;
+
+	c.r = r; c.g = g; c.b = b;
+	return (c);
+}
+
+t_color8	color8_make(uint8_t r, uint8_t g, uint8_t b)
+{
+	t_color8 c;
+
+	c.r = r; c.g = g; c.b = b;
+	return (c);
+}
+
+t_color	color_from_rgb8(t_color8 c8)
+{
+	const double rs = (double)c8.r / 255.0;
+	const double gs = (double)c8.g / 255.0;
+	const double bs = (double)c8.b / 255.0;
+
+	return (color_make(
+		srgb_to_linear01(rs),
+		srgb_to_linear01(gs),
+		srgb_to_linear01(bs)));
+}
+
+t_color8	color_to_rgb8(t_color c)
+{
+	const double rs = linear01_to_srgb(clamp01(c.r));
+	const double gs = linear01_to_srgb(clamp01(c.g));
+	const double bs = linear01_to_srgb(clamp01(c.b));
+
+	return (color8_make(to_u8(rs), to_u8(gs), to_u8(bs)));
+}
+
+t_color	color_add(t_color a, t_color b)
+{
+	return (color_make(a.r + b.r, a.g + b.g, a.b + b.b));
+}
+
+t_color	color_multiply(t_color a, t_color b)
+{
+	return (color_make(a.r * b.r, a.g * b.g, a.b * b.b));
+}
+
+t_color	color_scale(t_color c, double k)
+{
+	return (color_make(c.r * k, c.g * k, c.b * k));
+}
+
+t_color	color_clamp01(t_color c)
+{
+	return (color_make(clamp01(c.r), clamp01(c.g), clamp01(c.b)));
+}
+
+t_color	color_lerp(t_color a, t_color b, double t)
+{
+	return (color_make(
+		a.r * (1.0 - t) + b.r * t,
+		a.g * (1.0 - t) + b.g * t,
+		a.b * (1.0 - t) + b.b * t));
+}
