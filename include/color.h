@@ -26,14 +26,14 @@ t_color		color_make(double r, double g, double b);
 t_color8	color8_make(uint8_t r, uint8_t g, uint8_t b);
 
 // sRGB 0..255 to linear 0..1 and vice versa
-t_color		color_from_rgb8(t_color8 c8);
-t_color8	color_to_rgb8(t_color c);
+t_color		color_from_rgb8(t_color8 color8);
+t_color8	color_to_rgb8(t_color color);
 
 // Basic operations (component-wise)
 t_color		color_add(t_color a, t_color b);
 t_color		color_multiply(t_color a, t_color b);     // a ⊙ b (albedo * light)
-t_color		color_scale(t_color c, double k);     // c * k
-t_color		color_clamp01(t_color c);
+t_color		color_scale(t_color color, double k);     // c * k
+t_color		color_clamp01(t_color color);
 
 // Utilities
 t_color		color_lerp(t_color a, t_color b, double t);

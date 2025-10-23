@@ -49,11 +49,11 @@ t_color8	color8_make(uint8_t r, uint8_t g, uint8_t b)
 	return (c);
 }
 
-t_color	color_from_rgb8(t_color8 c8)
+t_color	color_from_rgb8(t_color8 color8)
 {
-	const double rs = (double)c8.r / 255.0;
-	const double gs = (double)c8.g / 255.0;
-	const double bs = (double)c8.b / 255.0;
+	const double rs = (double)color8.r / 255.0;
+	const double gs = (double)color8.g / 255.0;
+	const double bs = (double)color8.b / 255.0;
 
 	return (color_make(
 		srgb_to_linear01(rs),
@@ -61,11 +61,11 @@ t_color	color_from_rgb8(t_color8 c8)
 		srgb_to_linear01(bs)));
 }
 
-t_color8	color_to_rgb8(t_color c)
+t_color8	color_to_rgb8(t_color color)
 {
-	const double rs = linear01_to_srgb(clamp01(c.r));
-	const double gs = linear01_to_srgb(clamp01(c.g));
-	const double bs = linear01_to_srgb(clamp01(c.b));
+	const double rs = linear01_to_srgb(clamp01(color.r));
+	const double gs = linear01_to_srgb(clamp01(color.g));
+	const double bs = linear01_to_srgb(clamp01(color.b));
 
 	return (color8_make(to_u8(rs), to_u8(gs), to_u8(bs)));
 }
@@ -80,14 +80,14 @@ t_color	color_multiply(t_color a, t_color b)
 	return (color_make(a.r * b.r, a.g * b.g, a.b * b.b));
 }
 
-t_color	color_scale(t_color c, double k)
+t_color	color_scale(t_color color, double k)
 {
-	return (color_make(c.r * k, c.g * k, c.b * k));
+	return (color_make(color.r * k, color.g * k, color.b * k));
 }
 
-t_color	color_clamp01(t_color c)
+t_color	color_clamp01(t_color color)
 {
-	return (color_make(clamp01(c.r), clamp01(c.g), clamp01(c.b)));
+	return (color_make(clamp01(color.r), clamp01(color.g), clamp01(color.b)));
 }
 
 t_color	color_lerp(t_color a, t_color b, double t)
