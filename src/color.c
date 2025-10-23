@@ -9,18 +9,18 @@ static double	clamp01(double x)
 }
 
 // IEC 61966-2-1: sRGB gamma
-static double srgb_to_linear01(double colorSRGB) // cs in 0..1
+static double srgb_to_linear01(double color_srgb) // cs in 0..1
 {
-    if (colorSRGB <= SRGB_K0)              
-        return colorSRGB / SRGB_PHI;
-    return pow((colorSRGB + SRGB_A) / SRGB_APLUS1, SRGB_GAMMA);
+    if (color_srgb <= SRGB_K0)              
+        return color_srgb / SRGB_PHI;
+    return pow((color_srgb + SRGB_A) / SRGB_APLUS1, SRGB_GAMMA);
 }
 
-static double linear01_to_srgb(double colorLinear) // cl in 0..1
+static double linear01_to_srgb(double color_linear) // cl in 0..1
 {
-    if (colorLinear <= SRGB_K0_LINEAR)
-        return (colorLinear * SRGB_PHI);
-    return (SRGB_APLUS1 * pow(colorLinear, 1.0 / SRGB_GAMMA) - SRGB_A);
+    if (color_linear <= SRGB_K0_LINEAR)
+        return (color_linear * SRGB_PHI);
+    return (SRGB_APLUS1 * pow(color_linear, 1.0 / SRGB_GAMMA) - SRGB_A);
 }
 
 static uint8_t	to_u8(double x)
