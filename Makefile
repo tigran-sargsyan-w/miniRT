@@ -5,6 +5,7 @@
 NAME = miniRT
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -g
+MINILIBX_FLAGS = -L$(MINILIBX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 # -------------------------------
 #  		  Directories 
@@ -14,6 +15,7 @@ SRC_DIR = src/
 OBJ_DIR = obj/
 INCLUDE_DIR = include/
 LIBFT_DIR = libft/
+MINILIBX_DIR = minilibx/
 
 # -------------------------------
 #   Source for miniRT
@@ -22,15 +24,16 @@ LIBFT_DIR = libft/
 SRCS = main.c parse/parse.c parse/parse_utils.c parse/ambient.c \
 parse/camera.c parse/light.c \
 parse/sphere.c parse/plane.c parse/cylinder.c parse/validate_range.c vector.c \
-debug_print_scene.c
+debug_print_scene.c mlx_utils.c
 
 # -------------------------------
 #   Object & Dependency Files
 # -------------------------------
 OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
 DEPS = $(OBJS:%.o=%.d)
-INCLUDES = -I$(INCLUDE_DIR) -I$(LIBFT_DIR)
+INCLUDES = -I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(MINILIBX_DIR)
 LIBFT = $(LIBFT_DIR)libft.a
+MINILIBX = $(MINILIBX_DIR)libmlx.a
 
 # **************************************************************************** #
 #                                 Build Rules                                  #
@@ -41,9 +44,10 @@ all: $(NAME)
 
 libs:
 	@$(MAKE) -s -C $(LIBFT_DIR)
+	@$(MAKE) -s -C $(MINILIBX_DIR)
 
 $(NAME): $(OBJS) | libs
-	@$(CC) $(CFLAGS) $(OBJS) -lm $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -lm $(LIBFT) $(MINILIBX_FLAGS) -o $(NAME)
 	@echo "✅ miniRT object files compiled."
 	@echo "🚀 $(NAME) created!"
 
@@ -54,6 +58,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 clean:
 	@rm -rf $(OBJ_DIR)
 	@$(MAKE) -s -C $(LIBFT_DIR) clean
+	@$(MAKE) -s -C $(MINILIBX_DIR) clean
 	@echo "🗑️ $(NAME) object files removed."
 
 fclean: clean
