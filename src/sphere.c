@@ -6,7 +6,7 @@
 static int	intersect_sphere(const t_object *obj,
 					t_ray ray, double t_min, double t_max, t_hit *out)
 {
-    // TODO: implement sphere intersection
+    // TODO: implement ray-sphere intersection
 	return (1);
 }
 
