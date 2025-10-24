@@ -7,6 +7,11 @@ static int	intersect_plane(const t_object *obj,
 				t_ray ray, double t_min, double t_max, t_hit *out)
 {
     // TODO: implement ray-plane intersection
+    (void)obj;
+	(void)ray;
+	(void)t_min;
+	(void)t_max;
+	(void)out;
 	return (1);
 }
 
