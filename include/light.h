@@ -16,7 +16,7 @@ struct						s_light
 // Linked list node for lights
 typedef struct s_light_node
 {
-	t_light					light;
+	t_light					*light;
 	struct s_light_node		*next;
 }							t_light_node;
 
