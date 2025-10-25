@@ -23,7 +23,7 @@ typedef struct s_mlx_data
 }					t_mlx_data;
 
 void	mlx_destroy_all(t_mlx_data *data);
-int		mlx_init_system(t_mlx_data *data, char *name);
+int		mlx_init_system(t_mlx_data *mlx_data, char *name);
 void	my_mlx_pixel_put(t_img_data *image_data, int x, int y, int color);
 
 #endif

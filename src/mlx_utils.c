@@ -10,46 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "mlx_utils.h"
-#include <X11/X.h>
-#include <X11/keysym.h>
 #include <mlx.h>
 #include <stdlib.h>
-#include <stdio.h>
 
-void	mlx_destroy_all(t_mlx_data *data)
+void	mlx_destroy_all(t_mlx_data *mlx_data)
 {
-	if (data->img.img_ptr)
-		mlx_destroy_image(data->mlx_ptr, data->img.img_ptr);
-	if (data->win_ptr)
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	if (data->mlx_ptr)
+	if (mlx_data->img.img_ptr)
+		mlx_destroy_image(mlx_data->mlx_ptr, mlx_data->img.img_ptr);
+	if (mlx_data->win_ptr)
+		mlx_destroy_window(mlx_data->mlx_ptr, mlx_data->win_ptr);
+	if (mlx_data->mlx_ptr)
 	{
-		mlx_destroy_display(data->mlx_ptr);
-		free(data->mlx_ptr);
+		mlx_destroy_display(mlx_data->mlx_ptr);
+		free(mlx_data->mlx_ptr);
 	}
 }
 
-int	mlx_init_system(t_mlx_data *data, char *name)
+int	mlx_init_system(t_mlx_data *mlx_data, char *name)
 {
-	data->mlx_ptr = mlx_init();
-	if (data->mlx_ptr == NULL)
+	ft_bzero(mlx_data, sizeof(t_mlx_data));
+	mlx_data->mlx_ptr = mlx_init();
+	if (mlx_data->mlx_ptr == NULL)
 		return (1);
-	data->win_ptr = mlx_new_window(data->mlx_ptr, WIDTH, HEIGHT, name);
-	if (data->win_ptr == NULL)
+	mlx_data->win_ptr = mlx_new_window(mlx_data->mlx_ptr, WIDTH, HEIGHT, name);
+	if (mlx_data->win_ptr == NULL)
 	{
-		mlx_destroy_all(data);
+		mlx_destroy_all(mlx_data);
 		return (1);
 	}
-	data->img.img_ptr = mlx_new_image(data->mlx_ptr, WIDTH, HEIGHT);
-	if (data->img.img_ptr == NULL)
+	mlx_data->img.img_ptr = mlx_new_image(mlx_data->mlx_ptr, WIDTH, HEIGHT);
+	if (mlx_data->img.img_ptr == NULL)
 	{
-		mlx_destroy_all(data);
+		mlx_destroy_all(mlx_data);
 		return (1);
 	}
-	data->img.pixels_ptr = mlx_get_data_addr(data->img.img_ptr,
-			&data->img.bits_per_pixel, &data->img.line_length,
-			&data->img.endian);
+	mlx_data->img.pixels_ptr = mlx_get_data_addr(mlx_data->img.img_ptr,
+			&mlx_data->img.bits_per_pixel, &mlx_data->img.line_length,
+			&mlx_data->img.endian);
 	return (0);
 }
 

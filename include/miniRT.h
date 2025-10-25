@@ -19,7 +19,7 @@
 typedef struct s_data
 {
 	t_scene			scene;
-	t_mlx_data		*mlx;
+	t_mlx_data		mlx;
 }					t_data;
 
 int	check_args(int argc, char **argv);

@@ -49,7 +49,9 @@ int	main(int argc, char **argv)
 	close(fd);
 	validate_input_range(&data.scene);
 	debug_print_scene(&data.scene); // For debugging purposes
-	mlx_init_system(data.mlx, "MiniRT");
+	mlx_init_system(&data.mlx, "MiniRT");
+	// TODO: Add rendering and event handling here
 	free_scene(&data.scene);
+	mlx_destroy_all(&data.mlx);
 	return (0);
 }
