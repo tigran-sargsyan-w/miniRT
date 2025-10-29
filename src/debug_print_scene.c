@@ -10,22 +10,29 @@ void	debug_print_scene(t_scene *scene)
 	printf("Ambient Ratio: %.2f\n", scene->ambient.intensity);
 	printf("Ambient Color: (%d, %d, %d)\n", scene->ambient.color[0],
 		scene->ambient.color[1], scene->ambient.color[2]);
-	printf("Camera: %d\n", scene->has_camera);
-	printf("Light: %d\n", scene->has_light);
+    printf("Camera:\n Position: (%.2f, %.2f, %.2f)\n Orientation: (%.2f, %.2f, %.2f)\n FOV: %d\n",
+        scene->camera.position[0], scene->camera.position[1], scene->camera.position[2],
+        scene->camera.orientation[0], scene->camera.orientation[1], scene->camera.orientation[2],
+        scene->camera.fov);
+    printf("Light: %d\n", scene->has_light);
+    if (scene->has_light)
+    {
+        printf(" Light Position: (%.2f, %.2f, %.2f)\n Brightness: %.2f\n",
+            scene->light.position[0], scene->light.position[1], scene->light.position[2],
+            scene->light.brightness);
+    }
 	printf("Number of Spheres: %d\n", scene->sphere_count);
 	for (int i = 0; i < scene->sphere_count; ++i)
 	{
 		sp = &scene->spheres[i];
-		printf(" Sphere %d: Center(%.2f, %.2f, %.2f), Diameter: %.2f, Color(%d, \
-			%d, %d)\n", i, sp->center[0], sp->center[1], sp->center[2],
+		printf(" Sphere %d: Center(%.2f, %.2f, %.2f), Diameter: %.2f, Color(%d, %d, %d)\n", i, sp->center[0], sp->center[1], sp->center[2],
 			sp->diameter, sp->color[0], sp->color[1], sp->color[2]);
 	}
     printf("Number of Planes: %d\n", scene->plane_count);
     for (int i = 0; i < scene->plane_count; ++i)
     {
         t_plane *pl = &scene->planes[i];
-        printf(" Plane %d: Point(%.2f, %.2f, %.2f), Normal(%.2f, %.2f, %.2f), \
-            Color(%d, %d, %d)\n", i, pl->point[0], pl->point[1], pl->point[2],
+        printf(" Plane %d: Point(%.2f, %.2f, %.2f), Normal(%.2f, %.2f, %.2f),  Color(%d, %d, %d)\n", i, pl->point[0], pl->point[1], pl->point[2],
             pl->normal[0], pl->normal[1], pl->normal[2],
             pl->color[0], pl->color[1], pl->color[2]);
     }
@@ -33,8 +40,7 @@ void	debug_print_scene(t_scene *scene)
     for (int i = 0; i < scene->cylinder_count; ++i)
     {
         t_cylinder *cy = &scene->cylinders[i];
-        printf(" Cylinder %d: Center(%.2f, %.2f, %.2f), Orientation(%.2f, %.2f, \
-            %.2f), Diameter: %.2f, Height: %.2f, Color(%d, %d, %d)\n", i,
+        printf(" Cylinder %d: Center(%.2f, %.2f, %.2f), Orientation(%.2f, %.2f, %.2f), Diameter: %.2f, Height: %.2f, Color(%d, %d, %d)\n", i,
             cy->center[0], cy->center[1], cy->center[2],
             cy->orientation[0], cy->orientation[1], cy->orientation[2],
             cy->diameter, cy->height,
