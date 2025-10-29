@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 # define TYPES_H
 
+# include "light.h"
+
 typedef enum e_object_type
 {
     AMBIENT,
@@ -23,12 +25,6 @@ typedef struct s_camera
     float orientation[3];
     int fov;
 }   t_camera;
-
-typedef struct s_light
-{
-    float position[3];
-    float brightness;
-}   t_light;
 
 typedef struct s_sphere
 {

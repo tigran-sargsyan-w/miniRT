@@ -17,9 +17,10 @@ void	debug_print_scene(t_scene *scene)
     printf("Light: %d\n", scene->has_light);
     if (scene->has_light)
     {
-        printf(" Light Position: (%.2f, %.2f, %.2f)\n Brightness: %.2f\n",
-            scene->light.position[0], scene->light.position[1], scene->light.position[2],
-            scene->light.brightness);
+        printf(" Light Position: (%.2f, %.2f, %.2f)\n Color: (%d, %d, %d)\n Intensity: %.2f\n",
+            scene->light.position.x, scene->light.position.y, scene->light.position.z,
+            scene->light.color.r, scene->light.color.g, scene->light.color.b,
+            scene->light.intensity);
     }
 	printf("Number of Spheres: %d\n", scene->sphere_count);
 	for (int i = 0; i < scene->sphere_count; ++i)

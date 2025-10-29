@@ -9,7 +9,7 @@ typedef struct s_light_node	t_light_node;
 struct						s_light
 {
 	t_vector3				position;
-	t_color color;    // linear 0..1
+	t_color8				color;
 	double intensity; // 0..∞
 };
 

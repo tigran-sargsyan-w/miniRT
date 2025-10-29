@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_range.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 05:22:45 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 05:56:14 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:35:11 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,9 @@ int	validate_input_range(t_scene *scene)
 		printf("Error: Camera FOV out of range (0 - 180)\n");
 		return (1);
 	}
-	if (scene->light.brightness < 0.0 || scene->light.brightness > 1.0)
+	if (scene->light.intensity < 0.0 || scene->light.intensity > 1.0)
 	{
-		printf("Error: Light brightness out of range (0.0 - 1.0)\n");
+		printf("Error: Light intensity out of range (0.0 - 1.0)\n");
 		return (1);
 	}
 	if (validate_cylinder_orientation_range(scene) != 0)
