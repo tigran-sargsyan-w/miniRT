@@ -23,12 +23,13 @@ void	debug_print_scene(t_scene *scene)
             scene->light.intensity);
     }
 	printf("Number of Spheres: %d\n", scene->sphere_count);
-	for (int i = 0; i < scene->sphere_count; ++i)
-	{
-		sp = &scene->spheres[i];
-		printf(" Sphere %d: Center(%.2f, %.2f, %.2f), Diameter: %.2f, Color(%d, %d, %d)\n", i, sp->center[0], sp->center[1], sp->center[2],
-			sp->diameter, sp->color[0], sp->color[1], sp->color[2]);
-	}
+    for (int i = 0; i < scene->sphere_count; ++i)
+    {
+        sp = &scene->spheres[i];
+        printf(" Sphere %d: Center(%.2f, %.2f, %.2f), Diameter: %.2f, Color(%d, %d, %d)\n", i,
+            sp->center.x, sp->center.y, sp->center.z,
+            sp->diameter, sp->color.r, sp->color.g, sp->color.b);
+    }
     printf("Number of Planes: %d\n", scene->plane_count);
     for (int i = 0; i < scene->plane_count; ++i)
     {

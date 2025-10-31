@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 04:51:35 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/31 15:23:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parse.h"
+#include "sphere.h"
+#include "vector.h"
+#include "color.h"
+#include "material.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -41,6 +45,8 @@ int	parse_sphere(char *line, t_scene *scene)
 	int			n;
 	char		**tab;
 	t_sphere	sp;
+	float		tmp_center[3];
+	int			tmp_color[3];
 
 	tab = ft_split(line, ' ');
 	if (!tab)
@@ -54,12 +60,21 @@ int	parse_sphere(char *line, t_scene *scene)
 		printf("Error: Invalid number of parameters for sphere\n");
 		return (1);
 	}
-	if (parse_vec3(tab[0], sp.center) || parse_color(tab[2], sp.color))
+	if (parse_vec3(tab[0], tmp_center) || parse_color(tab[2], tmp_color))
 	{
 		ft_free_tab(tab);
 		return (1);
 	}
+	sp.center = vector3_create((double)tmp_center[0], (double)tmp_center[1], (double)tmp_center[2]);
+	sp.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1], (uint8_t)tmp_color[2]);
+	// TODO: replace atof
 	sp.diameter = atof(tab[1]);
+	// initialize material/object base
+	if (sphere_init(&sp, sp.center, sp.diameter, material_from_rgb8(sp.color)))
+	{
+		ft_free_tab(tab);
+		return (1);
+	}
 	if (spheres_push(scene, &sp))
 	{
 		ft_free_tab(tab);

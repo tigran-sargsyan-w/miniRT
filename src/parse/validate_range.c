@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "types.h"
+#include "color.h"
 #include <stdio.h>
 
 int	validate_color_range(int *color)
@@ -41,7 +42,9 @@ int	validate_colors_range(t_scene *scene)
 	i = 0;
 	while (i < scene->sphere_count)
 	{
-		if (validate_color_range(scene->spheres[i].color) != 0)
+		t_color8 col = scene->spheres[i].color;
+		int comps[3] = {(int)col.r, (int)col.g, (int)col.b};
+		if (validate_color_range(comps) != 0)
 		{
 			printf("Error: Sphere %d color out of range\n", i);
 			return (1);

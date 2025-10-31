@@ -2,6 +2,7 @@
 # define TYPES_H
 
 # include "light.h"
+# include "sphere.h"
 
 typedef struct s_ambient
 {
@@ -15,13 +16,6 @@ typedef struct s_camera
     float orientation[3];
     int fov;
 }   t_camera;
-
-typedef struct s_sphere
-{
-    float center[3];
-    float diameter;
-    int color[3];
-}   t_sphere;
 
 typedef struct s_plane
 {
