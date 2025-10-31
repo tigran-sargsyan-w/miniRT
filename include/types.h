@@ -5,16 +5,9 @@
 # include "sphere.h"
 # include "plane.h"
 # include "cylinder.h"
-# include "vector.h"
+# include "camera.h"
 # include "color.h"
 # include "ambient.h"
-
-typedef struct s_camera
-{
-    float position[3];
-    float orientation[3];
-    int fov;
-}   t_camera;
 
 typedef struct s_scene
 {

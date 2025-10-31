@@ -68,20 +68,14 @@ int	validate_colors_range(t_scene *scene)
 
 int	validate_camera_orientation_range(t_scene *scene)
 {
-	int	i;
+	 t_vector3 ori = scene->camera.orientation;
 
-	i = 0;
-	while (i < 3)
+	if (ori.x < -1.0 || ori.x > 1.0
+		|| ori.y < -1.0 || ori.y > 1.0
+		|| ori.z < -1.0 || ori.z > 1.0)
 	{
-		if (scene->camera.orientation[i] < -1.0
-			|| scene->camera.orientation[i] > 1.0)
-		{
-			printf("Error: Camera orientation component %d out of range \
-                (-1.0 - 1.0)\n",
-					i);
-			return (1);
-		}
-		i++;
+		printf("Error: Camera orientation component out of range (-1.0 - 1.0)\n");
+		return (1);
 	}
 	return (0);
 }

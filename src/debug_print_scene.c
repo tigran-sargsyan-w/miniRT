@@ -11,8 +11,8 @@ void	debug_print_scene(t_scene *scene)
     printf("Ambient Color: (%d, %d, %d)\n", scene->ambient.color.r,
         scene->ambient.color.g, scene->ambient.color.b);
     printf("Camera:\n Position: (%.2f, %.2f, %.2f)\n Orientation: (%.2f, %.2f, %.2f)\n FOV: %d\n",
-        scene->camera.position[0], scene->camera.position[1], scene->camera.position[2],
-        scene->camera.orientation[0], scene->camera.orientation[1], scene->camera.orientation[2],
+        scene->camera.position.x, scene->camera.position.y, scene->camera.position.z,
+        scene->camera.orientation.x, scene->camera.orientation.y, scene->camera.orientation.z,
         scene->camera.fov);
     printf("Light: %d\n", scene->has_light);
     if (scene->has_light)
