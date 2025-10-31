@@ -13,7 +13,7 @@ int							parse_obj_data(char *line, int type,
 int							obj_count(t_scene *scene, int obj_type);
 int							check_parse_file(int fd, t_scene *scene);
 int							parse_color(char *line, int color[3]);
-int							parse_vec3(char *line, float vec[3]);
+int							parse_vec3(char *line, double vec[3]);
 int							parse_ambient(char *line, t_scene *scene);
 int							parse_camera(char *line, t_scene *scene);
 int							parse_light(char *line, t_scene *scene);

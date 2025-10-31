@@ -46,8 +46,8 @@ int	parse_plane(char *line, t_scene *scene)
 	char	**tab;
 	t_plane	plane;
 	int		n;
-	float	tmp_point[3];
-	float	tmp_normal[3];
+	double	tmp_point[3];
+	double	tmp_normal[3];
 	int		tmp_color[3];
 
 	tab = ft_split(line, ' ');
@@ -70,8 +70,8 @@ int	parse_plane(char *line, t_scene *scene)
 		ft_free_tab(tab);
 		return (1);
 	}
-	plane.point = vector3_create((double)tmp_point[0], (double)tmp_point[1], (double)tmp_point[2]);
-	plane.normal = vector3_create((double)tmp_normal[0], (double)tmp_normal[1], (double)tmp_normal[2]);
+	plane.point = vector3_create(tmp_point[0], tmp_point[1], tmp_point[2]);
+	plane.normal = vector3_create(tmp_normal[0], tmp_normal[1], tmp_normal[2]);
 	plane.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1], (uint8_t)tmp_color[2]);
 	if (plane_init(&plane, plane.point, plane.normal, material_from_rgb8(plane.color)))
 	{

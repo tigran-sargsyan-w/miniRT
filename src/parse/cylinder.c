@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 04:38:57 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/31 18:04:39 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/10/31 22:41:42 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	parse_cylinder(char *line, t_scene *scene)
 	char		**tab;
 	t_cylinder	cy;
 	int			n;
-	float		tmp_center[3];
-	float		tmp_ori[3];
+	double		tmp_center[3];
+	double		tmp_ori[3];
 	int			tmp_color[3];
 
 	tab = ft_split(line, ' ');
@@ -70,12 +70,33 @@ int	parse_cylinder(char *line, t_scene *scene)
 		ft_free_tab(tab);
 		return (1);
 	}
-	cy.center = vector3_create((double)tmp_center[0], (double)tmp_center[1], (double)tmp_center[2]);
-	cy.orientation = vector3_create((double)tmp_ori[0], (double)tmp_ori[1], (double)tmp_ori[2]);
+	cy.center = vector3_create(tmp_center[0], tmp_center[1], tmp_center[2]);
+	cy.orientation = vector3_create(tmp_ori[0], tmp_ori[1], tmp_ori[2]);
 	cy.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1], (uint8_t)tmp_color[2]);
-	/* TODO: consider using strtod/atof wrapper with error check */
-	cy.diameter = atof(tab[2]);
-	cy.height = atof(tab[3]);
+	// parse diameter
+	{
+		char *endptr = NULL;
+		double val = strtod(tab[2], &endptr);
+		if (endptr == tab[2])
+		{
+			ft_free_tab(tab);
+			printf("Error: Invalid cylinder diameter\n");
+			return (1);
+		}
+		cy.diameter = val;
+	}
+	// parse height
+	{
+		char *endptr = NULL;
+		double val = strtod(tab[3], &endptr);
+		if (endptr == tab[3])
+		{
+			ft_free_tab(tab);
+			printf("Error: Invalid cylinder height\n");
+			return (1);
+		}
+		cy.height = val;
+	}
 	if (cylinder_init(&cy, cy.center, cy.orientation, cy.diameter, cy.height,
 			material_from_rgb8(cy.color)))
 	{

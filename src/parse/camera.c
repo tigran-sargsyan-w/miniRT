@@ -19,8 +19,8 @@ int	parse_camera(char *line, t_scene *scene)
 	char	**tab;
 	int		i;
 
-	float tmp_pos[3];
-	float tmp_ori[3];
+	double tmp_pos[3];
+	double tmp_ori[3];
 
 	while (*line && ft_strchr(" \t\r\n", *line))
 		line++;
@@ -41,10 +41,8 @@ int	parse_camera(char *line, t_scene *scene)
 		ft_free_tab(tab);
 		return (1);
 	}
-	scene->camera.position = vector3_create((double)tmp_pos[0],
-			(double)tmp_pos[1], (double)tmp_pos[2]);
-	scene->camera.orientation = vector3_create((double)tmp_ori[0],
-			(double)tmp_ori[1], (double)tmp_ori[2]);
+	scene->camera.position = vector3_create(tmp_pos[0], tmp_pos[1], tmp_pos[2]);
+	scene->camera.orientation = vector3_create(tmp_ori[0], tmp_ori[1], tmp_ori[2]);
 	scene->camera.fov = ft_atoi(tab[2]);
 	ft_free_tab(tab);
 	return (0);

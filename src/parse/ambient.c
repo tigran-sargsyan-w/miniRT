@@ -15,15 +15,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int	parse_ratio(char *str, float *ratio)
+int	parse_ratio(char *str, double *ratio)
 {
 	char	*endptr;
-	float	value;
+	double	value;
 
-	value = strtof(str, &endptr);
+	value = strtod(str, &endptr);
 	if (endptr == str)
 	{
-		printf("Error: Invalid float value for ambient ratio\n");
+		printf("Error: Invalid double value for ambient ratio\n");
 		return (1);
 	}
 	*ratio = value;
@@ -34,7 +34,7 @@ int	parse_ambient(char *line, t_scene *scene)
 {
 	char	**tab;
 	int			i;
-	float		ratio_tmp;
+	double		ratio_tmp;
 	int			tmp_color[3];
 
 	while (*line && ft_strchr(" \t\r\n", *line))
@@ -61,7 +61,7 @@ int	parse_ambient(char *line, t_scene *scene)
 		ft_free_tab(tab);
 		return (1);
 	}
-	scene->ambient.intensity = (double)ratio_tmp;
+	scene->ambient.intensity = ratio_tmp;
 	scene->ambient.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1], (uint8_t)tmp_color[2]);
 	ft_free_tab(tab);
 	return (0);

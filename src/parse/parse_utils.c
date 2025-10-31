@@ -84,7 +84,7 @@ int	parse_color(char *line, int color[3])
 	return (0);
 }
 
-int	parse_vec3(char *line, float vec[3])
+int	parse_vec3(char *line, double vec[3])
 {
 	char	**tab;
 	int		n;
@@ -101,7 +101,16 @@ int	parse_vec3(char *line, float vec[3])
 		return (1);
 	}
 	for (int i = 0; i < 3; ++i)
-		vec[i] = atof(tab[i]);
+	{
+		char *endptr = NULL;
+		double value = strtod(tab[i], &endptr);
+		if (endptr == tab[i])
+		{
+			ft_free_tab(tab);
+			return (1);
+		}
+		vec[i] = value;
+	}
 	ft_free_tab(tab);
 	return (0);
 }

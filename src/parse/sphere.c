@@ -45,7 +45,7 @@ int	parse_sphere(char *line, t_scene *scene)
 	int			n;
 	char		**tab;
 	t_sphere	sp;
-	float		tmp_center[3];
+	double		tmp_center[3];
 	int			tmp_color[3];
 
 	tab = ft_split(line, ' ');
@@ -65,10 +65,19 @@ int	parse_sphere(char *line, t_scene *scene)
 		ft_free_tab(tab);
 		return (1);
 	}
-	sp.center = vector3_create((double)tmp_center[0], (double)tmp_center[1], (double)tmp_center[2]);
+	sp.center = vector3_create(tmp_center[0], tmp_center[1], tmp_center[2]);
 	sp.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1], (uint8_t)tmp_color[2]);
-	// TODO: replace atof
-	sp.diameter = atof(tab[1]);
+	{
+		char *endptr = NULL;
+		double val = strtod(tab[1], &endptr);
+		if (endptr == tab[1])
+		{
+			ft_free_tab(tab);
+			printf("Error: Invalid sphere diameter\n");
+			return (1);
+		}
+		sp.diameter = val;
+	}
 	// initialize material/object base
 	if (sphere_init(&sp, sp.center, sp.diameter, material_from_rgb8(sp.color)))
 	{
