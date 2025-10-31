@@ -34,9 +34,10 @@ void	debug_print_scene(t_scene *scene)
     for (int i = 0; i < scene->plane_count; ++i)
     {
         t_plane *pl = &scene->planes[i];
-        printf(" Plane %d: Point(%.2f, %.2f, %.2f), Normal(%.2f, %.2f, %.2f),  Color(%d, %d, %d)\n", i, pl->point[0], pl->point[1], pl->point[2],
-            pl->normal[0], pl->normal[1], pl->normal[2],
-            pl->color[0], pl->color[1], pl->color[2]);
+        printf(" Plane %d: Point(%.2f, %.2f, %.2f), Normal(%.2f, %.2f, %.2f),  Color(%d, %d, %d)\n", i,
+            pl->point.x, pl->point.y, pl->point.z,
+            pl->normal.x, pl->normal.y, pl->normal.z,
+            pl->color.r, pl->color.g, pl->color.b);
     }
     printf("Number of Cylinders: %d\n", scene->cylinder_count);
     for (int i = 0; i < scene->cylinder_count; ++i)

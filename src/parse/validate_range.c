@@ -54,7 +54,9 @@ int	validate_colors_range(t_scene *scene)
 	i = 0;
 	while (i < scene->plane_count)
 	{
-		if (validate_color_range(scene->planes[i].color) != 0)
+		t_color8 col = scene->planes[i].color;
+		int comps[3] = {(int)col.r, (int)col.g, (int)col.b};
+		if (validate_color_range(comps) != 0)
 		{
 			printf("Error: Plane %d color out of range\n", i);
 			return (1);

@@ -3,6 +3,7 @@
 
 # include "light.h"
 # include "sphere.h"
+# include "plane.h"
 
 typedef struct s_ambient
 {
@@ -16,13 +17,6 @@ typedef struct s_camera
     float orientation[3];
     int fov;
 }   t_camera;
-
-typedef struct s_plane
-{
-    float point[3];
-    float normal[3];
-    int color[3];
-}   t_plane;
 
 typedef struct s_cylinder
 {
