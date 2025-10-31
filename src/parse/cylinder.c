@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 04:38:57 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/31 22:41:42 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/10/31 23:25:50 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	parse_cylinder(char *line, t_scene *scene)
 	// parse diameter
 	{
 		char *endptr = NULL;
-		double val = strtod(tab[2], &endptr);
+		double val = ft_strtod(tab[2], &endptr);
 		if (endptr == tab[2])
 		{
 			ft_free_tab(tab);
@@ -88,7 +88,7 @@ int	parse_cylinder(char *line, t_scene *scene)
 	// parse height
 	{
 		char *endptr = NULL;
-		double val = strtod(tab[3], &endptr);
+		double val = ft_strtod(tab[3], &endptr);
 		if (endptr == tab[3])
 		{
 			ft_free_tab(tab);

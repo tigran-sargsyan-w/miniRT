@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:37 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/31 13:32:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/10/31 23:25:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	parse_vec3(char *line, double vec[3])
 	while (i < 3)
 	{
 		char *endptr = NULL;
-		double value = strtod(tab[i], &endptr);
+		double value = ft_strtod(tab[i], &endptr);
 		if (endptr == tab[i])
 		{
 			ft_free_tab(tab);

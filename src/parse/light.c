@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:23 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/31 22:43:39 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/10/31 23:25:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	parse_light(char *line, t_scene *scene)
 	scene->light.color = color8_make((uint8_t)col_int[0], (uint8_t)col_int[1], (uint8_t)col_int[2]);
 	{
 		char *endptr = NULL;
-		double val = strtod(tab[1], &endptr);
+		double val = ft_strtod(tab[1], &endptr);
 		if (endptr == tab[1])
 		{
 			ft_free_tab(tab);

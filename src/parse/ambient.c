@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ambient.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:12 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 03:21:35 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/31 23:25:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	parse_ratio(char *str, double *ratio)
 	char	*endptr;
 	double	value;
 
-	value = strtod(str, &endptr);
+	value = ft_strtod(str, &endptr);
 	if (endptr == str)
 	{
 		printf("Error: Invalid double value for ambient ratio\n");

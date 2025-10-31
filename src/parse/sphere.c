@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/31 15:23:25 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/10/31 23:25:50 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	parse_sphere(char *line, t_scene *scene)
 	sp.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1], (uint8_t)tmp_color[2]);
 	{
 		char *endptr = NULL;
-		double val = strtod(tab[1], &endptr);
+		double val = ft_strtod(tab[1], &endptr);
 		if (endptr == tab[1])
 		{
 			ft_free_tab(tab);
