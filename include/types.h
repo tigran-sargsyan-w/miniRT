@@ -7,12 +7,7 @@
 # include "cylinder.h"
 # include "vector.h"
 # include "color.h"
-
-typedef struct s_ambient
-{
-    double intensity;
-    t_color8 color;
-}   t_ambient;
+# include "ambient.h"
 
 typedef struct s_camera
 {
