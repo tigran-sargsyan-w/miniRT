@@ -15,17 +15,18 @@ static int	intersect_cylinder(const t_object *obj,
 	return (1);
 }
 
-int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 axis,
-			double radius, double height, t_material material)
+int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
+			double diameter, double height, t_material material)
 {
-	if (!cylinder || radius <= 0.0 || height <= 0.0)
+	if (!cylinder || diameter <= 0.0 || height <= 0.0)
 		return (1);
-	if (!vector3_normalize_safe(axis, &axis, RT_EPS))
+	// compute normalized axis but also preserve raw orientation
+	if (!vector3_normalize_safe(orientation, &cylinder->axis_unit, RT_EPS))
 		return (1);
-	object_init(&cylinder->base, OBJ_CYL, material, &intersect_cylinder);
+	object_init(&cylinder->base, CYLINDER, material, &intersect_cylinder);
 	cylinder->center = center;
-	cylinder->axis = axis;
-	cylinder->radius = radius;
-	cylinder->half_height = height * 0.5;
+	cylinder->orientation = orientation;
+	cylinder->diameter = diameter;
+	cylinder->height = height;
 	return (0);
 }

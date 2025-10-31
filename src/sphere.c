@@ -15,12 +15,12 @@ static int	intersect_sphere(const t_object *obj,
 	return (1);
 }
 
-int	sphere_init(t_sphere *sphere, t_vector3 center, double radius, t_material material)
+int	sphere_init(t_sphere *sphere, t_vector3 center, double diameter, t_material material)
 {
-	if (!sphere || radius <= 0.0)
+	if (!sphere || diameter <= 0.0)
 		return (1);
-	object_init(&sphere->base, OBJ_SPHERE, material, &intersect_sphere);
+	object_init(&sphere->base, SPHERE, material, &intersect_sphere);
 	sphere->center = center;
-	sphere->radius = radius;
+	sphere->diameter = diameter;
 	return (0);
 }

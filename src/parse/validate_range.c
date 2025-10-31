@@ -3,32 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   validate_range.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 05:22:45 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 05:56:14 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/31 18:13:22 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
+#include "color.h"
 #include <stdio.h>
 
-int	validate_color_range(int *color)
+int	validate_color_range(t_color8 color)
 {
-	int	i;
-
-	i = 0;
-	while (i < 3)
-	{
-		if (color[i] < 0 || color[i] > 255)
-		{
-			printf("Error: Color component %d out of range (0 - 255)\n", i);
-			return (1);
-		}
-		i++;
-	}
+	// components are stored as uint8_t, range checks should be performed before casting
+	(void)color;
 	return (0);
 }
+
 int	validate_colors_range(t_scene *scene)
 {
 	int	i;
@@ -41,7 +33,8 @@ int	validate_colors_range(t_scene *scene)
 	i = 0;
 	while (i < scene->sphere_count)
 	{
-		if (validate_color_range(scene->spheres[i].color) != 0)
+		t_color8 col = scene->spheres[i].color;
+		if (validate_color_range(col) != 0)
 		{
 			printf("Error: Sphere %d color out of range\n", i);
 			return (1);
@@ -51,7 +44,8 @@ int	validate_colors_range(t_scene *scene)
 	i = 0;
 	while (i < scene->plane_count)
 	{
-		if (validate_color_range(scene->planes[i].color) != 0)
+		t_color8 col = scene->planes[i].color;
+		if (validate_color_range(col) != 0)
 		{
 			printf("Error: Plane %d color out of range\n", i);
 			return (1);
@@ -61,7 +55,8 @@ int	validate_colors_range(t_scene *scene)
 	i = 0;
 	while (i < scene->cylinder_count)
 	{
-		if (validate_color_range(scene->cylinders[i].color) != 0)
+		t_color8 col = scene->cylinders[i].color;
+		if (validate_color_range(col) != 0)
 		{
 			printf("Error: Cylinder %d color out of range\n", i);
 			return (1);
@@ -73,20 +68,14 @@ int	validate_colors_range(t_scene *scene)
 
 int	validate_camera_orientation_range(t_scene *scene)
 {
-	int	i;
+	 t_vector3 ori = scene->camera.orientation;
 
-	i = 0;
-	while (i < 3)
+	if (ori.x < -1.0 || ori.x > 1.0
+		|| ori.y < -1.0 || ori.y > 1.0
+		|| ori.z < -1.0 || ori.z > 1.0)
 	{
-		if (scene->camera.orientation[i] < -1.0
-			|| scene->camera.orientation[i] > 1.0)
-		{
-			printf("Error: Camera orientation component %d out of range \
-                (-1.0 - 1.0)\n",
-					i);
-			return (1);
-		}
-		i++;
+		printf("Error: Camera orientation component out of range (-1.0 - 1.0)\n");
+		return (1);
 	}
 	return (0);
 }
@@ -98,15 +87,13 @@ int	validate_cylinder_orientation_range(t_scene *scene)
 	i = 0;
 	while (i < scene->cylinder_count)
 	{
-		if (scene->cylinders[i].orientation[0] < -1.0
-			|| scene->cylinders[i].orientation[0] > 1.0
-			|| scene->cylinders[i].orientation[1] < -1.0
-			|| scene->cylinders[i].orientation[1] > 1.0
-			|| scene->cylinders[i].orientation[2] < -1.0
-			|| scene->cylinders[i].orientation[2] > 1.0)
+		t_vector3 ori = scene->cylinders[i].orientation;
+		if (ori.x < -1.0 || ori.x > 1.0
+			|| ori.y < -1.0 || ori.y > 1.0
+			|| ori.z < -1.0 || ori.z > 1.0)
 		{
 			printf("Error: Cylinder %d orientation component out of range \
-                (-1.0 - 1.0)\n",
+				(-1.0 - 1.0)\n",
 					i);
 			return (1);
 		}
@@ -131,9 +118,9 @@ int	validate_input_range(t_scene *scene)
 		printf("Error: Camera FOV out of range (0 - 180)\n");
 		return (1);
 	}
-	if (scene->light.brightness < 0.0 || scene->light.brightness > 1.0)
+	if (scene->light.intensity < 0.0 || scene->light.intensity > 1.0)
 	{
-		printf("Error: Light brightness out of range (0.0 - 1.0)\n");
+		printf("Error: Light intensity out of range (0.0 - 1.0)\n");
 		return (1);
 	}
 	if (validate_cylinder_orientation_range(scene) != 0)

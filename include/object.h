@@ -13,17 +13,20 @@ typedef int (*t_intersect_func)(const t_object *object,
 								double t_max,
 								t_hit *hit_result);
 
-typedef enum e_obj_type
+typedef enum e_object_type
 {
-	OBJ_SPHERE = 1,
-	OBJ_PLANE = 2,
-	OBJ_CYL = 3
-}								t_obj_type;
+    AMBIENT,
+    CAMERA,
+    LIGHT,
+    SPHERE,
+    PLANE,
+    CYLINDER
+}   t_object_type;
 
 // Base class (first field in "derived" structs)
 struct							s_object
 {
-	t_obj_type					type;
+	t_object_type					type;
 	t_intersect_func			intersect_func;
 	t_material					material;
 };
@@ -35,7 +38,7 @@ struct							s_object_node
 	struct s_object_node		*next;
 };
 
-void							object_init(t_object *object, t_obj_type type,
+void							object_init(t_object *object, t_object_type type,
 									t_material material,
 									t_intersect_func intersect_func);
 

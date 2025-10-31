@@ -7,37 +7,53 @@ void	debug_print_scene(t_scene *scene)
 
 	printf("Scene Debug Info:\n");
 	printf("Ambient Light: %d\n", scene->has_ambient);
-	printf("Ambient Ratio: %.2f\n", scene->ambient.intensity);
-	printf("Ambient Color: (%d, %d, %d)\n", scene->ambient.color[0],
-		scene->ambient.color[1], scene->ambient.color[2]);
-	printf("Camera: %d\n", scene->has_camera);
-	printf("Light: %d\n", scene->has_light);
+    if (scene->has_ambient)
+    {
+        printf(" Intensity: %.2f Color: (%d, %d, %d)\n",
+            scene->ambient.intensity,
+            scene->ambient.color.r, scene->ambient.color.g, scene->ambient.color.b);
+    }
+    printf("Camera: %d\n", scene->has_camera);
+    if (scene->has_camera)
+    {
+        printf(" Position: (%.2f, %.2f, %.2f) Orientation: (%.2f, %.2f, %.2f) FOV: %d\n",
+            scene->camera.position.x, scene->camera.position.y, scene->camera.position.z,
+            scene->camera.orientation.x, scene->camera.orientation.y, scene->camera.orientation.z,
+            scene->camera.fov);
+    }
+    printf("Light: %d\n", scene->has_light);
+    if (scene->has_light)
+    {
+        printf("Position: (%.2f, %.2f, %.2f) Color: (%d, %d, %d) Intensity: %.2f\n",
+            scene->light.position.x, scene->light.position.y, scene->light.position.z,
+            scene->light.color.r, scene->light.color.g, scene->light.color.b,
+            scene->light.intensity);
+    }
 	printf("Number of Spheres: %d\n", scene->sphere_count);
-	for (int i = 0; i < scene->sphere_count; ++i)
-	{
-		sp = &scene->spheres[i];
-		printf(" Sphere %d: Center(%.2f, %.2f, %.2f), Diameter: %.2f, Color(%d, \
-			%d, %d)\n", i, sp->center[0], sp->center[1], sp->center[2],
-			sp->diameter, sp->color[0], sp->color[1], sp->color[2]);
-	}
+    for (int i = 0; i < scene->sphere_count; ++i)
+    {
+        sp = &scene->spheres[i];
+        printf(" Sphere %d: Center(%.2f, %.2f, %.2f), Diameter: %.2f, Color(%d, %d, %d)\n", i,
+            sp->center.x, sp->center.y, sp->center.z,
+            sp->diameter, sp->color.r, sp->color.g, sp->color.b);
+    }
     printf("Number of Planes: %d\n", scene->plane_count);
     for (int i = 0; i < scene->plane_count; ++i)
     {
         t_plane *pl = &scene->planes[i];
-        printf(" Plane %d: Point(%.2f, %.2f, %.2f), Normal(%.2f, %.2f, %.2f), \
-            Color(%d, %d, %d)\n", i, pl->point[0], pl->point[1], pl->point[2],
-            pl->normal[0], pl->normal[1], pl->normal[2],
-            pl->color[0], pl->color[1], pl->color[2]);
+        printf(" Plane %d: Point(%.2f, %.2f, %.2f), Normal(%.2f, %.2f, %.2f),  Color(%d, %d, %d)\n", i,
+            pl->point.x, pl->point.y, pl->point.z,
+            pl->normal.x, pl->normal.y, pl->normal.z,
+            pl->color.r, pl->color.g, pl->color.b);
     }
     printf("Number of Cylinders: %d\n", scene->cylinder_count);
     for (int i = 0; i < scene->cylinder_count; ++i)
     {
         t_cylinder *cy = &scene->cylinders[i];
-        printf(" Cylinder %d: Center(%.2f, %.2f, %.2f), Orientation(%.2f, %.2f, \
-            %.2f), Diameter: %.2f, Height: %.2f, Color(%d, %d, %d)\n", i,
-            cy->center[0], cy->center[1], cy->center[2],
-            cy->orientation[0], cy->orientation[1], cy->orientation[2],
+        printf(" Cylinder %d: Center(%.2f, %.2f, %.2f), Orientation(%.2f, %.2f, %.2f), Diameter: %.2f, Height: %.2f, Color(%d, %d, %d)\n", i,
+            cy->center.x, cy->center.y, cy->center.z,
+            cy->orientation.x, cy->orientation.y, cy->orientation.z,
             cy->diameter, cy->height,
-            cy->color[0], cy->color[1], cy->color[2]);
+            cy->color.r, cy->color.g, cy->color.b);
     }
 }

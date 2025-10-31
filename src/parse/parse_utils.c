@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:37 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 06:18:47 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/31 23:25:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "types.h"
+#include "object.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -83,7 +84,7 @@ int	parse_color(char *line, int color[3])
 	return (0);
 }
 
-int	parse_vec3(char *line, float vec[3])
+int	parse_vec3(char *line, double vec[3])
 {
 	char	**tab;
 	int		n;
@@ -99,8 +100,19 @@ int	parse_vec3(char *line, float vec[3])
 		ft_free_tab(tab);
 		return (1);
 	}
-	for (int i = 0; i < 3; ++i)
-		vec[i] = atof(tab[i]);
+	int i = 0;
+	while (i < 3)
+	{
+		char *endptr = NULL;
+		double value = ft_strtod(tab[i], &endptr);
+		if (endptr == tab[i])
+		{
+			ft_free_tab(tab);
+			return (1);
+		}
+		vec[i] = value;
+		i++;
+	}
 	ft_free_tab(tab);
 	return (0);
 }

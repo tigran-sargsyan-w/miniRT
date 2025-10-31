@@ -5,7 +5,12 @@
 
 typedef struct s_camera
 {
+	// parsed input (from scene file)
 	t_vector3	position;
+	t_vector3	orientation;
+	int			fov;
+
+	// precomputed/render-time data
 	t_vector3	forward;
 	t_vector3	right;
 	t_vector3	up;
