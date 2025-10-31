@@ -22,7 +22,7 @@ int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 axis,
 		return (1);
 	if (!vector3_normalize_safe(axis, &axis, RT_EPS))
 		return (1);
-	object_init(&cylinder->base, OBJ_CYL, material, &intersect_cylinder);
+	object_init(&cylinder->base, CYLINDER, material, &intersect_cylinder);
 	cylinder->center = center;
 	cylinder->axis = axis;
 	cylinder->radius = radius;

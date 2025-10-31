@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 03:20:37 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 06:18:47 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/31 13:32:58 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "types.h"
+#include "object.h"
 #include <stdio.h>
 #include <stdlib.h>
 

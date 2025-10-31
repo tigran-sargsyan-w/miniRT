@@ -19,7 +19,7 @@ int	sphere_init(t_sphere *sphere, t_vector3 center, double radius, t_material ma
 {
 	if (!sphere || radius <= 0.0)
 		return (1);
-	object_init(&sphere->base, OBJ_SPHERE, material, &intersect_sphere);
+	object_init(&sphere->base, SPHERE, material, &intersect_sphere);
 	sphere->center = center;
 	sphere->radius = radius;
 	return (0);

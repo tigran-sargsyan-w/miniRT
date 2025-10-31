@@ -3,16 +3,6 @@
 
 # include "light.h"
 
-typedef enum e_object_type
-{
-    AMBIENT,
-    CAMERA,
-    LIGHT,
-    SPHERE,
-    PLANE,
-    CYLINDER
-}   t_object_type;
-
 typedef struct s_ambient
 {
     float intensity;
