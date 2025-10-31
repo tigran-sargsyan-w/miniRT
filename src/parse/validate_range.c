@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 05:22:45 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/29 14:35:11 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/10/31 18:13:22 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,13 @@
 #include "color.h"
 #include <stdio.h>
 
-int	validate_color_range(int *color)
+int	validate_color_range(t_color8 color)
 {
-	int	i;
-
-	i = 0;
-	while (i < 3)
-	{
-		if (color[i] < 0 || color[i] > 255)
-		{
-			printf("Error: Color component %d out of range (0 - 255)\n", i);
-			return (1);
-		}
-		i++;
-	}
+	// components are stored as uint8_t, range checks should be performed before casting
+	(void)color;
 	return (0);
 }
+
 int	validate_colors_range(t_scene *scene)
 {
 	int	i;
@@ -43,8 +34,7 @@ int	validate_colors_range(t_scene *scene)
 	while (i < scene->sphere_count)
 	{
 		t_color8 col = scene->spheres[i].color;
-		int comps[3] = {(int)col.r, (int)col.g, (int)col.b};
-		if (validate_color_range(comps) != 0)
+		if (validate_color_range(col) != 0)
 		{
 			printf("Error: Sphere %d color out of range\n", i);
 			return (1);
@@ -55,8 +45,7 @@ int	validate_colors_range(t_scene *scene)
 	while (i < scene->plane_count)
 	{
 		t_color8 col = scene->planes[i].color;
-		int comps[3] = {(int)col.r, (int)col.g, (int)col.b};
-		if (validate_color_range(comps) != 0)
+		if (validate_color_range(col) != 0)
 		{
 			printf("Error: Plane %d color out of range\n", i);
 			return (1);
@@ -66,7 +55,8 @@ int	validate_colors_range(t_scene *scene)
 	i = 0;
 	while (i < scene->cylinder_count)
 	{
-		if (validate_color_range(scene->cylinders[i].color) != 0)
+		t_color8 col = scene->cylinders[i].color;
+		if (validate_color_range(col) != 0)
 		{
 			printf("Error: Cylinder %d color out of range\n", i);
 			return (1);
@@ -103,15 +93,13 @@ int	validate_cylinder_orientation_range(t_scene *scene)
 	i = 0;
 	while (i < scene->cylinder_count)
 	{
-		if (scene->cylinders[i].orientation[0] < -1.0
-			|| scene->cylinders[i].orientation[0] > 1.0
-			|| scene->cylinders[i].orientation[1] < -1.0
-			|| scene->cylinders[i].orientation[1] > 1.0
-			|| scene->cylinders[i].orientation[2] < -1.0
-			|| scene->cylinders[i].orientation[2] > 1.0)
+		t_vector3 ori = scene->cylinders[i].orientation;
+		if (ori.x < -1.0 || ori.x > 1.0
+			|| ori.y < -1.0 || ori.y > 1.0
+			|| ori.z < -1.0 || ori.z > 1.0)
 		{
 			printf("Error: Cylinder %d orientation component out of range \
-                (-1.0 - 1.0)\n",
+				(-1.0 - 1.0)\n",
 					i);
 			return (1);
 		}

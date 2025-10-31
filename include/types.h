@@ -4,11 +4,14 @@
 # include "light.h"
 # include "sphere.h"
 # include "plane.h"
+# include "cylinder.h"
+# include "vector.h"
+# include "color.h"
 
 typedef struct s_ambient
 {
-    float intensity;
-    int color[3];
+    double intensity;
+    t_color8 color;
 }   t_ambient;
 
 typedef struct s_camera
@@ -17,15 +20,6 @@ typedef struct s_camera
     float orientation[3];
     int fov;
 }   t_camera;
-
-typedef struct s_cylinder
-{
-    float center[3];
-    float orientation[3];
-    float diameter;
-    float height;
-    int color[3];
-}   t_cylinder;
 
 typedef struct s_scene
 {

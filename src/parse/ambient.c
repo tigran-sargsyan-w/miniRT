@@ -33,7 +33,9 @@ int	parse_ratio(char *str, float *ratio)
 int	parse_ambient(char *line, t_scene *scene)
 {
 	char	**tab;
-	int		i;
+	int			i;
+	float		ratio_tmp;
+	int			tmp_color[3];
 
 	while (*line && ft_strchr(" \t\r\n", *line))
 		line++;
@@ -49,16 +51,18 @@ int	parse_ambient(char *line, t_scene *scene)
 		ft_free_tab(tab);
 		return (1);
 	}
-	if (parse_ratio(tab[0], &scene->ambient.intensity))
+	if (parse_ratio(tab[0], &ratio_tmp))
 	{
 		ft_free_tab(tab);
 		return (1);
 	}
-	if (parse_color(tab[1], scene->ambient.color))
+	if (parse_color(tab[1], tmp_color))
 	{
 		ft_free_tab(tab);
 		return (1);
 	}
+	scene->ambient.intensity = (double)ratio_tmp;
+	scene->ambient.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1], (uint8_t)tmp_color[2]);
 	ft_free_tab(tab);
 	return (0);
 }

@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 04:38:57 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 04:58:38 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/10/31 18:04:39 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parse.h"
-#include "types.h"
+#include "cylinder.h"
+#include "vector.h"
+#include "color.h"
+#include "material.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -42,6 +45,9 @@ int	parse_cylinder(char *line, t_scene *scene)
 	char		**tab;
 	t_cylinder	cy;
 	int			n;
+	float		tmp_center[3];
+	float		tmp_ori[3];
+	int			tmp_color[3];
 
 	tab = ft_split(line, ' ');
 	if (!tab)
@@ -58,14 +64,24 @@ int	parse_cylinder(char *line, t_scene *scene)
 		printf("Error: Invalid number of parameters for cylinder\n");
 		return (1);
 	}
-	if (parse_vec3(tab[0], cy.center) || parse_vec3(tab[1], cy.orientation)
-		|| parse_color(tab[4], cy.color))
+	if (parse_vec3(tab[0], tmp_center) || parse_vec3(tab[1], tmp_ori)
+		|| parse_color(tab[4], tmp_color))
 	{
 		ft_free_tab(tab);
 		return (1);
 	}
+	cy.center = vector3_create((double)tmp_center[0], (double)tmp_center[1], (double)tmp_center[2]);
+	cy.orientation = vector3_create((double)tmp_ori[0], (double)tmp_ori[1], (double)tmp_ori[2]);
+	cy.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1], (uint8_t)tmp_color[2]);
+	/* TODO: consider using strtod/atof wrapper with error check */
 	cy.diameter = atof(tab[2]);
 	cy.height = atof(tab[3]);
+	if (cylinder_init(&cy, cy.center, cy.orientation, cy.diameter, cy.height,
+			material_from_rgb8(cy.color)))
+	{
+		ft_free_tab(tab);
+		return (1);
+	}
 	if (push_cylinder(scene, &cy))
 	{
 		ft_free_tab(tab);

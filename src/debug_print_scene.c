@@ -8,8 +8,8 @@ void	debug_print_scene(t_scene *scene)
 	printf("Scene Debug Info:\n");
 	printf("Ambient Light: %d\n", scene->has_ambient);
 	printf("Ambient Ratio: %.2f\n", scene->ambient.intensity);
-	printf("Ambient Color: (%d, %d, %d)\n", scene->ambient.color[0],
-		scene->ambient.color[1], scene->ambient.color[2]);
+    printf("Ambient Color: (%d, %d, %d)\n", scene->ambient.color.r,
+        scene->ambient.color.g, scene->ambient.color.b);
     printf("Camera:\n Position: (%.2f, %.2f, %.2f)\n Orientation: (%.2f, %.2f, %.2f)\n FOV: %d\n",
         scene->camera.position[0], scene->camera.position[1], scene->camera.position[2],
         scene->camera.orientation[0], scene->camera.orientation[1], scene->camera.orientation[2],
@@ -44,9 +44,9 @@ void	debug_print_scene(t_scene *scene)
     {
         t_cylinder *cy = &scene->cylinders[i];
         printf(" Cylinder %d: Center(%.2f, %.2f, %.2f), Orientation(%.2f, %.2f, %.2f), Diameter: %.2f, Height: %.2f, Color(%d, %d, %d)\n", i,
-            cy->center[0], cy->center[1], cy->center[2],
-            cy->orientation[0], cy->orientation[1], cy->orientation[2],
+            cy->center.x, cy->center.y, cy->center.z,
+            cy->orientation.x, cy->orientation.y, cy->orientation.z,
             cy->diameter, cy->height,
-            cy->color[0], cy->color[1], cy->color[2]);
+            cy->color.r, cy->color.g, cy->color.b);
     }
 }
