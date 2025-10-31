@@ -20,7 +20,8 @@ int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
 {
 	if (!cylinder || diameter <= 0.0 || height <= 0.0)
 		return (1);
-	if (!vector3_normalize_safe(orientation, &orientation, RT_EPS))
+	/* compute normalized axis but also preserve raw orientation */
+	if (!vector3_normalize_safe(orientation, &cylinder->axis_unit, RT_EPS))
 		return (1);
 	object_init(&cylinder->base, CYLINDER, material, &intersect_cylinder);
 	cylinder->center = center;

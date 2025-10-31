@@ -9,7 +9,10 @@ typedef struct s_cylinder
 {
 	t_object	base;
 	t_vector3	center;
+	// Raw orientation as provided in scene (not normalized)
 	t_vector3	orientation;
+	// Normalized axis direction for intersection/shading
+	t_vector3	axis_unit;
 	double		diameter;
 	double		height;
 	t_color8	color;
