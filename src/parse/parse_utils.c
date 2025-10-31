@@ -100,7 +100,8 @@ int	parse_vec3(char *line, double vec[3])
 		ft_free_tab(tab);
 		return (1);
 	}
-	for (int i = 0; i < 3; ++i)
+	int i = 0;
+	while (i < 3)
 	{
 		char *endptr = NULL;
 		double value = strtod(tab[i], &endptr);
@@ -110,6 +111,7 @@ int	parse_vec3(char *line, double vec[3])
 			return (1);
 		}
 		vec[i] = value;
+		i++;
 	}
 	ft_free_tab(tab);
 	return (0);
