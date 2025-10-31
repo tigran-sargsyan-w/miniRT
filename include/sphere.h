@@ -6,10 +6,11 @@ typedef struct s_sphere
 {
 	t_object	base;
 	t_vector3	center;
-	double		radius;
+	t_color8	color;
+	double		diameter;
 }				t_sphere;
 
-int				sphere_init(t_sphere *sphere, t_vector3 center, double radius,
+int				sphere_init(t_sphere *sphere, t_vector3 center, double diameter,
 					t_material material);
 
 #endif
