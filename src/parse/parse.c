@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/31 13:32:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/11/04 16:01:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ int	check_parse_file(int fd, t_scene *scene)
 			else
 			{
 				printf("Unknown object type: %s\n", token);
+				free(token);
+				free(trimmed);
+				return (1);
 			}
 			free(token);
 		}
