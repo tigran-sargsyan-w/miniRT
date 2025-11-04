@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/13 22:08:04 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/23 20:53:48 by dsemenov         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft.h"
 #include "miniRT.h"
 #include "types.h"
@@ -47,7 +35,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	close(fd);
-	validate_input_range(&data.scene);
+	validate_input_range(&data.scene);//TODO: handle errors
 	debug_print_scene(&data.scene); // For debugging purposes
 	mlx_init_system(&data.mlx, "MiniRT");
 	// TODO: Add rendering and event handling here
