@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/04 16:01:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/11/04 16:03:04 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_args(int argc, char **argv)
 		return (1);
 	}
 	len = ft_strlen(argv[1]);
-	if (len < 4 || argv[1][len - 3] != '.' || argv[1][len - 2] != 'r'
+	if (len < 3 || argv[1][len - 3] != '.' || argv[1][len - 2] != 'r'
 		|| argv[1][len - 1] != 't')
 	{
 		printf("Error: Filename must end with .rt\n");
