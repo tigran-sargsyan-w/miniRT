@@ -6,6 +6,13 @@
 static int	intersect_cylinder(const t_object *obj,
 				t_ray ray, double t_min, double t_max, t_hit *out)
 {
+	// base formula: P = O + tD
+	// out->hitPoint = ray.orig + t_hit * ray.dir;
+	// In practice, in C this is usually written using vector helper functions.
+	// out->hitPoint = vector3_add(ray.orig, vector3_scale(ray.dir, t_hit));
+	// or with helper function:
+	// out->hitPoint = ray_at(&ray, t_hit); // return O + t*D
+	
 	// Finite right circular cylinder with caps.
 	const t_cylinder *cyl;
 	t_vector3  axis;                // unit axis direction
