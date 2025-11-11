@@ -17,50 +17,6 @@ static int color_to_int(t_color c)
     return ((srgb.r << 16) | (srgb.g << 8) | (srgb.b));
 }
 
-// Aggregate all objects into an array of base pointers for intersection.
-// static int build_object_array(t_scene *scene, const t_object ***out_arr, int *out_count)
-// {
-//     int total = scene->sphere_count + scene->plane_count + scene->cylinder_count;
-//     const t_object **arr = (const t_object **)malloc(sizeof(*arr) * total);
-//     int idx = 0;
-//     int i;
-//     if (!arr)
-//         return 1;
-//     i = 0; while (i < scene->sphere_count) { arr[idx++] = (const t_object *)&scene->spheres[i]; i++; }
-//     i = 0; while (i < scene->plane_count)  { arr[idx++] = (const t_object *)&scene->planes[i]; i++; }
-//     i = 0; while (i < scene->cylinder_count){ arr[idx++] = (const t_object *)&scene->cylinders[i]; i++; }
-//     *out_arr = arr;
-//     *out_count = total;
-//     return 0;
-// }
-
-// static int scene_intersect(const t_scene *scene, t_ray ray, double t_min, double t_max, t_hit *out_hit)
-// {
-//     const t_object **objects = NULL;
-//     int count = 0;
-//     int i;
-//     t_hit temp_hit;
-//     int hit_any = 0;
-//     double closest = t_max;
-
-//     if (build_object_array((t_scene *)scene, &objects, &count))
-//         return 0;
-//     i = 0;
-//     while (i < count)
-//     {
-//         const t_object *obj = objects[i];
-//         if (obj->intersect_func && obj->intersect_func(obj, ray, t_min, closest, &temp_hit))
-//         {
-//             hit_any = 1;
-//             closest = temp_hit.t;
-//             *out_hit = temp_hit;
-//         }
-//         i++;
-//     }
-//     free(objects);
-//     return hit_any;
-// }
-
 static int scene_intersect(const t_scene *scene, t_ray ray, double t_min, double t_max, t_hit *out_hit)
 {
     t_hit   temp_hit;
@@ -158,18 +114,6 @@ static t_color trace_ray(const t_scene *scene, t_ray ray)
     const t_color sky_bottom = color_make(0.0, 0.0, 0.0);
     return color_lerp(sky_bottom, sky_top, t);
 }
-
-// static t_color trace_ray(const t_scene *scene, t_ray ray)
-// {
-//     t_hit hit;
-//     if (scene_intersect(scene, ray, 1e-6, 1e6, &hit))
-//         return shade(scene, &hit);
-//     // background (simple gradient based on ray dir.y)
-//     double t = 0.5 * (ray.dir.y + 1.0);
-//     t_color sky_top = color_make(0.6, 0.7, 1.0);
-//     t_color sky_bottom = color_make(0.1, 0.1, 0.2);
-//     return color_lerp(sky_bottom, sky_top, t);
-// }
 
 int render_scene(t_data *data)
 {
