@@ -6,16 +6,10 @@
 static int	intersect_cylinder(const t_object *obj,
 				t_ray ray, double t_min, double t_max, t_hit *out)
 {
-	// Finite right circular cylinder with axis "axis_unit",
-	// center at "center" (we'll consider axis passing through center),
-	// radius = diameter/2, finite height along axis direction.
-	// Algorithm:
-	// 1) Project ray direction and origin-to-center onto plane orthogonal to axis
-	// 2) Solve quadratic for infinite cylinder (|w| = radius) where w is component perpendicular to axis
-	// 3) Check t roots within [t_min, t_max] and within finite height bounds via projection onto axis
+	// Finite right circular cylinder with caps.
 	const t_cylinder *cyl;
-	t_vector3  axis;      // unit axis direction
-	t_vector3  origin_to_center; // ray.orig - cyl.center
+	t_vector3  axis;                // unit axis direction
+	t_vector3  origin_to_center;    // ray.orig - cyl.center
 	double     radius;
 
 	double dir_dot_axis; // ray.dir · axis
@@ -23,10 +17,13 @@ static int	intersect_cylinder(const t_object *obj,
 	t_vector3 dir_perp_axis; // component of ray.dir perpendicular to axis
 	t_vector3 oc_perp_axis;  // component of origin_to_center perpendicular to axis
 
-	double quad_a, quad_b, quad_c; // quadratic coefficients for infinite cylinder
+	double quad_a, quad_b, quad_c; // quadratic coefficients for side (infinite cylinder)
 	double disc, sqrt_disc;
-	double t_candidates[2];
-	int    i;
+	double side_t1, side_t2;
+
+	int     has_hit;
+	double  best_t;
+	t_hit   best_hit;
 
 	if (!obj || !out)
 		return (0);
@@ -35,6 +32,10 @@ static int	intersect_cylinder(const t_object *obj,
 	origin_to_center = vector3_subtract(ray.orig, cyl->center);
 	radius = cyl->diameter * 0.5;
 
+	has_hit = 0;
+	best_t = t_max;
+
+	// --- Side intersection (infinite cylinder reduced by height) ---
 	dir_dot_axis = vector3_dot(ray.dir, axis);
 	oc_dot_axis = vector3_dot(origin_to_center, axis);
 	// perpendicular components
@@ -45,43 +46,137 @@ static int	intersect_cylinder(const t_object *obj,
 	quad_b = 2.0 * vector3_dot(dir_perp_axis, oc_perp_axis);
 	quad_c = vector3_dot(oc_perp_axis, oc_perp_axis) - radius * radius;
 
-	// If quad_a is near zero, ray is parallel to axis; treat as no side hit
-	if (fabs(quad_a) <= RT_EPS)
-		return (0);
-
-	disc = quad_b * quad_b - 4.0 * quad_a * quad_c;
-	if (disc < 0.0)
-		return (0);
-	sqrt_disc = sqrt(disc);
-
-	t_candidates[0] = (-quad_b - sqrt_disc) / (2.0 * quad_a);
-	t_candidates[1] = (-quad_b + sqrt_disc) / (2.0 * quad_a);
-
-	for (i = 0; i < 2; ++i)
+	if (fabs(quad_a) > RT_EPS)
 	{
-		double t_hit = t_candidates[i];
-		if (t_hit < t_min || t_hit > t_max)
-			continue;
-		// Check finite height: distance along axis from center must be within [-h/2, h/2]
-		t_vector3 hit_point = ray_at(&ray, t_hit);
-		t_vector3 center_to_point = vector3_subtract(hit_point, cyl->center);
-		double axis_proj = vector3_dot(center_to_point, axis);
-		if (fabs(axis_proj) > (cyl->height * 0.5 + RT_EPS))
-			continue;
-		// Compute normal: component of (hit_point - center) perpendicular to axis, normalized
-		t_vector3 radial_component = vector3_subtract(center_to_point, vector3_scale(axis, axis_proj));
-		t_vector3 hit_normal;
-		if (!vector3_normalize_safe(radial_component, &hit_normal, RT_EPS))
-			continue;
-		if (vector3_dot(hit_normal, ray.dir) > 0.0)
-			hit_normal = vector3_negate(hit_normal);
-		out->t = t_hit;
-		out->hitPoint = hit_point;
-		out->normal = hit_normal;
-		out->material = &obj->material;
-		return (1);
+		disc = quad_b * quad_b - 4.0 * quad_a * quad_c;
+		if (disc >= 0.0)
+		{
+			sqrt_disc = sqrt(disc);
+			side_t1 = (-quad_b - sqrt_disc) / (2.0 * quad_a);
+			side_t2 = (-quad_b + sqrt_disc) / (2.0 * quad_a);
+
+			// check first root
+			if (side_t1 >= t_min && side_t1 <= t_max)
+			{
+				t_vector3 hit_point = ray_at(&ray, side_t1);
+				t_vector3 center_to_point = vector3_subtract(hit_point, cyl->center);
+				double axis_proj = vector3_dot(center_to_point, axis);
+				if (fabs(axis_proj) <= (cyl->height * 0.5 + RT_EPS))
+				{
+					t_vector3 radial_component = vector3_subtract(center_to_point, vector3_scale(axis, axis_proj));
+					t_vector3 hit_normal;
+					if (vector3_normalize_safe(radial_component, &hit_normal, RT_EPS))
+					{
+						if (vector3_dot(hit_normal, ray.dir) > 0.0)
+							hit_normal = vector3_negate(hit_normal);
+						if (!has_hit || side_t1 < best_t)
+						{
+							has_hit = 1;
+							best_t = side_t1;
+							best_hit.t = side_t1;
+							best_hit.hitPoint = hit_point;
+							best_hit.normal = hit_normal;
+							best_hit.material = &obj->material;
+						}
+					}
+				}
+			}
+
+			// check second root
+			if (side_t2 >= t_min && side_t2 <= t_max)
+			{
+				t_vector3 hit_point = ray_at(&ray, side_t2);
+				t_vector3 center_to_point = vector3_subtract(hit_point, cyl->center);
+				double axis_proj = vector3_dot(center_to_point, axis);
+				if (fabs(axis_proj) <= (cyl->height * 0.5 + RT_EPS))
+				{
+					t_vector3 radial_component = vector3_subtract(center_to_point, vector3_scale(axis, axis_proj));
+					t_vector3 hit_normal;
+					if (vector3_normalize_safe(radial_component, &hit_normal, RT_EPS))
+					{
+						if (vector3_dot(hit_normal, ray.dir) > 0.0)
+							hit_normal = vector3_negate(hit_normal);
+						if (!has_hit || side_t2 < best_t)
+						{
+							has_hit = 1;
+							best_t = side_t2;
+							best_hit.t = side_t2;
+							best_hit.hitPoint = hit_point;
+							best_hit.normal = hit_normal;
+							best_hit.material = &obj->material;
+						}
+					}
+				}
+			}
+		}
 	}
-	return (0);
+
+	// --- Caps intersection (top and bottom disks) ---
+	{
+		double denom = vector3_dot(ray.dir, axis);
+		if (fabs(denom) > RT_EPS)
+		{
+			t_vector3 top_center = vector3_add(cyl->center, vector3_scale(axis, cyl->height * 0.5));
+			t_vector3 bottom_center = vector3_subtract(cyl->center, vector3_scale(axis, cyl->height * 0.5));
+
+			// Top cap
+			{
+				double t_cap = vector3_dot(vector3_subtract(top_center, ray.orig), axis) / denom;
+				if (t_cap >= t_min && t_cap <= t_max)
+				{
+					t_vector3 hit_point = ray_at(&ray, t_cap);
+					t_vector3 to_center = vector3_subtract(hit_point, top_center);
+					double r2 = vector3_dot(to_center, to_center);
+					if (r2 <= radius * radius + RT_EPS)
+					{
+						t_vector3 hit_normal = axis; // normal points outward
+						if (vector3_dot(hit_normal, ray.dir) > 0.0)
+							hit_normal = vector3_negate(hit_normal);
+						if (!has_hit || t_cap < best_t)
+						{
+							has_hit = 1;
+							best_t = t_cap;
+							best_hit.t = t_cap;
+							best_hit.hitPoint = hit_point;
+							best_hit.normal = hit_normal;
+							best_hit.material = &obj->material;
+						}
+					}
+				}
+			}
+
+			// Bottom cap
+			{
+				double t_cap = vector3_dot(vector3_subtract(bottom_center, ray.orig), axis) / denom;
+				if (t_cap >= t_min && t_cap <= t_max)
+				{
+					t_vector3 hit_point = ray_at(&ray, t_cap);
+					t_vector3 to_center = vector3_subtract(hit_point, bottom_center);
+					double r2 = vector3_dot(to_center, to_center);
+					if (r2 <= radius * radius + RT_EPS)
+					{
+						t_vector3 hit_normal = vector3_negate(axis); // normal points outward
+						if (vector3_dot(hit_normal, ray.dir) > 0.0)
+							hit_normal = vector3_negate(hit_normal);
+						if (!has_hit || t_cap < best_t)
+						{
+							has_hit = 1;
+							best_t = t_cap;
+							best_hit.t = t_cap;
+							best_hit.hitPoint = hit_point;
+							best_hit.normal = hit_normal;
+							best_hit.material = &obj->material;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (!has_hit)
+		return (0);
+	*out = best_hit;
+	return (1);
 }
 
 int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
