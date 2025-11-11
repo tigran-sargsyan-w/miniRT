@@ -76,7 +76,7 @@ static int scene_intersect(const t_scene *scene, t_ray ray, double t_min, double
 static t_color shade(const t_scene *scene, const t_hit *hit)
 {
     // Ambient + single light diffuse (Lambert). No shadows yet.
-    t_color base = hit->material ? hit->material->base_color : COLOR_BLACK;
+    t_color base = hit->material->base_color;
     t_color ambient_lin = color_scale(color_from_rgb8(scene->ambient.color), scene->ambient.intensity);
     t_color result = color_multiply(base, ambient_lin);
     if (!scene->has_light || !hit || !hit->material)
