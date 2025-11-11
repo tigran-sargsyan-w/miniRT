@@ -1,5 +1,4 @@
 #include "libft.h"
-#include "scene.h"
 #include "object.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -85,6 +84,7 @@ int	parse_vec3(char *line, double vec[3])
 		n++;
 	if (n != 3)
 	{
+		printf("Vector parsing error: expected 3 components, got %d\n", n);
 		ft_free_tab(tab);
 		return (1);
 	}
