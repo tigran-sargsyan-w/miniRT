@@ -1,19 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 22:47:11 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/04 16:03:04 by tsargsya         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 #include "libft.h"
 #include "parse.h"
-#include "types.h"
+#include "scene.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "miniRT.h"
