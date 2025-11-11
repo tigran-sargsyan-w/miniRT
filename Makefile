@@ -27,7 +27,8 @@ parse/sphere.c parse/plane.c parse/cylinder.c parse/validate_range.c \
 vector.c ray.c camera.c \
 debug_print_scene.c mlx_utils.c \
 color.c material.c \
-sphere.c object.c plane.c cylinder.c
+sphere.c object.c plane.c cylinder.c \
+render.c
 
 # -------------------------------
 #   Object & Dependency Files

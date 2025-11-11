@@ -15,4 +15,8 @@ int	check_parse_file(int fd, struct s_scene *scene);
 int	validate_input_range(t_scene *scene);
 void	debug_print_scene(t_scene *scene);
 
+int     render_scene(t_data *data);
+void    install_event_handlers(t_data *data);
+void    free_scene(t_scene *scene);
+
 #endif
