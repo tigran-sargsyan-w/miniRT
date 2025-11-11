@@ -72,7 +72,13 @@ int	check_parse_file(int fd, t_scene *scene)
 	char	*token;
 	int		obj_type;
 
-	while ((line = get_next_line(fd)))
+	line = get_next_line(fd);
+	if (!line)
+	{
+		printf("Error: Empty scene file\n");
+		return (1);
+	}
+	while (line)
 	{
 		trimmed = ft_strtrim(line, " \t\r\n");
 		p = trimmed;
@@ -101,6 +107,8 @@ int	check_parse_file(int fd, t_scene *scene)
 			free(token);
 		}
 		free(trimmed);
+		line = get_next_line(fd);
 	}
+	free(line);
 	return (0);
 }
