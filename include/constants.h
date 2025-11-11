@@ -9,4 +9,20 @@
 #   define RT_EPS 1e-9
 #  endif
 
+# ifndef K_TMIN_PRIMARY
+#  define K_TMIN_PRIMARY 1e-6
+# endif
+
+# ifndef K_TMAX_PRIMARY
+#  define K_TMAX_PRIMARY 1e6
+# endif
+
+# ifndef K_SKY_BLEND_BIAS
+#  define K_SKY_BLEND_BIAS 0.5
+# endif
+
+# ifndef KeyEscape
+# define KeyEscape 65307
+# endif
+
 # endif

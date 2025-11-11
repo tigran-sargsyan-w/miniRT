@@ -1,5 +1,6 @@
 #include "libft.h"
 #include "mlx_utils.h"
+#include "miniRT.h"
 #include <mlx.h>
 #include <stdlib.h>
 
@@ -47,4 +48,37 @@ void	my_mlx_pixel_put(t_img_data *image_data, int x, int y, int color)
 	dst = image_data->pixels_ptr + (y * image_data->line_length + x
 			* (image_data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
+}
+
+static int	on_keypress(int keycode, void *param)
+{
+	t_data *data;
+
+	data = (t_data *)param;
+	if (keycode == KeyEscape)
+	{
+		free_scene(&data->scene);
+		mlx_destroy_all(&data->mlx);
+		exit(0);
+	}
+	return (0);
+}
+
+static int	on_destroy(void *param)
+{
+	t_data *data;
+
+	data = (t_data *)param;
+	free_scene(&data->scene);
+	mlx_destroy_all(&data->mlx);
+	exit(0);
+	return (0);
+}
+
+void	install_event_handlers(t_data *data)
+{
+	if (!data || !data->mlx.win_ptr)
+		return ;
+	mlx_key_hook(data->mlx.win_ptr, &on_keypress, data);
+	mlx_hook(data->mlx.win_ptr, 17, 0, &on_destroy, data);
 }
