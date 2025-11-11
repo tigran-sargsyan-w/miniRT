@@ -1,4 +1,4 @@
-#include "types.h"
+#include "scene.h"
 #include <stdio.h>
 
 void	debug_print_scene(t_scene *scene)

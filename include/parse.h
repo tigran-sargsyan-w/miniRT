@@ -1,7 +1,7 @@
 #ifndef PARSE_H
 # define PARSE_H
 
-# include "types.h"
+# include "scene.h"
 # include <stdint.h>
 
 int							check_args(int argc, char **argv);

@@ -1,6 +1,6 @@
 #include "libft.h"
 #include "miniRT.h"
-#include "types.h"
+#include "scene.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>

@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   plane.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/21 04:14:54 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/10/21 05:03:47 by dsemenov         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft.h"
 #include "parse.h"
 #include "plane.h"
 #include "vector.h"
 #include "color.h"
 #include "material.h"
-#include "types.h"
+#include "scene.h"
 #include <stdio.h>
 #include <stdlib.h>
 

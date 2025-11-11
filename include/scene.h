@@ -1,5 +1,5 @@
-#ifndef TYPES_H
-# define TYPES_H
+#ifndef SCENE_H
+# define SCENE_H
 
 # include "light.h"
 # include "sphere.h"
