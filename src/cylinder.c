@@ -190,7 +190,12 @@ static int	intersect_cylinder(const t_object *obj,
 int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
 			double diameter, double height, t_material material)
 {
-	if (!cylinder || diameter <= 0.0 || height <= 0.0)
+	if (!cylinder)
+	{
+		printf("Error: Invalid cylinder pointer\n");
+		return (1);
+	}
+	if (diameter <= 0 || height <= 0)
 	{
 		printf("Error: Cylinder diameter and height must be positive\n");
 		return (1);
