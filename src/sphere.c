@@ -1,7 +1,7 @@
 #include <math.h>
 #include "sphere.h"
 #include "vector.h"
-#include "constants.h"
+#include <stdio.h>
 
 static int	intersect_sphere(const t_object *obj, t_ray ray, double t_min, double t_max, t_hit *out)
 {
@@ -58,8 +58,16 @@ static int	intersect_sphere(const t_object *obj, t_ray ray, double t_min, double
 
 int	sphere_init(t_sphere *sphere, t_vector3 center, double diameter, t_material material)
 {
-	if (!sphere || diameter <= 0.0)
+	if (!sphere)
+	{
+		printf("Error: Invalid sphere pointer\n");
 		return (1);
+	}
+	if (diameter <= 0.0)
+	{
+		printf("Error: Sphere diameter must be positive\n");
+		return (1);
+	}
 	object_init(&sphere->base, SPHERE, material, &intersect_sphere);
 	sphere->center = center;
 	sphere->diameter = diameter;
