@@ -1,7 +1,6 @@
 #include "libft.h"
 #include "parse.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 int	parse_ratio(char *str, double *ratio)
 {
