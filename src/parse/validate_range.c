@@ -65,6 +65,11 @@ int	validate_camera_orientation_range(t_scene *scene)
 		printf("Error: Camera orientation component out of range (-1.0 - 1.0)\n");
 		return (1);
 	}
+	if (vector3_length(ori) == 0.0)
+	{
+		printf("Error: Camera orientation vector cannot be zero\n");
+		return (1);
+	}
 	return (0);
 }
 
