@@ -22,6 +22,7 @@ int							parse_plane(char *line, t_scene *scene);
 int							parse_cylinder(char *line, t_scene *scene);
 int							validate_input_range(t_scene *scene);
 void						ft_free_tab(char **tab);
+int							ft_atoi_checked(const char *nptr, int *num);
 char						*get_token(char **str, const char *delim);
 
 #endif

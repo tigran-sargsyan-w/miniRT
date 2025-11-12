@@ -2,6 +2,7 @@
 #include "object.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "parse.h"
 
 char	*get_token(char **str, const char *delim)
 {
@@ -64,7 +65,12 @@ int	parse_color(char *line, int color[3])
 	i = 0;
 	while (i < 3)
 	{
-		color[i] = ft_atoi(tab[i]);
+		if (ft_atoi_checked(tab[i], &color[i]) || color[i] < 0 || color[i] > 255)
+		{
+			printf("Color parsing error: invalid value '%s'\n", tab[i]);
+			ft_free_tab(tab);
+			return (1);
+		}
 		i++;
 	}
 	ft_free_tab(tab);
