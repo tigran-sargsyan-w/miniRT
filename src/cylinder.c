@@ -2,6 +2,7 @@
 #include "cylinder.h"
 #include "vector.h"
 #include "constants.h"
+#include <stdio.h>
 
 static int	intersect_cylinder(const t_object *obj,
 				t_ray ray, double t_min, double t_max, t_hit *out)
@@ -189,8 +190,16 @@ static int	intersect_cylinder(const t_object *obj,
 int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
 			double diameter, double height, t_material material)
 {
-	if (!cylinder || diameter <= 0.0 || height <= 0.0)
+	if (!cylinder)
+	{
+		printf("Error: Invalid cylinder pointer\n");
 		return (1);
+	}
+	if (diameter <= 0 || height <= 0)
+	{
+		printf("Error: Cylinder diameter and height must be positive\n");
+		return (1);
+	}
 	// compute normalized axis but also preserve raw orientation
 	if (!vector3_normalize_safe(orientation, &cylinder->axis_unit, RT_EPS))
 		return (1);
