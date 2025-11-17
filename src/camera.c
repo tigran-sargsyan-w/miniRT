@@ -29,12 +29,12 @@ int	camera_init(t_camera *camera, t_vector3 position,
 	if (fabs(vector3_dot(forward, world_up)) > 0.999)
 		world_up = VECTOR3_UNIT_X;
 
-	right = vector3_cross(forward, world_up);
+	right = vector3_cross(world_up, forward);
 	if (!vector3_normalize_safe(right, &right, RT_EPS))
 		return (1);
 
 	camera->right = right;
-	camera->up = vector3_cross(right, forward); /* уже единичный в нормальном случае */
+	camera->up = vector3_cross(forward, right);
 
 	/* Горизонтальный FOV */
 	fov_rad = fov_deg * (M_PI / 180.0);
