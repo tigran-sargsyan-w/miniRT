@@ -91,6 +91,17 @@ static t_color shade(const t_scene *scene, const t_hit *hit)
     if (!vector3_normalize_safe(L, &L_unit, RT_EPS))
         return result;
 
+    // Shadow: cast ray toward light, check occlusion
+    double light_dist = vector3_length(L);
+    t_vector3 shadow_origin = vector3_add(hit->hitPoint, vector3_scale(hit->normal, K_SHADOW_BIAS));
+    t_ray shadow_ray = ray_make(shadow_origin, L_unit);
+    t_hit shadow_hit;
+    if (scene_intersect(scene, shadow_ray, K_TMIN_PRIMARY, light_dist - K_SHADOW_BIAS, &shadow_hit))
+    {
+        // In shadow: only ambient contribution
+        return result;
+    }
+
     double ndotl = vector3_dot(hit->normal, L_unit);
     if (ndotl > 0.0)
     {

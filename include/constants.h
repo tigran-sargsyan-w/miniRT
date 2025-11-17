@@ -21,6 +21,10 @@
 #  define K_SKY_BLEND_BIAS 0.5
 # endif
 
+# ifndef K_SHADOW_BIAS
+#  define K_SHADOW_BIAS 1e-4
+# endif
+
 # ifndef KeyEscape
 # define KeyEscape 65307
 # endif
