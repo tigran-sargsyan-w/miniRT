@@ -42,6 +42,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	close(fd);
+	// TODO: The requirement for ambient/camera/light is not checked
 	if (validate_input_range(&data.scene) != 0)
 	{
 		free_scene(&data.scene);
