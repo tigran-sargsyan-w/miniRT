@@ -5,6 +5,7 @@
 int	validate_color_range(t_color8 color)
 {
 	// components are stored as uint8_t, range checks should be performed before casting
+	// TODO: check usages of this function to ensure proper range checks
 	(void)color;
 	return (0);
 }

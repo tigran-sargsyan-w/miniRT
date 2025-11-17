@@ -50,6 +50,7 @@ int	parse_plane(char *line, t_scene *scene)
 	if (n != 3)
 	{
 		printf("Error: Invalid number of arguments for plane\n");
+		// TODO: free tab maybe
 		return (1);
 	}
 	if (parse_vec3(tab[0], tmp_point) || parse_vec3(tab[1], tmp_normal)
