@@ -40,6 +40,7 @@ static int	intersect_plane(const t_object *obj,
 	out->hitPoint = hit_point;
 	out->normal = hit_normal;
 	out->material = &obj->material;
+	out->object = obj;
 	return (1);
 }
 

@@ -1,6 +1,11 @@
 #include "libft.h"
 #include "mlx_utils.h"
 #include "miniRT.h"
+#include "ray.h"
+#include "hit.h"
+#include "camera.h"
+#include "constants.h"
+#include "trace.h"
 #include <mlx.h>
 #include <stdlib.h>
 
@@ -75,10 +80,36 @@ static int	on_destroy(void *param)
 	return (0);
 }
 
+static int on_mouse(int button, int x, int y, void *param)
+{
+	t_data *data;
+	t_hit hit;
+
+	(void)button; // We only handle left click (1), but ignore other buttons silently
+	data = (t_data *)param;
+	if (!data || !data->scene.has_camera)
+		return (0);
+	if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT)
+		return (0);
+
+	if (button == 1)
+	{
+		t_ray ray = camera_ray(&data->scene.camera, x, y, WIDTH, HEIGHT);
+		if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &hit))
+			data->selected_object = hit.object;
+		else
+			data->selected_object = NULL;
+		if (render_scene(data) == 0)
+			mlx_put_image_to_window(data->mlx.mlx_ptr, data->mlx.win_ptr, data->mlx.img.img_ptr, 0, 0);
+	}
+	return (0);
+}
+
 void	install_event_handlers(t_data *data)
 {
 	if (!data || !data->mlx.win_ptr)
 		return ;
 	mlx_key_hook(data->mlx.win_ptr, &on_keypress, data);
 	mlx_hook(data->mlx.win_ptr, 17, 0, &on_destroy, data);
+	mlx_mouse_hook(data->mlx.win_ptr, &on_mouse, data);
 }

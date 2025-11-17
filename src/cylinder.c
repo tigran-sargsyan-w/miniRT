@@ -184,6 +184,7 @@ static int	intersect_cylinder(const t_object *obj,
 	if (!has_hit)
 		return (0);
 	*out = best_hit;
+	out->object = obj;
 	return (1);
 }
 

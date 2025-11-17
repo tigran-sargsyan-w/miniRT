@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "material.h"
 #include "constants.h"
+#include "trace.h"
 
 // Convert linear t_color to packed int (X11 expected endian: assume 0x00RRGGBB)
 static int color_to_int(t_color c)
@@ -17,60 +18,7 @@ static int color_to_int(t_color c)
     return ((srgb.r << 16) | (srgb.g << 8) | (srgb.b));
 }
 
-static int scene_intersect(const t_scene *scene, t_ray ray, double t_min, double t_max, t_hit *out_hit)
-{
-    t_hit   temp_hit;
-    double  closest = t_max;
-    int     hit_any = 0;
-    int     i;
-
-    /* Spheres */
-    i = 0;
-    while (i < scene->sphere_count)
-    {
-        const t_object *obj = (const t_object *)&scene->spheres[i];
-        if (obj->intersect_func &&
-            obj->intersect_func(obj, ray, t_min, closest, &temp_hit))
-        {
-            hit_any = 1;
-            closest = temp_hit.t;
-            *out_hit = temp_hit;
-        }
-        i++;
-    }
-
-    /* Planes */
-    i = 0;
-    while (i < scene->plane_count)
-    {
-        const t_object *obj = (const t_object *)&scene->planes[i];
-        if (obj->intersect_func &&
-            obj->intersect_func(obj, ray, t_min, closest, &temp_hit))
-        {
-            hit_any = 1;
-            closest = temp_hit.t;
-            *out_hit = temp_hit;
-        }
-        i++;
-    }
-
-    /* Cylinders */
-    i = 0;
-    while (i < scene->cylinder_count)
-    {
-        const t_object *obj = (const t_object *)&scene->cylinders[i];
-        if (obj->intersect_func &&
-            obj->intersect_func(obj, ray, t_min, closest, &temp_hit))
-        {
-            hit_any = 1;
-            closest = temp_hit.t;
-            *out_hit = temp_hit;
-        }
-        i++;
-    }
-
-    return hit_any;
-}
+// scene_intersect is now provided by trace.c
 
 // Very simple pseudo-random (linear congruential generator).
 static double rand01(unsigned int *seed)
@@ -189,6 +137,7 @@ int render_scene(t_data *data)
 {
     int x,y;
     t_camera cam;
+    const t_object **objbuf = NULL;
 
     if (!data)
         return 1;
@@ -205,6 +154,11 @@ int render_scene(t_data *data)
     data->scene.camera.half_width = cam.half_width;
     data->scene.camera.half_height = cam.half_height;
 
+    // Allocate object buffer for outline pass
+    objbuf = (const t_object **)malloc(sizeof(*objbuf) * WIDTH * HEIGHT);
+    if (!objbuf)
+        return 1;
+
     y = 0;
     while (y < HEIGHT)
     {
@@ -213,11 +167,48 @@ int render_scene(t_data *data)
         {
             t_ray ray = camera_ray(&cam, x, y, WIDTH, HEIGHT);
             t_color col = trace_ray(&data->scene, ray);
+            // Store which object was hit for selection outline
+            {
+                t_hit htmp;
+                if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &htmp))
+                    objbuf[y * WIDTH + x] = htmp.object;
+                else
+                    objbuf[y * WIDTH + x] = NULL;
+            }
             int packed = color_to_int(col);
             my_mlx_pixel_put(&data->mlx.img, x, y, packed);
             x++;
         }
         y++;
     }
+
+    // Simple 1px outline for selected object
+    if (data->selected_object)
+    {
+        const int outline = 0x00FFFF00; // yellow
+        y = 0;
+        while (y < HEIGHT)
+        {
+            x = 0;
+            while (x < WIDTH)
+            {
+                const t_object *o = objbuf[y * WIDTH + x];
+                if (o == data->selected_object)
+                {
+                    int edge = 0;
+                    if (x <= 0 || objbuf[y * WIDTH + (x - 1)] != data->selected_object) edge = 1;
+                    else if (x >= WIDTH - 1 || objbuf[y * WIDTH + (x + 1)] != data->selected_object) edge = 1;
+                    else if (y <= 0 || objbuf[(y - 1) * WIDTH + x] != data->selected_object) edge = 1;
+                    else if (y >= HEIGHT - 1 || objbuf[(y + 1) * WIDTH + x] != data->selected_object) edge = 1;
+                    if (edge)
+                        my_mlx_pixel_put(&data->mlx.img, x, y, outline);
+                }
+                x++;
+            }
+            y++;
+        }
+    }
+
+    free(objbuf);
     return 0;
 }

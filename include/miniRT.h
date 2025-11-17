@@ -1,6 +1,7 @@
 #ifndef MINI_RT_H
 # define MINI_RT_H
 # include "scene.h"
+# include "object.h"
 
 #include "mlx_utils.h"
 
@@ -8,6 +9,7 @@ typedef struct s_data
 {
 	t_scene			scene;
 	t_mlx_data		mlx;
+	const t_object	*selected_object;
 }					t_data;
 
 int	check_args(int argc, char **argv);

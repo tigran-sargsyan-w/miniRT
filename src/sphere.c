@@ -53,6 +53,7 @@ static int	intersect_sphere(const t_object *obj, t_ray ray, double t_min, double
 	out->hitPoint = hit_point;
 	out->normal = hit_normal;
 	out->material = &obj->material;
+	out->object = obj;
 	return (1);
 }
 
