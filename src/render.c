@@ -75,20 +75,6 @@ static t_color shade(const t_scene *scene, const t_hit *hit)
     return result;
 }
 
-static t_color trace_ray(const t_scene *scene, t_ray ray)
-{
-    t_hit hit;
-
-    if (scene_intersect(scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &hit))
-        return shade(scene, &hit);
-
-    // Background gradient
-    const double t = K_SKY_BLEND_BIAS * (ray.dir.y + 1.0);
-    const t_color sky_top    = color_make(0.5, 0.5, 0.5);
-    const t_color sky_bottom = color_make(0.0, 0.0, 0.0);
-    return color_lerp(sky_bottom, sky_top, t);
-}
-
 int render_scene(t_data *data)
 {
     int x,y;
@@ -122,14 +108,20 @@ int render_scene(t_data *data)
         while (x < WIDTH)
         {
             t_ray ray = camera_ray(&cam, x, y, WIDTH, HEIGHT);
-            t_color col = trace_ray(&data->scene, ray);
-            // Store which object was hit for selection outline
+            t_hit htmp;
+            t_color col;
+            if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &htmp))
             {
-                t_hit htmp;
-                if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &htmp))
-                    objbuf[y * WIDTH + x] = htmp.object;
-                else
-                    objbuf[y * WIDTH + x] = NULL;
+                objbuf[y * WIDTH + x] = htmp.object;
+                col = shade(&data->scene, &htmp);
+            }
+            else
+            {
+                objbuf[y * WIDTH + x] = NULL;
+                const double tb = K_SKY_BLEND_BIAS * (ray.dir.y + 1.0);
+                const t_color sky_top    = color_make(0.5, 0.5, 0.5);
+                const t_color sky_bottom = color_make(0.0, 0.0, 0.0);
+                col = color_lerp(sky_bottom, sky_top, tb);
             }
             int packed = color_to_int(col);
             my_mlx_pixel_put(&data->mlx.img, x, y, packed);
