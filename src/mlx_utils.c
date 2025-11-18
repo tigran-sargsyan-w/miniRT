@@ -75,8 +75,13 @@ static int	on_keypress(int keycode, void *param)
 				mlx_put_image_to_window(data->mlx.mlx_ptr, data->mlx.win_ptr, data->mlx.img.img_ptr, 0, 0);
 			return (0);
 		}
-		free_scene(&data->scene);
-		mlx_destroy_all(&data->mlx);
+			free_scene(&data->scene);
+			if (data->ray_dir_cache) 
+			{ 
+				free(data->ray_dir_cache);
+				data->ray_dir_cache = NULL; 
+			}
+			mlx_destroy_all(&data->mlx);
 		exit(0);
 	}
 
@@ -147,6 +152,11 @@ static int	on_destroy(void *param)
 
 	data = (t_data *)param;
 	free_scene(&data->scene);
+	if (data->ray_dir_cache) 
+	{ 
+		free(data->ray_dir_cache);
+		data->ray_dir_cache = NULL;
+	}
 	mlx_destroy_all(&data->mlx);
 	exit(0);
 	return (0);

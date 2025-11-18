@@ -13,6 +13,68 @@
 #include "constants.h"
 #include "trace.h"
 
+static int cam_basis_equal(const t_camera *cam, const t_data *data)
+{
+    if (!data->ray_cache_valid)
+        return 0;
+    if (data->ray_cache_w != WIDTH || data->ray_cache_h != HEIGHT) 
+        return 0;
+    if (vector3_length(vector3_subtract(cam->forward, data->cam_fwd_cache)) > RT_EPS)
+        return 0;
+    if (vector3_length(vector3_subtract(cam->right, data->cam_right_cache)) > RT_EPS)
+        return 0;
+    if (vector3_length(vector3_subtract(cam->up, data->cam_up_cache)) > RT_EPS)
+        return 0;
+    if (fabs(cam->half_width  - data->cam_half_w_cache) > RT_EPS)
+        return 0;
+    if (fabs(cam->half_height - data->cam_half_h_cache) > RT_EPS)
+        return 0;
+    return 1;
+}
+
+static int rebuild_ray_cache(t_data *data, const t_camera *cam)
+{
+    const int W = WIDTH;
+    const int H = HEIGHT;
+    size_t count = (size_t)W * (size_t)H;
+    int y;
+    int x;
+    if (!data->ray_dir_cache)
+    {
+        data->ray_dir_cache = (t_vector3*)malloc(sizeof(t_vector3) * count);
+        if (!data->ray_dir_cache) return 1;
+    }
+    y = 0;
+    while (y < H)
+    {
+        x = 0;
+        while (x < W)
+        {
+            double u = ((double)x + 0.5) / (double)W * 2.0 - 1.0;
+            double v = 1.0 - ((double)y + 0.5) / (double)H * 2.0;
+            double sx = u * cam->half_width;
+            double sy = v * cam->half_height;
+            t_vector3 dir = vector3_add(cam->forward, vector3_scale(cam->right, sx));
+            dir = vector3_add(dir, vector3_scale(cam->up, sy));
+            t_vector3 ndir;
+            if (!vector3_normalize_safe(dir, &ndir, RT_EPS))
+                ndir = cam->forward;
+            data->ray_dir_cache[y * W + x] = ndir;
+            x++;
+        }
+        y++;
+    }
+    data->ray_cache_w = W;
+    data->ray_cache_h = H;
+    data->cam_fwd_cache = cam->forward;
+    data->cam_right_cache = cam->right;
+    data->cam_up_cache = cam->up;
+    data->cam_half_w_cache = cam->half_width;
+    data->cam_half_h_cache = cam->half_height;
+    data->ray_cache_valid = 1;
+    return 0;
+}
+
 // Convert linear t_color to packed int (X11 expected endian: assume 0x00RRGGBB)
 static int color_to_int(t_color c)
 {
@@ -113,13 +175,18 @@ int render_scene(t_data *data)
     // Start timing just before the heavy per-pixel loop
     gettimeofday(&start_time, NULL); // TODO: delete this debug timing
 
+    // Ensure ray direction cache is valid for this camera basis
+    if (!cam_basis_equal(&cam, data))
+        if (rebuild_ray_cache(data, &cam))
+            return 1;
+
     y = 0;
     while (y < HEIGHT)
     {
         x = 0;
         while (x < WIDTH)
         {
-            t_ray ray = camera_ray(&cam, x, y, WIDTH, HEIGHT);
+            t_ray ray = ray_make(cam.position, data->ray_dir_cache[y * WIDTH + x]);
             t_hit htmp;
             t_color col;
             if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &htmp))
