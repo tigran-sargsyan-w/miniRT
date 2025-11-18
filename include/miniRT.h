@@ -10,6 +10,7 @@ typedef struct s_data
 	t_scene			scene;
 	t_mlx_data		mlx;
 	const t_object	*selected_object;
+	const t_object	**objbuf;
 }					t_data;
 
 int	check_args(int argc, char **argv);

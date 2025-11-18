@@ -79,7 +79,6 @@ int render_scene(t_data *data)
 {
     int x,y;
     t_camera cam;
-    const t_object **objbuf = NULL;
 
     if (!data)
         return 1;
@@ -96,10 +95,14 @@ int render_scene(t_data *data)
     data->scene.camera.half_width = cam.half_width;
     data->scene.camera.half_height = cam.half_height;
 
-    // Allocate object buffer for outline pass
-    objbuf = (const t_object **)malloc(sizeof(*objbuf) * WIDTH * HEIGHT);
-    if (!objbuf)
-        return 1;
+    // Allocate object buffer for outline pass once and reuse between frames
+    if (!data->objbuf)
+    {
+        data->objbuf = (const t_object **)malloc(sizeof(*data->objbuf)
+                * WIDTH * HEIGHT);
+        if (!data->objbuf)
+            return 1;
+    }
 
     y = 0;
     while (y < HEIGHT)
@@ -112,12 +115,12 @@ int render_scene(t_data *data)
             t_color col;
             if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &htmp))
             {
-                objbuf[y * WIDTH + x] = htmp.object;
+                data->objbuf[y * WIDTH + x] = htmp.object;
                 col = shade(&data->scene, &htmp);
             }
             else
             {
-                objbuf[y * WIDTH + x] = NULL;
+                data->objbuf[y * WIDTH + x] = NULL;
                 const double tb = K_SKY_BLEND_BIAS * (ray.dir.y + 1.0);
                 const t_color sky_top    = color_make(0.5, 0.5, 0.5);
                 const t_color sky_bottom = color_make(0.0, 0.0, 0.0);
@@ -140,14 +143,14 @@ int render_scene(t_data *data)
             x = 0;
             while (x < WIDTH)
             {
-                const t_object *o = objbuf[y * WIDTH + x];
+            const t_object *o = data->objbuf[y * WIDTH + x];
                 if (o == data->selected_object)
                 {
                     int edge = 0;
-                    if (x <= 0 || objbuf[y * WIDTH + (x - 1)] != data->selected_object) edge = 1;
-                    else if (x >= WIDTH - 1 || objbuf[y * WIDTH + (x + 1)] != data->selected_object) edge = 1;
-                    else if (y <= 0 || objbuf[(y - 1) * WIDTH + x] != data->selected_object) edge = 1;
-                    else if (y >= HEIGHT - 1 || objbuf[(y + 1) * WIDTH + x] != data->selected_object) edge = 1;
+                    if (x <= 0 || data->objbuf[y * WIDTH + (x - 1)] != data->selected_object) edge = 1;
+                    else if (x >= WIDTH - 1 || data->objbuf[y * WIDTH + (x + 1)] != data->selected_object) edge = 1;
+                    else if (y <= 0 || data->objbuf[(y - 1) * WIDTH + x] != data->selected_object) edge = 1;
+                    else if (y >= HEIGHT - 1 || data->objbuf[(y + 1) * WIDTH + x] != data->selected_object) edge = 1;
                     if (edge)
                         my_mlx_pixel_put(&data->mlx.img, x, y, outline);
                 }
@@ -156,7 +159,5 @@ int render_scene(t_data *data)
             y++;
         }
     }
-
-    free(objbuf);
     return 0;
 }
