@@ -25,14 +25,6 @@
 #  define K_SHADOW_BIAS 1e-4
 # endif
 
-# ifndef SHADOW_SAMPLES
-#  define SHADOW_SAMPLES 8
-# endif
-
-#ifndef LIGHT_RADIUS
-# define LIGHT_RADIUS 0.3
-#endif
-
 # ifndef KeyEscape
 # define KeyEscape 65307
 # endif
