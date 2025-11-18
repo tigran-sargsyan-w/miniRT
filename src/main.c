@@ -56,6 +56,7 @@ int	main(int argc, char **argv)
 	}
 	if (render_scene(&data) != 0)
 	{
+		free(data.objbuf);
 		free_scene(&data.scene);
 		mlx_destroy_all(&data.mlx);
 		return (1);
@@ -63,6 +64,7 @@ int	main(int argc, char **argv)
 	install_event_handlers(&data);
 	mlx_put_image_to_window(data.mlx.mlx_ptr, data.mlx.win_ptr, data.mlx.img.img_ptr, 0, 0);
 	mlx_loop(data.mlx.mlx_ptr);
+	free(data.objbuf);
 	free_scene(&data.scene);
 	mlx_destroy_all(&data.mlx);
 	return (0);

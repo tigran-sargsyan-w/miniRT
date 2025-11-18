@@ -2,6 +2,8 @@
 #include "sphere.h"
 #include "vector.h"
 #include <stdio.h>
+#include "transform.h"
+#include "object.h"
 
 static int	intersect_sphere(const t_object *obj, t_ray ray, double t_min, double t_max, t_hit *out)
 {
@@ -53,7 +55,32 @@ static int	intersect_sphere(const t_object *obj, t_ray ray, double t_min, double
 	out->hitPoint = hit_point;
 	out->normal = hit_normal;
 	out->material = &obj->material;
+	out->object = obj;
 	return (1);
+}
+
+static void sphere_translate(t_object *obj, t_vector3 delta)
+{
+	t_sphere *s = (t_sphere*)obj;
+	s->center = vector3_add(s->center, delta);
+}
+
+static void sphere_rotate(t_object *obj, double rx, double ry, double rz)
+{
+	(void)obj; (void)rx; (void)ry; (void)rz; // no-op for sphere
+}
+
+static void sphere_scale_uniform(t_object *obj, double factor)
+{
+	t_sphere *s = (t_sphere*)obj;
+	double d = s->diameter * factor;
+	if (d > RT_MIN_OBJECT_EXTENT)
+		s->diameter = d;
+}
+
+static void sphere_scale_height(t_object *obj, double factor)
+{
+	(void)obj; (void)factor; // no-op for sphere
 }
 
 int	sphere_init(t_sphere *sphere, t_vector3 center, double diameter, t_material material)
@@ -68,7 +95,8 @@ int	sphere_init(t_sphere *sphere, t_vector3 center, double diameter, t_material 
 		printf("Error: Sphere diameter must be positive\n");
 		return (1);
 	}
-	object_init(&sphere->base, SPHERE, material, &intersect_sphere);
+	object_init(&sphere->base, SPHERE, material, &intersect_sphere,
+		&sphere_translate, &sphere_rotate, &sphere_scale_uniform, &sphere_scale_height);
 	sphere->center = center;
 	sphere->diameter = diameter;
 	return (0);

@@ -2,6 +2,8 @@
 #include "plane.h"
 #include "vector.h"
 #include "constants.h"
+#include "transform.h"
+#include "object.h"
 
 static int	intersect_plane(const t_object *obj,
 				t_ray ray, double t_min, double t_max, t_hit *out)
@@ -40,7 +42,33 @@ static int	intersect_plane(const t_object *obj,
 	out->hitPoint = hit_point;
 	out->normal = hit_normal;
 	out->material = &obj->material;
+	out->object = obj;
 	return (1);
+}
+
+static void plane_translate(t_object *obj, t_vector3 delta)
+{
+	t_plane *pl = (t_plane*)obj;
+	pl->point = vector3_add(pl->point, delta);
+}
+
+static void plane_rotate(t_object *obj, double rx, double ry, double rz)
+{
+	t_plane *pl = (t_plane*)obj;
+	t_vector3 n = rotate_euler_vec(pl->normal, rx, ry, rz);
+	pl->normal = n;
+	if (!vector3_normalize_safe(pl->normal, &pl->normal_unit, RT_EPS))
+		pl->normal_unit = VECTOR3_UNIT_Y;
+}
+
+static void plane_scale_uniform(t_object *obj, double factor)
+{
+	(void)obj; (void)factor; // no-op for plane
+}
+
+static void plane_scale_height(t_object *obj, double factor)
+{
+	(void)obj; (void)factor; // no-op for plane
 }
 
 int	plane_init(t_plane *plane, t_vector3 point, t_vector3 normal, t_material material)
@@ -50,7 +78,8 @@ int	plane_init(t_plane *plane, t_vector3 point, t_vector3 normal, t_material mat
 	// compute normalized unit normal but preserve raw normal
 	if (!vector3_normalize_safe(normal, &plane->normal_unit, RT_EPS))
 		return (1);
-	object_init(&plane->base, PLANE, material, &intersect_plane);
+	object_init(&plane->base, PLANE, material, &intersect_plane,
+		&plane_translate, &plane_rotate, &plane_scale_uniform, &plane_scale_height);
 	plane->point = point;
 	plane->normal = normal;
 	return (0);
