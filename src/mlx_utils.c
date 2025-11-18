@@ -68,6 +68,13 @@ static int	on_keypress(int keycode, void *param)
 	data = (t_data *)param;
 	if (keycode == KeyEscape)
 	{
+		if (data->selected_object)
+		{
+			data->selected_object = NULL;
+			if (render_scene(data) == 0)
+				mlx_put_image_to_window(data->mlx.mlx_ptr, data->mlx.win_ptr, data->mlx.img.img_ptr, 0, 0);
+			return (0);
+		}
 		free_scene(&data->scene);
 		mlx_destroy_all(&data->mlx);
 		exit(0);
