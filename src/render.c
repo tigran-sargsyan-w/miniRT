@@ -30,7 +30,6 @@ static int is_in_shadow(const t_scene *scene, const t_hit *hit)
     t_vector3 L_unit;
     t_vector3 shadow_origin;
     t_ray     shadow_ray;
-    t_hit     tmp_hit;
 
     L = vector3_subtract(scene->light.position, hit->hitPoint);
     dist = vector3_length(L);
@@ -39,8 +38,7 @@ static int is_in_shadow(const t_scene *scene, const t_hit *hit)
     shadow_origin = vector3_add(hit->hitPoint,
             vector3_scale(hit->normal, K_SHADOW_BIAS));
     shadow_ray = ray_make(shadow_origin, L_unit);
-    if (scene_intersect(scene, shadow_ray,
-            K_TMIN_PRIMARY, dist - K_SHADOW_BIAS, &tmp_hit))
+    if (scene_occluded(scene, shadow_ray, K_TMIN_PRIMARY, dist - K_SHADOW_BIAS))
         return (1);
     return (0);
 }
@@ -63,11 +61,14 @@ static t_color shade(const t_scene *scene, const t_hit *hit)
     if (!vector3_normalize_safe(L, &L_unit, RT_EPS))
         return result;
 
-    // hard shadow: if blocked, keep only ambient
-    if (is_in_shadow(scene, hit))
+    // Evaluate ndotl first; if not facing light, skip shadow ray
+    double ndotl = vector3_dot(hit->normal, L_unit);
+    if (ndotl <= 0.0)
         return result;
 
-    double ndotl = vector3_dot(hit->normal, L_unit);
+    // Hard shadow: if blocked, keep only ambient
+    if (is_in_shadow(scene, hit))
+        return result;
     if (ndotl > 0.0)
     {
         double diffuse = ndotl * scene->light.intensity;
@@ -123,12 +124,14 @@ int render_scene(t_data *data)
             t_color col;
             if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &htmp))
             {
-                data->objbuf[y * WIDTH + x] = htmp.object;
+                if (data->selected_object)
+                    data->objbuf[y * WIDTH + x] = htmp.object;
                 col = shade(&data->scene, &htmp);
             }
             else
             {
-                data->objbuf[y * WIDTH + x] = NULL;
+                if (data->selected_object)
+                    data->objbuf[y * WIDTH + x] = NULL;
                 const double tb = K_SKY_BLEND_BIAS * (ray.dir.y + 1.0);
                 const t_color sky_top    = color_make(0.5, 0.5, 0.5);
                 const t_color sky_bottom = color_make(0.0, 0.0, 0.0);

@@ -7,4 +7,7 @@
 
 int scene_intersect(const t_scene *scene, t_ray ray, double t_min, double t_max, t_hit *out_hit);
 
+// Fast boolean occlusion query for shadow rays
+int scene_occluded(const t_scene *scene, t_ray ray, double t_min, double t_max);
+
 #endif
