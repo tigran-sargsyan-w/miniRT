@@ -3,6 +3,8 @@
 #include "vector.h"
 #include "constants.h"
 #include <stdio.h>
+#include "transform.h"
+#include "object.h"
 
 static int	intersect_cylinder(const t_object *obj,
 				t_ray ray, double t_min, double t_max, t_hit *out)
@@ -188,6 +190,36 @@ static int	intersect_cylinder(const t_object *obj,
 	return (1);
 }
 
+static void cylinder_translate(t_object *obj, t_vector3 delta)
+{
+	t_cylinder *c = (t_cylinder*)obj;
+	c->center = vector3_add(c->center, delta);
+}
+
+static void cylinder_rotate(t_object *obj, double rx, double ry, double rz)
+{
+	t_cylinder *c = (t_cylinder*)obj;
+	c->orientation = rotate_euler_vec(c->orientation, rx, ry, rz);
+	if (!vector3_normalize_safe(c->orientation, &c->axis_unit, RT_EPS))
+		c->axis_unit = VECTOR3_UNIT_Y;
+}
+
+static void cylinder_scale_uniform(t_object *obj, double factor)
+{
+	t_cylinder *c = (t_cylinder*)obj;
+	double d = c->diameter * factor;
+	if (d > RT_MIN_OBJECT_EXTENT)
+		c->diameter = d;
+}
+
+static void cylinder_scale_height(t_object *obj, double factor)
+{
+	t_cylinder *c = (t_cylinder*)obj;
+	double h = c->height * factor;
+	if (h > RT_MIN_OBJECT_EXTENT)
+		c->height = h;
+}
+
 int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
 			double diameter, double height, t_material material)
 {
@@ -204,7 +236,8 @@ int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
 	// compute normalized axis but also preserve raw orientation
 	if (!vector3_normalize_safe(orientation, &cylinder->axis_unit, RT_EPS))
 		return (1);
-	object_init(&cylinder->base, CYLINDER, material, &intersect_cylinder);
+	object_init(&cylinder->base, CYLINDER, material, &intersect_cylinder,
+		&cylinder_translate, &cylinder_rotate, &cylinder_scale_uniform, &cylinder_scale_height);
 	cylinder->center = center;
 	cylinder->orientation = orientation;
 	cylinder->diameter = diameter;

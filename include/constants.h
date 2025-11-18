@@ -9,6 +9,10 @@
 #   define RT_EPS 1e-9
 #  endif
 
+# ifndef RT_MIN_OBJECT_EXTENT
+#  define RT_MIN_OBJECT_EXTENT 1e-6
+# endif
+
 # ifndef K_TMIN_PRIMARY
 #  define K_TMIN_PRIMARY 1e-6
 # endif
