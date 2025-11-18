@@ -6,6 +6,12 @@
 #include "camera.h"
 #include "constants.h"
 #include "trace.h"
+#include "object.h"
+#include "sphere.h"
+#include "plane.h"
+#include "cylinder.h"
+#include "vector.h"
+#include <math.h>
 #include <mlx.h>
 #include <stdlib.h>
 
@@ -65,6 +71,151 @@ static int	on_keypress(int keycode, void *param)
 		free_scene(&data->scene);
 		mlx_destroy_all(&data->mlx);
 		exit(0);
+	}
+
+	// If we have a selected object, handle transforms
+	if (data->selected_object)
+	{
+		const t_object *obj = data->selected_object;
+		int changed = 0;
+
+		// Translation with WASDQE and arrow keys
+		if (keycode == KeyA || keycode == KeyLeft) { // -X
+			if (obj->type == SPHERE) ((t_sphere*)obj)->center.x -= MOVE_STEP;
+			else if (obj->type == PLANE) ((t_plane*)obj)->point.x -= MOVE_STEP;
+			else if (obj->type == CYLINDER) ((t_cylinder*)obj)->center.x -= MOVE_STEP;
+			changed = 1;
+		}
+		else if (keycode == KeyD || keycode == KeyRight) { // +X
+			if (obj->type == SPHERE) ((t_sphere*)obj)->center.x += MOVE_STEP;
+			else if (obj->type == PLANE) ((t_plane*)obj)->point.x += MOVE_STEP;
+			else if (obj->type == CYLINDER) ((t_cylinder*)obj)->center.x += MOVE_STEP;
+			changed = 1;
+		}
+		else if (keycode == KeyQ) { // +Y (up)
+			if (obj->type == SPHERE) ((t_sphere*)obj)->center.y += MOVE_STEP;
+			else if (obj->type == PLANE) ((t_plane*)obj)->point.y += MOVE_STEP;
+			else if (obj->type == CYLINDER) ((t_cylinder*)obj)->center.y += MOVE_STEP;
+			changed = 1;
+		}
+		else if (keycode == KeyE) { // -Y (down)
+			if (obj->type == SPHERE) ((t_sphere*)obj)->center.y -= MOVE_STEP;
+			else if (obj->type == PLANE) ((t_plane*)obj)->point.y -= MOVE_STEP;
+			else if (obj->type == CYLINDER) ((t_cylinder*)obj)->center.y -= MOVE_STEP;
+			changed = 1;
+		}
+		else if (keycode == KeyW || keycode == KeyUp) { // +Z (forward)
+			if (obj->type == SPHERE) ((t_sphere*)obj)->center.z += MOVE_STEP;
+			else if (obj->type == PLANE) ((t_plane*)obj)->point.z += MOVE_STEP;
+			else if (obj->type == CYLINDER) ((t_cylinder*)obj)->center.z += MOVE_STEP;
+			changed = 1;
+		}
+		else if (keycode == KeyS || keycode == KeyDown) { // -Z (back)
+			if (obj->type == SPHERE) ((t_sphere*)obj)->center.z -= MOVE_STEP;
+			else if (obj->type == PLANE) ((t_plane*)obj)->point.z -= MOVE_STEP;
+			else if (obj->type == CYLINDER) ((t_cylinder*)obj)->center.z -= MOVE_STEP;
+			changed = 1;
+		}
+
+		// Rotation helpers (Euler small-angle)
+		if (!changed && (keycode == KeyI || keycode == KeyK || keycode == KeyJ || keycode == KeyL || keycode == KeyU || keycode == KeyO))
+		{
+			double rx = 0.0, ry = 0.0, rz = 0.0;
+			double step = ROTATE_STEP_DEG * M_PI / 180.0;
+			if (keycode == KeyI) rx += step; // +X
+			if (keycode == KeyK) rx -= step; // -X
+			if (keycode == KeyJ) ry += step; // +Y
+			if (keycode == KeyL) ry -= step; // -Y
+			if (keycode == KeyU) rz += step; // +Z
+			if (keycode == KeyO) rz -= step; // -Z
+
+			if (obj->type == PLANE)
+			{
+				t_plane *pl = (t_plane*)obj;
+				t_vector3 v = pl->normal;
+				// Rz * Ry * Rx
+				// Rx
+				t_vector3 t;
+				double cx = cos(rx), sx = sin(rx);
+				double cy = cos(ry), sy = sin(ry);
+				double cz = cos(rz), sz = sin(rz);
+				t.x = v.x;
+				t.y = v.y * cx - v.z * sx;
+				t.z = v.y * sx + v.z * cx;
+				// Ry
+				v.x = t.x * cy + t.z * sy;
+				v.y = t.y;
+				v.z = -t.x * sy + t.z * cy;
+				// Rz
+				t.x = v.x * cz - v.y * sz;
+				t.y = v.x * sz + v.y * cz;
+				t.z = v.z;
+				pl->normal = t;
+				if (vector3_normalize_safe(pl->normal, &pl->normal_unit, 1e-12) == 0)
+					pl->normal_unit = VECTOR3_UNIT_Y;
+				changed = 1;
+			}
+			else if (obj->type == CYLINDER)
+			{
+				t_cylinder *cyl = (t_cylinder*)obj;
+				t_vector3 v = cyl->orientation;
+				t_vector3 t;
+				double cx = cos(rx), sx = sin(rx);
+				double cy = cos(ry), sy = sin(ry);
+				double cz = cos(rz), sz = sin(rz);
+				// Rx
+				t.x = v.x;
+				t.y = v.y * cx - v.z * sx;
+				t.z = v.y * sx + v.z * cx;
+				// Ry
+				v.x = t.x * cy + t.z * sy;
+				v.y = t.y;
+				v.z = -t.x * sy + t.z * cy;
+				// Rz
+				t.x = v.x * cz - v.y * sz;
+				t.y = v.x * sz + v.y * cz;
+				t.z = v.z;
+				cyl->orientation = t;
+				if (vector3_normalize_safe(cyl->orientation, &cyl->axis_unit, 1e-12) == 0)
+					cyl->axis_unit = VECTOR3_UNIT_Y;
+				changed = 1;
+			}
+		}
+
+		// Scaling: PageUp/PageDown for diameter; Home/End could be added for height; here use PageUp/PageDown and keep height on cylinder via Q/E? We'll keep separate keys below
+		if (!changed && (keycode == KeyPageUp || keycode == KeyPageDown))
+		{
+			double k = (keycode == KeyPageUp) ? SCALE_STEP : (1.0 / SCALE_STEP);
+			if (obj->type == SPHERE)
+			{
+				t_sphere *sp = (t_sphere*)obj;
+				double d = sp->diameter * k;
+				if (d > 1e-6) { sp->diameter = d; changed = 1; }
+			}
+			else if (obj->type == CYLINDER)
+			{
+				t_cylinder *cyl = (t_cylinder*)obj;
+				double d = cyl->diameter * k;
+				if (d > 1e-6) { cyl->diameter = d; changed = 1; }
+			}
+		}
+		// Height scaling for cylinder with Shifted PageUp/PageDown not available here; map to Up/Down already used. Use Left/Right? To avoid conflicts, map to J/L with Ctrl ideally. Keep simple: map to W/S with Page modifiers skipped. Use additional keys: ']' increase height, '[' decrease height.
+		if (!changed && (keycode == 93 /*]*/ || keycode == 91 /*[*/))
+		{
+			if (obj->type == CYLINDER)
+			{
+				t_cylinder *cyl = (t_cylinder*)obj;
+				double k = (keycode == 93) ? SCALE_STEP : (1.0 / SCALE_STEP);
+				double h = cyl->height * k;
+				if (h > 1e-6) { cyl->height = h; changed = 1; }
+			}
+		}
+
+		if (changed)
+		{
+			if (render_scene(data) == 0)
+				mlx_put_image_to_window(data->mlx.mlx_ptr, data->mlx.win_ptr, data->mlx.img.img_ptr, 0, 0);
+		}
 	}
 	return (0);
 }
