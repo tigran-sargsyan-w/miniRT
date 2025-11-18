@@ -1,5 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
+#include <sys/time.h> // TODO: delete this debug timing
+#include <stdio.h> // TODO: delete this debug timing
 #include "miniRT.h"
 #include "object.h"
 #include "vector.h"
@@ -79,6 +81,9 @@ int render_scene(t_data *data)
 {
     int x,y;
     t_camera cam;
+    struct timeval start_time; // TODO: delete this debug timing
+    struct timeval end_time; // TODO: delete this debug timing
+    double render_ms; // TODO: delete this debug timing
 
     if (!data)
         return 1;
@@ -103,6 +108,9 @@ int render_scene(t_data *data)
         if (!data->objbuf)
             return 1;
     }
+
+    // Start timing just before the heavy per-pixel loop
+    gettimeofday(&start_time, NULL); // TODO: delete this debug timing
 
     y = 0;
     while (y < HEIGHT)
@@ -159,5 +167,11 @@ int render_scene(t_data *data)
             y++;
         }
     }
+
+    // Stop timing after rendering and outline pass
+    gettimeofday(&end_time, NULL); // TODO: delete this debug timing
+    render_ms = (end_time.tv_sec - start_time.tv_sec) * 1000.0 // TODO: delete this debug timing
+        + (end_time.tv_usec - start_time.tv_usec) / 1000.0; // TODO: delete this debug timing
+    printf("Render time: %.2f ms\n", render_ms); // TODO: delete this debug timing
     return 0;
 }
