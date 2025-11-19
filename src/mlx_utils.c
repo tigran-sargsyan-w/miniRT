@@ -37,13 +37,11 @@ int	mlx_init_system(t_mlx_data *mlx_data, char *name)
 	mlx_data->win_ptr = mlx_new_window(mlx_data->mlx_ptr, WIDTH, HEIGHT, name);
 	if (mlx_data->win_ptr == NULL)
 	{
-		mlx_destroy_all(mlx_data);
 		return (1);
 	}
 	mlx_data->img.img_ptr = mlx_new_image(mlx_data->mlx_ptr, WIDTH, HEIGHT);
 	if (mlx_data->img.img_ptr == NULL)
 	{
-		mlx_destroy_all(mlx_data);
 		return (1);
 	}
 	mlx_data->img.pixels_ptr = mlx_get_data_addr(mlx_data->img.img_ptr,
