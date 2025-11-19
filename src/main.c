@@ -51,7 +51,9 @@ int	main(int argc, char **argv)
 	debug_print_scene(&data.scene); // For debugging purposes
 	if (mlx_init_system(&data.mlx, "MiniRT") != 0)
 	{
+		free(data.objbuf);
 		free_scene(&data.scene);
+		mlx_destroy_all(&data.mlx);
 		return (1);
 	}
 	if (render_scene(&data) != 0)
