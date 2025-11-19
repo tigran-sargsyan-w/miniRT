@@ -81,6 +81,7 @@ static int	on_keypress(int keycode, void *param)
 				free(data->ray_dir_cache);
 				data->ray_dir_cache = NULL; 
 			}
+			free(data->objbuf);
 			mlx_destroy_all(&data->mlx);
 		exit(0);
 	}
@@ -157,6 +158,7 @@ static int	on_destroy(void *param)
 		free(data->ray_dir_cache);
 		data->ray_dir_cache = NULL;
 	}
+	free(data->objbuf);
 	mlx_destroy_all(&data->mlx);
 	exit(0);
 	return (0);
