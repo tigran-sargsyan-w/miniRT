@@ -64,13 +64,10 @@ valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./miniRT sc
 
 | #  | Сценарий                                      | Что сделать / ожидаемое поведение                                                                                               | Статус |
 | -- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 20 | Запуск → ничего не делать → выход по ESC      | Открыть окно, не трогать сцену, нажать ESC. Должен отработать общий `cleanup`, утечек нет.                                      |        |
-| 21 | Запуск → ничего не делать → закрыть крестиком | Открыть окно и закрыть его через [X]. Обработчик `destroy` вызывает тот же `cleanup`, утечек нет.                               |        |
-| 22 | Активное управление → выход по ESC            | Подвигать камеру/зум/переключение камер (если есть), затем ESC. Все структуры, связанные с состоянием, должны быть освобождены. |        |
-| 23 | Активное управление → закрыть крестиком       | То же, что 22, но выход через [X]. Проверка, что оба пути выхода одинаково хорошо чистят ресурсы.                               |        |
-| 24 | Выбор/изменение объекта → ESC                 | Если есть выбор объекта/редактирование параметров: выбрать несколько объектов, изменить их, выйти по ESC без утечек.            |        |
-| 25 | Выбор/изменение объекта → закрыть крестиком   | Аналогично, но выход через [X].                                                                                                 |        |
-| 26 | Работа с меню/GUI (открытие/закрытие)         | Если есть меню/оверлей: несколько раз открыть/закрыть, потыкать пункты, потом выйти (ESC/[X]). Не должно быть утечек от GUI.    |        |
+| 20 | Запуск → ничего не делать → выход по ESC      | Открыть окно, не трогать сцену, нажать ESC. Должен отработать общий `cleanup`, утечек нет.                                      |   ✅   |
+| 21 | Запуск → ничего не делать → закрыть крестиком | Открыть окно и закрыть его через [X]. Обработчик `destroy` вызывает тот же `cleanup`, утечек нет.                               |   ✅   |
+| 22 | Выбор/изменение объекта → ESC                 | Если есть выбор объекта/редактирование параметров: выбрать несколько объектов, изменить их, выйти по ESC без утечек.            |   ✅   |
+| 23 | Выбор/изменение объекта → закрыть крестиком   | Аналогично, но выход через [X].                                                                                                 |   ✅   |
 
 ---
 
@@ -78,21 +75,10 @@ valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./miniRT sc
 
 | #  | Сценарий                     | Что сделать / ожидаемое поведение                                                                                                                            | Статус |
 | -- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ |
-| 27 | Длительная работа            | Запустить под Valgrind, несколько минут крутить камеру/двигаться. Потом выйти (ESC или [X]). Если в цикле есть `malloc` без `free`, Valgrind покажет утечки. |        |
-| 28 | Стресс-тест быстрых действий | Быстро переключать камеры, выбирать объекты, открывать/закрывать меню и т.д., затем выйти. Проверка редких веток кода на утечки.                             |        |
+| 24 | Длительная работа            | Запустить под Valgrind, несколько минут крутить камеру/двигаться. Потом выйти (ESC или [X]). Если в цикле есть `malloc` без `free`, Valgrind покажет утечки. |   ✅   |
+| 25 | Стресс-тест быстрых действий | Быстро переключать камеры, выбирать объекты, открывать/закрывать меню и т.д., затем выйти. Проверка редких веток кода на утечки.                             |   ✅   |
 
 ---
-
-## Категория 7 — Искусственные ошибки в рантайме (опционально)
-
-| #  | Сценарий                             | Что сделать / ожидаемое поведение                                                                                                                                                                                                     | Статус |
-| -- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 29 | Симуляция ошибки `malloc` в рантайме | В отладочной сборке добавить счётчик аллокаций и заставить `malloc` вернуть `NULL` при определённом вызове внутри цикла/события. Программа должна корректно обработать ошибку и при завершении освободить все уже выделенные ресурсы. |        |
-
----
-
-> Совет: рядом с этой таблицей можешь вести заметки: какие именно команды запускаешь (полные строки Valgrind), и какие именно файлы `.rt` используешь для каждого сценария.
-
 
 # miniRT — Leak Check Scenarios
 
@@ -155,11 +141,8 @@ Use this checklist to systematically test your program for memory leaks. In the 
 | -- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------ |
 | 20 | Start → do nothing → exit via ESC         | Open the window, do nothing, press ESC. Global cleanup is executed, no leaks reported.                                     |        |
 | 21 | Start → do nothing → close via window [X] | Open the window and close it with the [X] button. The destroy handler calls the same cleanup, no leaks.                    |        |
-| 22 | Active control → exit via ESC             | Move camera/zoom/switch cameras (if implemented), then exit with ESC. All state-related structures are freed.              |        |
-| 23 | Active control → close via window [X]     | Same as 22 but exit via [X]. Ensures both exit paths call the same cleanup logic.                                          |        |
-| 24 | Select/modify object → ESC                | If you have object selection/editing: select multiple objects, change their params, then ESC. Program exits without leaks. |        |
-| 25 | Select/modify object → close via [X]      | Same as 24 but exit via [X].                                                                                               |        |
-| 26 | Work with menu/GUI (open/close)           | If you have menu/overlay: open/close it several times, click different options, then exit (ESC/[X]). No GUI-related leaks. |        |
+| 22 | Select/modify object → ESC                | If you have object selection/editing: select multiple objects, change their params, then ESC. Program exits without leaks. |        |
+| 23 | Select/modify object → close via [X]      | Same as 24 but exit via [X].                                                                                               |        |
 
 ---
 
@@ -167,17 +150,5 @@ Use this checklist to systematically test your program for memory leaks. In the 
 
 | #  | Scenario                      | What to do / expected behavior                                                                                                                                                                | Status |
 | -- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 27 | Long-running session          | Run under Valgrind, keep the program open for several minutes, moving the camera/character. Then exit (ESC or [X]). Any `malloc` in the loop without a matching `free` will show up as leaks. |        |
-| 28 | Stress test with fast actions | Rapidly switch cameras, select objects, open/close menus, etc., then exit. Checks rare code branches for leaks.                                                                               |        |
-
----
-
-## Category 7 — Artificial Runtime Failures (Optional)
-
-| #  | Scenario                              | What to do / expected behavior                                                                                                                                                                                                             | Status |
-| -- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ |
-| 29 | Simulated `malloc` failure at runtime | In a debug build add an allocation counter and force `malloc` to return `NULL` at a specific call inside the loop/event handler. Program should handle the error gracefully and, on exit, free all already allocated resources (no leaks). |        |
-
----
-
-> Tip: next to this table you can keep a small note section where you write the exact Valgrind command you used and which `.rt` file belongs to each scenario.
+| 24 | Long-running session          | Run under Valgrind, keep the program open for several minutes, moving the camera/character. Then exit (ESC or [X]). Any `malloc` in the loop without a matching `free` will show up as leaks. |        |
+| 25 | Stress test with fast actions | Rapidly switch cameras, select objects, open/close menus, etc., then exit. Checks rare code branches for leaks.                                                                               |        |
