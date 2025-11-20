@@ -23,7 +23,7 @@ int	parse_light(char *line, t_scene *scene)
 	if (i != 2 && i != 3)
 	{
 		ft_free_tab(tab);
-		printf("Error: Invalid number of parameters for light\n");
+		printf("Error\nInvalid number of parameters for light\n");
 		return (1);
 	}
 	if (parse_vec3(tab[0], tmp_pos))
@@ -39,7 +39,7 @@ int	parse_light(char *line, t_scene *scene)
 		if (parse_color(tab[2], col_int))
 		{
 			ft_free_tab(tab);
-			printf("Error: Invalid light color\n");
+			printf("Error\nInvalid light color\n");
 			return (1);
 		}
 	}
@@ -56,7 +56,7 @@ int	parse_light(char *line, t_scene *scene)
 		if (endptr == tab[1])
 		{
 			ft_free_tab(tab);
-			printf("Error: Invalid light intensity\n");
+			printf("Error\nInvalid light intensity\n");
 			return (1);
 		}
 		scene->light.intensity = val;

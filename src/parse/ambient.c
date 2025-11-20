@@ -10,7 +10,7 @@ int	parse_ratio(char *str, double *ratio)
 	value = ft_strtod(str, &endptr);
 	if (endptr == str)
 	{
-		printf("Error: Invalid double value for ambient ratio\n");
+		printf("Error\nInvalid double value for ambient ratio\n");
 		return (1);
 	}
 	*ratio = value;
@@ -28,23 +28,28 @@ int	parse_ambient(char *line, t_scene *scene)
 		line++;
 	tab = ft_split(line, ' ');
 	if (!tab)
+	{
+		printf("Error\nMemory allocation failed\n");
 		return (1);
+	}
 	i = 0;
 	while (tab[i])
 		i++;
 	if (i != 2)
 	{
-		printf("Error: Ambient light requires 2 parameters\n");
+		printf("Error\nAmbient light requires 2 parameters\n");
 		ft_free_tab(tab);
 		return (1);
 	}
 	if (parse_ratio(tab[0], &ratio_tmp))
 	{
+		printf("Error\nAmbient light ratio parsing failed\n");
 		ft_free_tab(tab);
 		return (1);
 	}
 	if (parse_color(tab[1], tmp_color))
 	{
+		printf("Error\nAmbient light color parsing failed\n");
 		ft_free_tab(tab);
 		return (1);
 	}

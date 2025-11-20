@@ -21,7 +21,7 @@ int	parse_camera(char *line, t_scene *scene)
 	if (i != 3)
 	{
 		ft_free_tab(tab);
-		printf("Error: Invalid number of parameters for camera\n");
+		printf("Error\nInvalid number of parameters for camera\n");
 		return (1);
 	}
 	if (parse_vec3(tab[0], tmp_pos) || parse_vec3(tab[1], tmp_ori))
