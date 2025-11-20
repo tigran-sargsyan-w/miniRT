@@ -109,6 +109,12 @@ int	check_parse_file(int fd, t_scene *scene)
 		free(trimmed);
 		line = get_next_line(fd);
 	}
+	if (!scene->has_ambient || !scene->has_camera || !scene->has_light)
+	{
+		printf("Error: Missing required object (ambient, camera, or light)\n");
+		free(line);
+		return (1);
+	}
 	free(line);
 	return (0);
 }
