@@ -49,7 +49,6 @@ int	parse_ambient(char *line, t_scene *scene)
 	}
 	if (parse_color(tab[1], tmp_color))
 	{
-		printf("Error\nAmbient light color parsing failed\n");
 		ft_free_tab(tab);
 		return (1);
 	}

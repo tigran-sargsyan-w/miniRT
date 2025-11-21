@@ -54,7 +54,10 @@ int	parse_color(char *line, int color[3])
 	tab = ft_split(line, ',');
 	n = 0;
 	if (!tab)
+	{	
+		printf("Error\nMemory allocation failed\n");
 		return (1);
+	}
 	while (tab[n])
 		n++;
 	if (n != 3)

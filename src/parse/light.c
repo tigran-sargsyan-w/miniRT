@@ -16,7 +16,10 @@ int	parse_light(char *line, t_scene *scene)
 		line++;
 	tab = ft_split(line, ' ');
 	if (!tab)
+	{
+		printf("Error\nMemory allocation failed\n");
 		return (1);
+	}
 	i = 0;
 	while (tab[i])
 		i++;
@@ -39,7 +42,6 @@ int	parse_light(char *line, t_scene *scene)
 		if (parse_color(tab[2], col_int))
 		{
 			ft_free_tab(tab);
-			printf("Error\nInvalid light color\n");
 			return (1);
 		}
 	}
