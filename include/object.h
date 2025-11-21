@@ -27,7 +27,8 @@ typedef enum e_object_type
     LIGHT,
     SPHERE,
     PLANE,
-    CYLINDER
+    CYLINDER,
+	COMMENT
 }   t_object_type;
 
 // Base class (first field in "derived" structs)

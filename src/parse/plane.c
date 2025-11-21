@@ -41,7 +41,7 @@ int	parse_plane(char *line, t_scene *scene)
 	tab = ft_split(line, ' ');
 	if (!tab)
 	{
-		printf("Error: Memory allocation failed\n");
+		printf("Error\nMemory allocation failed\n");
 		return (1);
 	}
 	n = 0;
@@ -49,8 +49,8 @@ int	parse_plane(char *line, t_scene *scene)
 		n++;
 	if (n != 3)
 	{
-		printf("Error: Invalid number of arguments for plane\n");
-		// TODO: free tab maybe
+		printf("Error\nInvalid number of arguments for plane\n");
+		ft_free_tab(tab);
 		return (1);
 	}
 	if (parse_vec3(tab[0], tmp_point) || parse_vec3(tab[1], tmp_normal)
