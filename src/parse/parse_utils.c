@@ -131,6 +131,8 @@ int	identify_object(const char *token)
 		return (PLANE);
 	else if (ft_strcmp(token, "cy") == 0)
 		return (CYLINDER);
+	else if (token[0] == '#')
+		return (COMMENT); // Leave or remove comment handling?
 	else
 		return (-1);
 }

@@ -87,7 +87,14 @@ int	check_parse_file(int fd, t_scene *scene)
 		if (token)
 		{
 			obj_type = identify_object(token);
-			if (obj_type != -1)
+			if (obj_type == COMMENT)
+			{
+				free(token);
+				free(trimmed);
+				line = get_next_line(fd);
+				continue ;
+			}
+			else if (obj_type != -1)
 			{
 				if (obj_count(scene, obj_type) || parse_obj_data(p, obj_type,
 						scene))
