@@ -81,6 +81,12 @@ int	check_parse_file(int fd, t_scene *scene)
 	while (line)
 	{
 		trimmed = ft_strtrim(line, " \t\r\n");
+		if (!trimmed)
+		{
+			printf("Error\nMemory allocation failed\n");
+			free(line);
+			return (1);
+		}
 		p = trimmed;
 		free(line);
 		token = get_token(&p, " ");
