@@ -4,7 +4,7 @@
 
 NAME = miniRT
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -g
+CFLAGS = -Wall -Wextra -Werror
 MINILIBX_FLAGS = -L$(MINILIBX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 # -------------------------------
