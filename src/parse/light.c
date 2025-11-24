@@ -61,6 +61,12 @@ int	parse_light(char *line, t_scene *scene)
 			printf("Error\nInvalid light intensity\n");
 			return (1);
 		}
+		if (*endptr != '\0')
+		{
+			printf("Error\nInvalid light intensity: trailing characters starting at '%s'\n", endptr);
+			ft_free_tab(tab);
+			return (1);
+		}
 		scene->light.intensity = val;
 	}
 	ft_free_tab(tab);
