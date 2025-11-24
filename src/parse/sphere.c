@@ -64,6 +64,12 @@ int	parse_sphere(char *line, t_scene *scene)
 			printf("Error\nInvalid sphere diameter\n");
 			return (1);
 		}
+		if (*endptr != '\0')
+		{
+			printf("Error\nInvalid sphere diameter: trailing characters starting at '%s'\n", endptr);
+			ft_free_tab(tab);
+			return (1);
+		}
 		sp.diameter = val;
 	}
 	// initialize material/object base

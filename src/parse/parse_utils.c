@@ -107,6 +107,13 @@ int	parse_vec3(char *line, double vec[3])
 		double value = ft_strtod(tab[i], &endptr);
 		if (endptr == tab[i])
 		{
+			printf("Error\nVector component '%s' is not a number\n", tab[i]);
+			ft_free_tab(tab);
+			return (1);
+		}
+		if (*endptr != '\0')
+		{
+			printf("Error\nInvalid trailing characters in vector component '%s' (starts at '%s')\n", tab[i], endptr);
 			ft_free_tab(tab);
 			return (1);
 		}

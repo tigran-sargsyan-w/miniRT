@@ -71,6 +71,12 @@ int	parse_cylinder(char *line, t_scene *scene)
 			printf("Error\nInvalid cylinder diameter\n");
 			return (1);
 		}
+		if (*endptr != '\0')
+		{
+			printf("Error\nInvalid cylinder diameter: trailing characters starting at '%s'\n", endptr);
+			ft_free_tab(tab);
+			return (1);
+		}
 		cy.diameter = val;
 	}
 	// parse height
@@ -81,6 +87,12 @@ int	parse_cylinder(char *line, t_scene *scene)
 		{
 			ft_free_tab(tab);
 			printf("Error\nInvalid cylinder height\n");
+			return (1);
+		}
+		if (*endptr != '\0')
+		{
+			printf("Error\nInvalid cylinder height: trailing characters starting at '%s'\n", endptr);
+			ft_free_tab(tab);
 			return (1);
 		}
 		cy.height = val;
