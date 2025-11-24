@@ -13,6 +13,11 @@ int	parse_ratio(char *str, double *ratio)
 		printf("Error\nInvalid double value for ambient ratio\n");
 		return (1);
 	}
+	// Reject any trailing junk characters after the numeric part
+	if (*endptr != '\0') 
+	{
+		return (1);
+	}
 	*ratio = value;
 	return (0);
 }
