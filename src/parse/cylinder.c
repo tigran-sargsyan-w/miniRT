@@ -40,7 +40,7 @@ int	parse_cylinder(char *line, t_scene *scene)
 	tab = ft_split(line, ' ');
 	if (!tab)
 	{
-		printf("Error: Memory allocation failed\n");
+		printf("Error\nMemory allocation failed\n");
 		return (1);
 	}
 	n = 0;
@@ -49,7 +49,7 @@ int	parse_cylinder(char *line, t_scene *scene)
 	if (n != 5)
 	{
 		ft_free_tab(tab);
-		printf("Error: Invalid number of parameters for cylinder\n");
+		printf("Error\nInvalid number of parameters for cylinder\n");
 		return (1);
 	}
 	if (parse_vec3(tab[0], tmp_center) || parse_vec3(tab[1], tmp_ori)
@@ -68,7 +68,7 @@ int	parse_cylinder(char *line, t_scene *scene)
 		if (endptr == tab[2])
 		{
 			ft_free_tab(tab);
-			printf("Error: Invalid cylinder diameter\n");
+			printf("Error\nInvalid cylinder diameter\n");
 			return (1);
 		}
 		cy.diameter = val;
@@ -80,7 +80,7 @@ int	parse_cylinder(char *line, t_scene *scene)
 		if (endptr == tab[3])
 		{
 			ft_free_tab(tab);
-			printf("Error: Invalid cylinder height\n");
+			printf("Error\nInvalid cylinder height\n");
 			return (1);
 		}
 		cy.height = val;
@@ -94,7 +94,7 @@ int	parse_cylinder(char *line, t_scene *scene)
 	if (push_cylinder(scene, &cy))
 	{
 		ft_free_tab(tab);
-		printf("Error: Memory allocation failed for cylinder\n");
+		printf("Error\nMemory allocation failed for cylinder\n");
 		return (1);
 	}
 	ft_free_tab(tab);

@@ -45,7 +45,7 @@ int	parse_sphere(char *line, t_scene *scene)
 	if (n != 3)
 	{
 		ft_free_tab(tab);
-		printf("Error: Invalid number of parameters for sphere\n");
+		printf("Error\nInvalid number of parameters for sphere\n");
 		return (1);
 	}
 	if (parse_vec3(tab[0], tmp_center) || parse_color(tab[2], tmp_color))
@@ -61,7 +61,7 @@ int	parse_sphere(char *line, t_scene *scene)
 		if (endptr == tab[1])
 		{
 			ft_free_tab(tab);
-			printf("Error: Invalid sphere diameter\n");
+			printf("Error\nInvalid sphere diameter\n");
 			return (1);
 		}
 		sp.diameter = val;

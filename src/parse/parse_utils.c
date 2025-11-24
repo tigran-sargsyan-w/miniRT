@@ -54,7 +54,10 @@ int	parse_color(char *line, int color[3])
 	tab = ft_split(line, ',');
 	n = 0;
 	if (!tab)
+	{	
+		printf("Error\nMemory allocation failed\n");
 		return (1);
+	}
 	while (tab[n])
 		n++;
 	if (n != 3)
@@ -67,7 +70,7 @@ int	parse_color(char *line, int color[3])
 	{
 		if (ft_atoi_checked(tab[i], &color[i]) || color[i] < 0 || color[i] > 255)
 		{
-			printf("Color parsing error: invalid value '%s'\n", tab[i]);
+			printf("Error\nColor parsing error: invalid value '%s'\n", tab[i]);
 			ft_free_tab(tab);
 			return (1);
 		}
@@ -85,12 +88,15 @@ int	parse_vec3(char *line, double vec[3])
 	tab = ft_split(line, ',');
 	n = 0;
 	if (!tab)
+	{
+		printf("Error\nMemory allocation failed\n");
 		return (1);
+	}
 	while (tab[n])
 		n++;
 	if (n != 3)
 	{
-		printf("Vector parsing error: expected 3 components, got %d\n", n);
+		printf("Error\nVector parsing error: expected 3 components, got %d\n", n);
 		ft_free_tab(tab);
 		return (1);
 	}
@@ -125,6 +131,8 @@ int	identify_object(const char *token)
 		return (PLANE);
 	else if (ft_strcmp(token, "cy") == 0)
 		return (CYLINDER);
+	else if (token[0] == '#')
+		return (COMMENT); // Leave or remove comment handling?
 	else
 		return (-1);
 }
