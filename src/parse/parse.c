@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:41:28 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/26 22:08:01 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/11/26 23:01:18 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,44 @@ static int	handle_token(char *token, char *line, t_scene *scene)
 	return (0);
 }
 
-int	check_parse_file(int fd, t_scene *scene)
+static int	gnl_loop(int fd, t_scene *scene, char **line)
 {
-	char	*line;
 	char	*trimmed;
 	char	*p;
 	char	*token;
+
+	trimmed = ft_strtrim(*line, " \t\n");
+	free(*line);
+	if (!trimmed)
+		return (1);
+	if (trimmed[0] == '\0')
+	{
+		*line = get_next_line(fd);
+		free(trimmed);
+		return (0);
+	}
+	p = trimmed;
+	token = get_token(&p, " \t\n");
+	if (!token)
+	{
+		free(trimmed);
+		return (1);
+	}
+	if (handle_token(token, p, scene))
+	{
+		free(token);
+		free(trimmed);
+		return (1);
+	}
+	free(token);
+	free(trimmed);
+	*line = get_next_line(fd);
+	return (0);
+}
+
+int	check_parse_file(int fd, t_scene *scene)
+{
+	char	*line;
 
 	line = get_next_line(fd);
 	if (!line)
@@ -110,30 +142,11 @@ int	check_parse_file(int fd, t_scene *scene)
 		return (1);
 	}
 	while (line)
-	{
-		trimmed = ft_strtrim(line, " \t\r\n");
-		if (!trimmed)
+		if (gnl_loop(fd, scene, &line))
 		{
-			printf("Error\nMemory allocation failed\n");
 			free(line);
 			return (1);
 		}
-		p = trimmed;
-		free(line);
-		token = get_token(&p, " ");
-		if (token)
-		{
-			if (handle_token(token, p, scene))
-			{
-				free(token);
-				free(trimmed);
-				return (1);
-			}
-			free(token);
-		}
-		free(trimmed);
-		line = get_next_line(fd);
-	}
 	if (!scene->has_ambient || !scene->has_camera || !scene->has_light)
 	{
 		printf("Error\nMissing required object (ambient, camera, or light)\n");
