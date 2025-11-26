@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/26 20:41:28 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/11/26 22:08:01 by dsemenov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 #include "libft.h"
 #include "parse.h"
@@ -64,13 +76,32 @@ int	obj_count(t_scene *scene, int obj_type)
 	return (0);
 }
 
+static int	handle_token(char *token, char *line, t_scene *scene)
+{
+	int	obj_type;
+
+	obj_type = identify_object(token);
+	if (obj_type == COMMENT)
+		return (0);
+	else if (obj_type != -1)
+	{
+		if (obj_count(scene, obj_type) || parse_obj_data(line, obj_type, scene))
+			return (1);
+	}
+	else
+	{
+		printf("Error\nUnknown object type: %s\n", token);
+		return (1);
+	}
+	return (0);
+}
+
 int	check_parse_file(int fd, t_scene *scene)
 {
 	char	*line;
 	char	*trimmed;
 	char	*p;
 	char	*token;
-	int		obj_type;
 
 	line = get_next_line(fd);
 	if (!line)
@@ -92,27 +123,8 @@ int	check_parse_file(int fd, t_scene *scene)
 		token = get_token(&p, " ");
 		if (token)
 		{
-			obj_type = identify_object(token);
-			if (obj_type == COMMENT)
+			if (handle_token(token, p, scene))
 			{
-				free(token);
-				free(trimmed);
-				line = get_next_line(fd);
-				continue ;
-			}
-			else if (obj_type != -1)
-			{
-				if (obj_count(scene, obj_type) || parse_obj_data(p, obj_type,
-						scene))
-				{
-					free(token);
-					free(trimmed);
-					return (1);
-				}
-			}
-			else
-			{
-				printf("Error\nUnknown object type: %s\n", token);
 				free(token);
 				free(trimmed);
 				return (1);
