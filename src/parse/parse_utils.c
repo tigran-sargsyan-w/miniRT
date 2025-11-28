@@ -139,7 +139,7 @@ int	identify_object(const char *token)
 	else if (ft_strcmp(token, "cy") == 0)
 		return (CYLINDER);
 	else if (token[0] == '#')
-		return (COMMENT); // Leave or remove comment handling?
+		return (COMMENT);
 	else
 		return (-1);
 }
