@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:41:28 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 17:25:35 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/11/28 17:51:55 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static int	gnl_loop(int fd, t_scene *scene, char **line)
 
 	trimmed = ft_strtrim(*line, " \t\n");
 	free(*line);
+	*line = NULL;
 	if (!trimmed)
 		return (1);
 	if (trimmed[0] == '\0')
