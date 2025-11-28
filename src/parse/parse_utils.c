@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:55:56 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 18:02:21 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/11/28 18:53:28 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,42 +55,6 @@ void	ft_free_tab(char **tab)
 		i++;
 	}
 	free(tab);
-}
-
-int	parse_color(char *line, int color[3])
-{
-	char	**tab;
-	int		n;
-	int		i;
-
-	tab = ft_split(line, ',');
-	n = 0;
-	if (!tab)
-	{
-		printf("Error\nMemory allocation failed\n");
-		return (1);
-	}
-	while (tab[n])
-		n++;
-	if (n != 3)
-	{
-		ft_free_tab(tab);
-		return (1);
-	}
-	i = 0;
-	while (i < 3)
-	{
-		if (ft_atoi_checked(tab[i], &color[i]) || color[i] < 0
-			|| color[i] > 255)
-		{
-			printf("Error\nColor parsing error: invalid value '%s'\n", tab[i]);
-			ft_free_tab(tab);
-			return (1);
-		}
-		i++;
-	}
-	ft_free_tab(tab);
-	return (0);
 }
 
 int	identify_object(const char *token)
