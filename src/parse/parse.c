@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/26 20:41:28 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/11/28 17:51:55 by dsemenov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 #include "libft.h"
+#include "miniRT.h"
+#include "object.h"
 #include "parse.h"
 #include "scene.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "miniRT.h"
-#include "object.h"
 
 int	check_args(int argc, char **argv)
 {
@@ -31,46 +43,72 @@ int	check_args(int argc, char **argv)
 	return (0);
 }
 
-int	parse_obj_data(char *line, int type, t_scene *scene)
+static int	handle_token(char *token, char *line, t_scene *scene)
 {
-	if (type == AMBIENT)
-		return (parse_ambient(line, scene));
-	else if (type == CAMERA)
-		return (parse_camera(line, scene));
-	else if (type == LIGHT)
-		return (parse_light(line, scene));
-	else if (type == SPHERE)
-		return (parse_sphere(line, scene));
-	else if (type == PLANE)
-		return (parse_plane(line, scene));
-	else if (type == CYLINDER)
-		return (parse_cylinder(line, scene));
+	int	obj_type;
+
+	obj_type = identify_object(token);
+	if (obj_type == COMMENT)
+		return (0);
+	else if (obj_type != -1)
+	{
+		if (obj_count(scene, obj_type) || parse_obj_data(line, obj_type, scene))
+			return (1);
+	}
+	else
+	{
+		printf("Error\nUnknown object type: %s\n", token);
+		return (1);
+	}
 	return (0);
 }
 
-int	obj_count(t_scene *scene, int obj_type)
+static int	process_line(char *trimmed, t_scene *scene)
 {
-	if (obj_type == AMBIENT)
-		scene->has_ambient++;
-	else if (obj_type == CAMERA)
-		scene->has_camera++;
-	else if (obj_type == LIGHT)
-		scene->has_light++;
-	if (scene->has_ambient > 1 || scene->has_camera > 1 || scene->has_light > 1)
+	char	*p;
+	char	*token;
+
+	p = trimmed;
+	token = get_token(&p, " \t\n");
+	if (!token)
+		return (1);
+	if (handle_token(token, p, scene))
 	{
-		printf("Error\nMultiple definitions of unique object type\n");
+		free(token);
 		return (1);
 	}
+	free(token);
+	return (0);
+}
+
+static int	gnl_loop(int fd, t_scene *scene, char **line)
+{
+	char	*trimmed;
+
+	trimmed = ft_strtrim(*line, " \t\n");
+	free(*line);
+	*line = NULL;
+	if (!trimmed)
+		return (1);
+	if (trimmed[0] == '\0')
+	{
+		free(trimmed);
+		*line = get_next_line(fd);
+		return (0);
+	}
+	if (process_line(trimmed, scene))
+	{
+		free(trimmed);
+		return (1);
+	}
+	free(trimmed);
+	*line = get_next_line(fd);
 	return (0);
 }
 
 int	check_parse_file(int fd, t_scene *scene)
 {
 	char	*line;
-	char	*trimmed;
-	char	*p;
-	char	*token;
-	int		obj_type;
 
 	line = get_next_line(fd);
 	if (!line)
@@ -80,47 +118,11 @@ int	check_parse_file(int fd, t_scene *scene)
 	}
 	while (line)
 	{
-		trimmed = ft_strtrim(line, " \t\r\n");
-		if (!trimmed)
+		if (gnl_loop(fd, scene, &line))
 		{
-			printf("Error\nMemory allocation failed\n");
 			free(line);
 			return (1);
 		}
-		p = trimmed;
-		free(line);
-		token = get_token(&p, " ");
-		if (token)
-		{
-			obj_type = identify_object(token);
-			if (obj_type == COMMENT)
-			{
-				free(token);
-				free(trimmed);
-				line = get_next_line(fd);
-				continue ;
-			}
-			else if (obj_type != -1)
-			{
-				if (obj_count(scene, obj_type) || parse_obj_data(p, obj_type,
-						scene))
-				{
-					free(token);
-					free(trimmed);
-					return (1);
-				}
-			}
-			else
-			{
-				printf("Error\nUnknown object type: %s\n", token);
-				free(token);
-				free(trimmed);
-				return (1);
-			}
-			free(token);
-		}
-		free(trimmed);
-		line = get_next_line(fd);
 	}
 	if (!scene->has_ambient || !scene->has_camera || !scene->has_light)
 	{

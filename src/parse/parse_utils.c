@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/28 17:55:56 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/11/28 18:53:28 by dsemenov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "object.h"
+#include "parse.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "parse.h"
 
 char	*get_token(char **str, const char *delim)
 {
@@ -45,85 +57,6 @@ void	ft_free_tab(char **tab)
 	free(tab);
 }
 
-int	parse_color(char *line, int color[3])
-{
-	char	**tab;
-	int		n;
-	int		i;
-
-	tab = ft_split(line, ',');
-	n = 0;
-	if (!tab)
-	{	
-		printf("Error\nMemory allocation failed\n");
-		return (1);
-	}
-	while (tab[n])
-		n++;
-	if (n != 3)
-	{
-		ft_free_tab(tab);
-		return (1);
-	}
-	i = 0;
-	while (i < 3)
-	{
-		if (ft_atoi_checked(tab[i], &color[i]) || color[i] < 0 || color[i] > 255)
-		{
-			printf("Error\nColor parsing error: invalid value '%s'\n", tab[i]);
-			ft_free_tab(tab);
-			return (1);
-		}
-		i++;
-	}
-	ft_free_tab(tab);
-	return (0);
-}
-
-int	parse_vec3(char *line, double vec[3])
-{
-	char	**tab;
-	int		n;
-
-	tab = ft_split(line, ',');
-	n = 0;
-	if (!tab)
-	{
-		printf("Error\nMemory allocation failed\n");
-		return (1);
-	}
-	while (tab[n])
-		n++;
-	if (n != 3)
-	{
-		printf("Error\nVector parsing error: expected 3 components, got %d\n", n);
-		ft_free_tab(tab);
-		return (1);
-	}
-	int i = 0;
-	while (i < 3)
-	{
-		char *endptr = NULL;
-		double value = ft_strtod(tab[i], &endptr);
-		if (endptr == tab[i])
-		{
-			printf("Error\nVector component '%s' is not a number\n", tab[i]);
-			ft_free_tab(tab);
-			return (1);
-		}
-		if (*endptr != '\0')
-		{
-			printf("Error\nInvalid trailing characters in vector component '%s' (starts at '%s')\n", tab[i], endptr);
-			ft_free_tab(tab);
-			return (1);
-		}
-		vec[i] = value;
-		i++;
-	}
-	ft_free_tab(tab);
-	return (0);
-}
-
 int	identify_object(const char *token)
 {
 	if (ft_strcmp(token, "A") == 0)
@@ -139,7 +72,7 @@ int	identify_object(const char *token)
 	else if (ft_strcmp(token, "cy") == 0)
 		return (CYLINDER);
 	else if (token[0] == '#')
-		return (COMMENT); // Leave or remove comment handling?
+		return (COMMENT);
 	else
 		return (-1);
 }

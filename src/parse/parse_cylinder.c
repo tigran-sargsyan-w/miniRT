@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cylinder.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/28 17:46:44 by dsemenov          #+#    #+#             */
+/*   Updated: 2025/11/28 22:41:02 by dsemenov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "parse.h"
 #include "cylinder.h"
@@ -14,7 +26,10 @@ static int	push_cylinder(t_scene *s, t_cylinder *cy)
 
 	arr = malloc(sizeof(*arr) * (s->cylinder_count + 1));
 	if (!arr)
+	{
+		printf("Error\nMemory allocation failed\n");
 		return (1);
+	}
 	i = 0;
 	while (i < s->cylinder_count)
 	{
