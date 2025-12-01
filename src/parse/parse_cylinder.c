@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:46:44 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 20:22:10 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/01 21:01:45 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,48 +65,28 @@ static int	split_cylinder_line(char *line, char ***tab)
 	return (0);
 }
 
-static int	parse_cylinder_diameter(char **tab, double *diameter)
+static int	parse_cylinder_components(char **tab, double *tmp_center,
+		double *tmp_ori, int *tmp_color)
 {
-	char	*endptr;
-	double	val;
-
-	val = ft_strtod(tab[2], &endptr);
-	if (endptr == tab[2])
+	if (parse_vec3(tab[0], tmp_center) || parse_vec3(tab[1], tmp_ori)
+		|| parse_color(tab[4], tmp_color))
 	{
 		ft_free_tab(tab);
-		printf("Error\nInvalid cylinder diameter\n");
 		return (1);
 	}
-	if (*endptr != '\0')
-	{
-		ft_free_tab(tab);
-		printf("Error\nInvalid cylinder diameter: trailing characters\n");
+	if (parse_cylinder_diameter(tab, &tmp_center[3])
+		|| parse_cylinder_height(tab, &tmp_center[4]))
 		return (1);
-	}
-	*diameter = val;
 	return (0);
 }
 
-static int	parse_cylinder_height(char **tab, double *height)
+void	fill_cylinder_values(t_cylinder *cy, double *tmp_center,
+		double *tmp_ori, int *tmp_color)
 {
-	char	*endptr;
-	double	val;
-
-	val = ft_strtod(tab[3], &endptr);
-	if (endptr == tab[3])
-	{
-		ft_free_tab(tab);
-		printf("Error\nInvalid cylinder height\n");
-		return (1);
-	}
-	if (*endptr != '\0')
-	{
-		ft_free_tab(tab);
-		printf("Error\nInvalid cylinder height: trailing characters\n");
-		return (1);
-	}
-	*height = val;
-	return (0);
+	cy->center = vector3_create(tmp_center[0], tmp_center[1], tmp_center[2]);
+	cy->orientation = vector3_create(tmp_ori[0], tmp_ori[1], tmp_ori[2]);
+	cy->color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1],
+			(uint8_t)tmp_color[2]);
 }
 
 int	parse_cylinder(char *line, t_scene *scene)
@@ -119,29 +99,16 @@ int	parse_cylinder(char *line, t_scene *scene)
 
 	if (split_cylinder_line(line, &tab))
 		return (1);
-	if (parse_vec3(tab[0], tmp_center) || parse_vec3(tab[1], tmp_ori)
-		|| parse_color(tab[4], tmp_color))
+	if (parse_cylinder_components(tab, tmp_center, tmp_ori, tmp_color))
 	{
 		ft_free_tab(tab);
 		return (1);
 	}
-	cy.center = vector3_create(tmp_center[0], tmp_center[1], tmp_center[2]);
-	cy.orientation = vector3_create(tmp_ori[0], tmp_ori[1], tmp_ori[2]);
-	cy.color = color8_make((uint8_t)tmp_color[0], (uint8_t)tmp_color[1],
-			(uint8_t)tmp_color[2]);
-	if (parse_cylinder_diameter(tab, &cy.diameter)
-		|| parse_cylinder_height(tab, &cy.height))
-		return (1);
+	fill_cylinder_values(&cy, tmp_center, tmp_ori, tmp_color);
 	if (cylinder_init(&cy, cy.center, cy.orientation, cy.diameter, cy.height,
-			material_from_rgb8(cy.color)))
+			material_from_rgb8(cy.color)) || push_cylinder(scene, &cy))
 	{
 		ft_free_tab(tab);
-		return (1);
-	}
-	if (push_cylinder(scene, &cy))
-	{
-		ft_free_tab(tab);
-		printf("Error\nMemory allocation failed for cylinder\n");
 		return (1);
 	}
 	ft_free_tab(tab);
