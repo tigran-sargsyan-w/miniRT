@@ -20,6 +20,8 @@ int							parse_light(char *line, t_scene *scene);
 int							parse_sphere(char *line, t_scene *scene);
 int							parse_plane(char *line, t_scene *scene);
 int							parse_cylinder(char *line, t_scene *scene);
+int							parse_cylinder_diameter(char **tab, double *diameter);
+int							parse_cylinder_height(char **tab, double *height);
 int							validate_input_range(t_scene *scene);
 void						ft_free_tab(char **tab);
 int							ft_atoi_checked(const char *nptr, int *num);
