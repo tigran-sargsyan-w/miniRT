@@ -6,12 +6,19 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 23:31:19 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/02 23:45:38 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/03 00:15:11 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "object.h"
 
+/**
+ * @brief Initialize an object with the given type, material, and functions.
+ * @param object Pointer to the object to initialize.
+ * @param type The type of the object.
+ * @param material The material of the object.
+ * @param funcs The function pointers for the object's operations.
+ */
 void	object_init(t_object *object, t_object_type type,
 		t_material material, t_object_funcs funcs)
 {
