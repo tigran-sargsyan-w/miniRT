@@ -6,7 +6,7 @@
 /*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:46:44 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 21:01:45 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/02 18:23:23 by dsemenov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,6 @@ static int	parse_cylinder_components(char **tab, double *tmp_center,
 		ft_free_tab(tab);
 		return (1);
 	}
-	if (parse_cylinder_diameter(tab, &tmp_center[3])
-		|| parse_cylinder_height(tab, &tmp_center[4]))
-		return (1);
 	return (0);
 }
 
@@ -105,6 +102,9 @@ int	parse_cylinder(char *line, t_scene *scene)
 		return (1);
 	}
 	fill_cylinder_values(&cy, tmp_center, tmp_ori, tmp_color);
+	if (parse_cylinder_diameter(tab, &cy.diameter)
+		|| parse_cylinder_height(tab, &cy.height))
+		return (1);
 	if (cylinder_init(&cy, cy.center, cy.orientation, cy.diameter, cy.height,
 			material_from_rgb8(cy.color)) || push_cylinder(scene, &cy))
 	{
