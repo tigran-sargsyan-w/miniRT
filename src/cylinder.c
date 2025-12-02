@@ -236,8 +236,9 @@ int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
 	// compute normalized axis but also preserve raw orientation
 	if (!vector3_normalize_safe(orientation, &cylinder->axis_unit, RT_EPS))
 		return (1);
-	object_init(&cylinder->base, CYLINDER, material, &intersect_cylinder,
-		&cylinder_translate, &cylinder_rotate, &cylinder_scale_uniform, &cylinder_scale_height);
+	object_init(&cylinder->base, CYLINDER, material,
+		(t_object_funcs){&intersect_cylinder, &cylinder_translate,
+		&cylinder_rotate, &cylinder_scale_uniform, &cylinder_scale_height});
 	cylinder->center = center;
 	cylinder->orientation = orientation;
 	cylinder->diameter = diameter;

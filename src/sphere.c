@@ -95,8 +95,9 @@ int	sphere_init(t_sphere *sphere, t_vector3 center, double diameter, t_material 
 		printf("Error: Sphere diameter must be positive\n");
 		return (1);
 	}
-	object_init(&sphere->base, SPHERE, material, &intersect_sphere,
-		&sphere_translate, &sphere_rotate, &sphere_scale_uniform, &sphere_scale_height);
+ 	object_init(&sphere->base, SPHERE, material,
+		(t_object_funcs){&intersect_sphere, &sphere_translate,
+		&sphere_rotate, &sphere_scale_uniform, &sphere_scale_height});
 	sphere->center = center;
 	sphere->diameter = diameter;
 	return (0);

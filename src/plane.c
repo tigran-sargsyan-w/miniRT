@@ -78,8 +78,9 @@ int	plane_init(t_plane *plane, t_vector3 point, t_vector3 normal, t_material mat
 	// compute normalized unit normal but preserve raw normal
 	if (!vector3_normalize_safe(normal, &plane->normal_unit, RT_EPS))
 		return (1);
-	object_init(&plane->base, PLANE, material, &intersect_plane,
-		&plane_translate, &plane_rotate, &plane_scale_uniform, &plane_scale_height);
+	object_init(&plane->base, PLANE, material,
+		(t_object_funcs){&intersect_plane, &plane_translate,
+		&plane_rotate, &plane_scale_uniform, &plane_scale_height});
 	plane->point = point;
 	plane->normal = normal;
 	return (0);
