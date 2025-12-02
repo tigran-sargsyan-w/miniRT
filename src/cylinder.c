@@ -201,7 +201,7 @@ static void cylinder_rotate(t_object *obj, double rx, double ry, double rz)
 	t_cylinder *c = (t_cylinder*)obj;
 	c->orientation = rotate_euler_vec(c->orientation, rx, ry, rz);
 	if (!vector3_normalize_safe(c->orientation, &c->axis_unit, RT_EPS))
-		c->axis_unit = VECTOR3_UNIT_Y;
+		c->axis_unit = vector3_unit_y();
 }
 
 static void cylinder_scale_uniform(t_object *obj, double factor)

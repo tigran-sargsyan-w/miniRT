@@ -48,7 +48,7 @@ int	vector3_divide_componentwise_safe(t_vector3 a, t_vector3 b,
 {
 	if (fabs(b.x) <= eps || fabs(b.y) <= eps || fabs(b.z) <= eps)
 	{
-		*out = VECTOR3_ZERO;
+		*out = vector3_zero();
 		return (0);
 	}
 	out->x = a.x / b.x;

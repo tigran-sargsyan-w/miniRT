@@ -87,7 +87,7 @@ static int	on_keypress(int keycode, void *param)
 		int changed = 0;
 		// Translation with WASDQE and arrow keys
 		if (obj->translate) {
-			t_vector3 d = VECTOR3_ZERO;
+			t_vector3 d = vector3_zero();
 			if (keycode == KeyA || keycode == KeyLeft) d.x -= MOVE_STEP;
 			else if (keycode == KeyD || keycode == KeyRight) d.x += MOVE_STEP;
 			else if (keycode == KeyQ) d.y += MOVE_STEP;

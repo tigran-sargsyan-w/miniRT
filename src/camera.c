@@ -25,9 +25,9 @@ int	camera_init(t_camera *camera, t_vector3 position,
 	camera->forward = forward;
 
 	/* выбрать world_up; если близко к оси Y, переключиться на X */
-	world_up = VECTOR3_UNIT_Y;
+	world_up = vector3_unit_y();
 	if (fabs(vector3_dot(forward, world_up)) > 0.999)
-		world_up = VECTOR3_UNIT_X;
+		world_up = vector3_unit_x();
 
 	right = vector3_cross(world_up, forward);
 	if (!vector3_normalize_safe(right, &right, RT_EPS))

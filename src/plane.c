@@ -58,7 +58,7 @@ static void plane_rotate(t_object *obj, double rx, double ry, double rz)
 	t_vector3 n = rotate_euler_vec(pl->normal, rx, ry, rz);
 	pl->normal = n;
 	if (!vector3_normalize_safe(pl->normal, &pl->normal_unit, RT_EPS))
-		pl->normal_unit = VECTOR3_UNIT_Y;
+		pl->normal_unit = vector3_unit_y();
 }
 
 static void plane_scale_uniform(t_object *obj, double factor)

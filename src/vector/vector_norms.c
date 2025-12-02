@@ -31,7 +31,7 @@ int	vector3_normalize_safe(t_vector3 v, t_vector3 *out, double eps)
 	len2 = vector3_length_squared(v);
 	if (len2 <= eps * eps)
 	{
-		*out = VECTOR3_ZERO;
+		*out = vector3_zero();
 		return (0);
 	}
 	inv = 1.0 / sqrt(len2);

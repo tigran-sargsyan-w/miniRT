@@ -24,7 +24,7 @@ MINILIBX_DIR = minilibx/
 SRCS = main.c parse/parse.c parse/parse_utils.c parse/parse_utils2.c parse/parse_vec3.c parse/parse_ambient.c \
 parse/parse_camera.c parse/parse_light.c parse/ft_atoi_checked.c parse/parse_color.c \
 parse/parse_sphere.c parse/parse_plane.c parse/parse_cylinder.c parse/parse_cylinder_utils.c parse/validate_range.c \
-vector/vector.c vector/vector_arith.c vector/vector_arith2.c vector/vector_norms.c vector/vector_products.c vector/vector_utils.c \
+vector/vector.c vector/vector_arith.c vector/vector_arith2.c vector/vector_norms.c vector/vector_products.c vector/vector_utils.c vector/vector_predefined.c \
 ray.c camera.c \
 debug_print_scene.c mlx_utils.c \
 color.c material.c \
