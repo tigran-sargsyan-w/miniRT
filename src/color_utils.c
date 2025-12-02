@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 18:25:36 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/02 18:25:40 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/02 18:49:53 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,14 @@ t_color	color_lerp(t_color a, t_color b, double t)
 			a.r * (1.0 - t) + b.r * t,
 			a.g * (1.0 - t) + b.g * t,
 			a.b * (1.0 - t) + b.b * t));
+}
+
+t_color	color_black(void)
+{
+	return (color_make(0.0, 0.0, 0.0));
+}
+
+t_color	color_white(void)
+{
+	return (color_make(1.0, 1.0, 1.0));
 }
