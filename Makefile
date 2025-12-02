@@ -27,7 +27,7 @@ parse/parse_sphere.c parse/parse_plane.c parse/parse_cylinder.c parse/parse_cyli
 vector/vector.c vector/vector_arith.c vector/vector_arith2.c vector/vector_norms.c vector/vector_products.c vector/vector_utils.c vector/vector_predefined.c \
 ray.c camera.c \
 debug_print_scene.c mlx_utils.c \
-color.c material.c \
+color.c color_ops.c color_utils.c material.c \
 sphere.c object.c plane.c cylinder.c \
 render.c trace.c transform.c
 
