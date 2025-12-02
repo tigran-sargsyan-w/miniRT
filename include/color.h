@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 23:46:32 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 23:46:34 by dsemenov         ###   ########lyon.fr   */
+/*   Created: 2025/12/02 18:53:00 by tsargsya          #+#    #+#             */
+/*   Updated: 2025/12/02 18:53:03 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ typedef struct s_color
 	double	b;
 }	t_color;
 
-# define COLOR_BLACK   ((t_color){0.0, 0.0, 0.0})
-# define COLOR_WHITE   ((t_color){1.0, 1.0, 1.0})
+t_color		color_black(void);
+t_color		color_white(void);
 
 // sRGB conversion constants (IEC 61966-2-1)
 # define SRGB_GAMMA          2.4
@@ -52,8 +52,8 @@ t_color8	color_to_rgb8(t_color color);
 
 // Basic operations (component-wise)
 t_color		color_add(t_color a, t_color b);
-t_color		color_multiply(t_color a, t_color b);     // a ⊙ b (albedo * light)
-t_color		color_scale(t_color color, double k);     // c * k
+t_color		color_multiply(t_color a, t_color b);
+t_color		color_scale(t_color color, double k);
 t_color		color_clamp01(t_color color);
 
 // Utilities
