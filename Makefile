@@ -25,9 +25,10 @@ SRCS = main.c parse/parse.c parse/parse_utils.c parse/parse_utils2.c parse/parse
 parse/parse_camera.c parse/parse_light.c parse/ft_atoi_checked.c parse/parse_color.c \
 parse/parse_sphere.c parse/parse_plane.c parse/parse_cylinder.c parse/parse_cylinder_utils.c parse/validate_range.c \
 vector/vector.c vector/vector_arith.c vector/vector_arith2.c vector/vector_norms.c vector/vector_products.c vector/vector_utils.c vector/vector_predefined.c \
+color/color.c color/color_ops.c color/color_utils.c \
 ray.c camera.c \
 debug_print_scene.c mlx_utils.c \
-color.c color_ops.c color_utils.c material.c \
+material.c \
 sphere.c object.c plane.c cylinder.c \
 render.c trace.c transform.c
 
