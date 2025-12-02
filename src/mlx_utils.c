@@ -173,7 +173,8 @@ static int on_mouse(int button, int x, int y, void *param)
 	if (button == 1)
 	{
 		t_ray ray = camera_ray(&data->scene.camera, x, y, WIDTH, HEIGHT);
-		if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &hit))
+		if (scene_intersect(&data->scene, ray,
+				(t_range){K_TMIN_PRIMARY, K_TMAX_PRIMARY}, &hit))
 			data->selected_object = hit.object;
 		else
 			data->selected_object = NULL;

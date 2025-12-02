@@ -30,7 +30,7 @@ ray.c camera.c \
 debug_print_scene.c mlx_utils.c \
 material.c \
 sphere.c object.c plane.c cylinder.c \
-render.c trace.c transform.c
+render.c trace.c trace_occluded.c transform.c
 
 # -------------------------------
 #   Object & Dependency Files

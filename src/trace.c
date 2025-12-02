@@ -1,99 +1,98 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   trace.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/02 19:05:07 by tsargsya          #+#    #+#             */
+/*   Updated: 2025/12/02 22:09:47 by tsargsya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "trace.h"
 #include "object.h"
 
-int scene_intersect(const t_scene *scene, t_ray ray, double t_min, double t_max, t_hit *out_hit)
+static int	try_hit_object(const t_object *obj, t_ray ray,
+		t_range *range, t_hit *out_hit)
 {
-    t_hit   temp_hit;
-    double  closest = t_max;
-    int     hit_any = 0;
-    int     i;
+	t_hit	temp_hit;
 
-    /* Spheres */
-    i = 0;
-    while (i < scene->sphere_count)
-    {
-        const t_object *obj = (const t_object *)&scene->spheres[i];
-        if (obj->intersect_func &&
-            obj->intersect_func(obj, ray, t_min, closest, &temp_hit))
-        {
-            hit_any = 1;
-            closest = temp_hit.t;
-            *out_hit = temp_hit;
-            out_hit->object = obj;
-        }
-        i++;
-    }
-
-    /* Planes */
-    i = 0;
-    while (i < scene->plane_count)
-    {
-        const t_object *obj = (const t_object *)&scene->planes[i];
-        if (obj->intersect_func &&
-            obj->intersect_func(obj, ray, t_min, closest, &temp_hit))
-        {
-            hit_any = 1;
-            closest = temp_hit.t;
-            *out_hit = temp_hit;
-            out_hit->object = obj;
-        }
-        i++;
-    }
-
-    /* Cylinders */
-    i = 0;
-    while (i < scene->cylinder_count)
-    {
-        const t_object *obj = (const t_object *)&scene->cylinders[i];
-        if (obj->intersect_func &&
-            obj->intersect_func(obj, ray, t_min, closest, &temp_hit))
-        {
-            hit_any = 1;
-            closest = temp_hit.t;
-            *out_hit = temp_hit;
-            out_hit->object = obj;
-        }
-        i++;
-    }
-
-    return hit_any;
+	if (!obj->intersect_func)
+		return (0);
+	if (!obj->intersect_func(obj, ray, range->min, range->max, &temp_hit))
+		return (0);
+	range->max = temp_hit.t;
+	*out_hit = temp_hit;
+	out_hit->object = obj;
+	return (1);
 }
 
-// Fast boolean occlusion query: returns 1 as soon as any hit is found in (t_min, t_max)
-int scene_occluded(const t_scene *scene, t_ray ray, double t_min, double t_max)
+static int	intersect_spheres(const t_scene *scene, t_ray ray,
+		t_range *range, t_hit *out_hit)
 {
-    t_hit   temp_hit;
-    int     i;
+	int		i;
+	int		hit_any;
 
-    // Spheres
-    i = 0;
-    while (i < scene->sphere_count)
-    {
-        const t_object *obj = (const t_object *)&scene->spheres[i];
-        if (obj->intersect_func && obj->intersect_func(obj, ray, t_min, t_max, &temp_hit))
-            return 1;
-        i++;
-    }
+	hit_any = 0;
+	i = 0;
+	while (i < scene->sphere_count)
+	{
+		if (try_hit_object((const t_object *)&scene->spheres[i],
+				ray, range, out_hit))
+			hit_any = 1;
+		i++;
+	}
+	return (hit_any);
+}
 
-    // Planes
-    i = 0;
-    while (i < scene->plane_count)
-    {
-        const t_object *obj = (const t_object *)&scene->planes[i];
-        if (obj->intersect_func && obj->intersect_func(obj, ray, t_min, t_max, &temp_hit))
-            return 1;
-        i++;
-    }
+static int	intersect_planes(const t_scene *scene, t_ray ray,
+		t_range *range, t_hit *out_hit)
+{
+	int		i;
+	int		hit_any;
 
-    // Cylinders
-    i = 0;
-    while (i < scene->cylinder_count)
-    {
-        const t_object *obj = (const t_object *)&scene->cylinders[i];
-        if (obj->intersect_func && obj->intersect_func(obj, ray, t_min, t_max, &temp_hit))
-            return 1;
-        i++;
-    }
+	hit_any = 0;
+	i = 0;
+	while (i < scene->plane_count)
+	{
+		if (try_hit_object((const t_object *)&scene->planes[i],
+				ray, range, out_hit))
+			hit_any = 1;
+		i++;
+	}
+	return (hit_any);
+}
 
-    return 0;
+static int	intersect_cylinders(const t_scene *scene, t_ray ray,
+		t_range *range, t_hit *out_hit)
+{
+	int		i;
+	int		hit_any;
+
+	hit_any = 0;
+	i = 0;
+	while (i < scene->cylinder_count)
+	{
+		if (try_hit_object((const t_object *)&scene->cylinders[i],
+				ray, range, out_hit))
+			hit_any = 1;
+		i++;
+	}
+	return (hit_any);
+}
+
+int	scene_intersect(const t_scene *scene, t_ray ray,
+		t_range range, t_hit *out_hit)
+{
+	int	hit_any;
+
+	hit_any = 0;
+	if (intersect_spheres(scene, ray, &range, out_hit))
+		hit_any = 1;
+	if (intersect_planes(scene, ray, &range, out_hit))
+		hit_any = 1;
+	if (intersect_cylinders(scene, ray, &range, out_hit))
+		hit_any = 1;
+	return (hit_any);
 }

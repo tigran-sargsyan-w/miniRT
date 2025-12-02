@@ -100,8 +100,9 @@ static int is_in_shadow(const t_scene *scene, const t_hit *hit)
     shadow_origin = vector3_add(hit->hitPoint,
             vector3_scale(hit->normal, K_SHADOW_BIAS));
     shadow_ray = ray_make(shadow_origin, L_unit);
-    if (scene_occluded(scene, shadow_ray, K_TMIN_PRIMARY, dist - K_SHADOW_BIAS))
-        return (1);
+	if (scene_occluded(scene, shadow_ray,
+			(t_range){K_TMIN_PRIMARY, dist - K_SHADOW_BIAS}))
+		return (1);
     return (0);
 }
 
@@ -189,7 +190,8 @@ int render_scene(t_data *data)
             t_ray ray = ray_make(cam.position, data->ray_dir_cache[y * WIDTH + x]);
             t_hit htmp;
             t_color col;
-            if (scene_intersect(&data->scene, ray, K_TMIN_PRIMARY, K_TMAX_PRIMARY, &htmp))
+            if (scene_intersect(&data->scene, ray,
+					(t_range){K_TMIN_PRIMARY, K_TMAX_PRIMARY}, &htmp))
             {
                 if (data->selected_object)
                     data->objbuf[y * WIDTH + x] = htmp.object;
