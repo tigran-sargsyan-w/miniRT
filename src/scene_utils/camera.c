@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:10:23 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/03 01:08:14 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:12:10 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 #include "vector.h"
 #include "constants.h"
 
+/**
+ * @brief Validates camera initialization parameters
+ * @param params - camera parameters (position, direction, fov)
+ * @param img - image dimensions
+ * @return int - 0 if valid, 1 if invalid
+ */
 static int	validate_cam_params(t_cam_params params, t_img_size img)
 {
 	if (img.width <= 0 || img.height <= 0)
@@ -27,6 +33,12 @@ static int	validate_cam_params(t_cam_params params, t_img_size img)
 	return (0);
 }
 
+/**
+ * @brief Sets up camera orthonormal basis (right, up vectors)
+ * @param cam - camera to setup
+ * @param forward - normalized forward direction
+ * @return int - 0 on success, 1 on failure
+ */
 static int	setup_cam_basis(t_camera *cam, t_vector3 forward)
 {
 	t_vector3	world_up;
@@ -43,6 +55,13 @@ static int	setup_cam_basis(t_camera *cam, t_vector3 forward)
 	return (0);
 }
 
+/**
+ * @brief Initializes camera with position, orientation and FOV
+ * @param cam - camera structure to initialize
+ * @param params - camera parameters (position, look_dir, fov_deg)
+ * @param img - image dimensions for aspect ratio
+ * @return int - 0 on success, 1 on failure
+ */
 int	camera_init(t_camera *cam, t_cam_params params, t_img_size img)
 {
 	t_vector3	forward;
@@ -66,6 +85,16 @@ int	camera_init(t_camera *cam, t_cam_params params, t_img_size img)
 	return (0);
 }
 
+/**
+ * @brief Generates ray from camera through pixel (px, py)
+ * through UV coordinates mapped to image plane
+ * UV is NDC(Normalized Device Coordinates) mapped to [-1,1] range
+ * @param cam - initialized camera
+ * @param px - pixel x coordinate
+ * @param py - pixel y coordinate
+ * @param img - image dimensions
+ * @return t_ray - ray from camera origin through pixel center
+ */
 t_ray	camera_ray(const t_camera *cam, int px, int py, t_img_size img)
 {
 	double		u;
