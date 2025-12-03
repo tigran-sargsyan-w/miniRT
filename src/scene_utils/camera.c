@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:10:23 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/03 01:05:47 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:08:14 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	camera_init(t_camera *cam, t_cam_params params, t_img_size img)
 	return (0);
 }
 
-// UV is NDC(Normalized Device Coordinates) mapped to [-1,1] range
 t_ray	camera_ray(const t_camera *cam, int px, int py, t_img_size img)
 {
 	double		u;
