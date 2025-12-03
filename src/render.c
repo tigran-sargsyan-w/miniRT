@@ -154,8 +154,10 @@ int render_scene(t_data *data)
     // Initialize camera using parsed scene camera orientation as forward
     if (!data->scene.has_camera)
         return 1;
-    if (camera_init(&cam, data->scene.camera.position, data->scene.camera.orientation,
-            data->scene.camera.fov, WIDTH, HEIGHT))
+    if (camera_init(&cam,
+            (t_cam_params){data->scene.camera.position,
+            data->scene.camera.orientation, data->scene.camera.fov},
+            (t_img_size){WIDTH, HEIGHT}))
         return 1;
     // Cache into scene camera basis (optional if later needed)
     data->scene.camera.forward = cam.forward;

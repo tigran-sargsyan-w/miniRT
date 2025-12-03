@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:39:27 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 22:39:28 by dsemenov         ###   ########lyon.fr   */
+/*   Updated: 2025/12/03 00:30:38 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,34 @@
 # include "ray.h"
 # include "vector.h"
 
+typedef struct s_img_size
+{
+	int		width;
+	int		height;
+}	t_img_size;
+
+typedef struct s_cam_params
+{
+	t_vector3	position;
+	t_vector3	look_dir;
+	double		fov_deg;
+}	t_cam_params;
+
 typedef struct s_camera
 {
-	// parsed input (from scene file)
 	t_vector3	position;
 	t_vector3	orientation;
 	int			fov;
-
-	// precomputed/render-time data
 	t_vector3	forward;
 	t_vector3	right;
 	t_vector3	up;
 	double		half_width;
 	double		half_height;
-}				t_camera;
+}	t_camera;
 
-int				camera_init(t_camera *camera, t_vector3 position,
-					t_vector3 look_dir, double fov_deg, int img_width,
-					int img_height);
-t_ray			camera_ray(const t_camera *camera, int pixel_x, int pixel_y,
-					int img_width, int img_height);
+int				camera_init(t_camera *camera, t_cam_params params,
+					t_img_size img);
+t_ray			camera_ray(const t_camera *camera, int px, int py,
+					t_img_size img);
 
 #endif
