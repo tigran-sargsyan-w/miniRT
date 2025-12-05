@@ -29,8 +29,9 @@ color/color.c color/color_ops.c color/color_utils.c \
 ray_trace/ray.c ray_trace/trace.c ray_trace/trace_occluded.c \
 scene_utils/camera.c scene_utils/material.c scene_utils/object.c scene_utils/transform.c \
 objects/sphere.c objects/sphere_transform.c \
+objects/plane.c objects/plane_transform.c \
 debug_print_scene.c mlx_utils.c \
-plane.c cylinder.c \
+cylinder.c \
 render.c
 
 # -------------------------------
