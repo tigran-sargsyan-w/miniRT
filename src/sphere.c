@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 12:00:05 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/05 19:48:45 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/05 20:04:22 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include "vector.h"
 #include <math.h>
 #include <stdio.h>
-
-void	sphere_translate(t_object *obj, t_vector3 delta);
-void	sphere_rotate(t_object *obj, double rx, double ry, double rz);
-void	sphere_scale_uniform(t_object *obj, double factor);
-void	sphere_scale_height(t_object *obj, double factor);
 
 static double	calc_discriminant(t_ray ray, t_vector3 center, double radius)
 {
