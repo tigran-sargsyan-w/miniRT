@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 19:05:07 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/02 22:33:31 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/05 17:34:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,13 @@ static int	try_hit_object(const t_object *obj, t_ray ray,
 		t_range *range, t_hit *out_hit)
 {
 	t_hit	temp_hit;
+	t_range	r;
 
 	if (!obj->intersect_func)
 		return (0);
-	if (!obj->intersect_func(obj, ray, range->min, range->max, &temp_hit))
+	r.min = range->min;
+	r.max = range->max;
+	if (!obj->intersect_func(obj, ray, r, &temp_hit))
 		return (0);
 	range->max = temp_hit.t;
 	*out_hit = temp_hit;

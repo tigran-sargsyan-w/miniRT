@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:47:39 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/02 22:16:54 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/05 17:00:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,7 @@
 # include "scene.h"
 # include "ray.h"
 # include "hit.h"
-
-typedef struct s_range
-{
-	double	min;
-	double	max;
-}	t_range;
+# include "object.h"
 
 int	scene_intersect(const t_scene *scene, t_ray ray,
 		t_range range, t_hit *out_hit);

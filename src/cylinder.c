@@ -7,7 +7,7 @@
 #include "object.h"
 
 static int	intersect_cylinder(const t_object *obj,
-				t_ray ray, double t_min, double t_max, t_hit *out)
+				t_ray ray, t_range range, t_hit *out)
 {
 	// base formula: P = O + tD
 	// out->hitPoint = ray.orig + t_hit * ray.dir;
@@ -43,7 +43,7 @@ static int	intersect_cylinder(const t_object *obj,
 	radius = cyl->diameter * 0.5;
 
 	has_hit = 0;
-	best_t = t_max;
+	best_t = range.max;
 
 	// --- Side intersection (infinite cylinder reduced by height) ---
 	dir_dot_axis = vector3_dot(ray.dir, axis);
@@ -66,7 +66,7 @@ static int	intersect_cylinder(const t_object *obj,
 			side_t2 = (-quad_b + sqrt_disc) / (2.0 * quad_a);
 
 			// check first root
-			if (side_t1 >= t_min && side_t1 <= t_max)
+			if (side_t1 >= range.min && side_t1 <= range.max)
 			{
 				t_vector3 hit_point = ray_at(&ray, side_t1);
 				t_vector3 center_to_point = vector3_subtract(hit_point, cyl->center);
@@ -93,7 +93,7 @@ static int	intersect_cylinder(const t_object *obj,
 			}
 
 			// check second root
-			if (side_t2 >= t_min && side_t2 <= t_max)
+			if (side_t2 >= range.min && side_t2 <= range.max)
 			{
 				t_vector3 hit_point = ray_at(&ray, side_t2);
 				t_vector3 center_to_point = vector3_subtract(hit_point, cyl->center);
@@ -132,7 +132,7 @@ static int	intersect_cylinder(const t_object *obj,
 			// Top cap
 			{
 				double t_cap = vector3_dot(vector3_subtract(top_center, ray.orig), axis) / denom;
-				if (t_cap >= t_min && t_cap <= t_max)
+				if (t_cap >= range.min && t_cap <= range.max)
 				{
 					t_vector3 hit_point = ray_at(&ray, t_cap);
 					t_vector3 to_center = vector3_subtract(hit_point, top_center);
@@ -158,7 +158,7 @@ static int	intersect_cylinder(const t_object *obj,
 			// Bottom cap
 			{
 				double t_cap = vector3_dot(vector3_subtract(bottom_center, ray.orig), axis) / denom;
-				if (t_cap >= t_min && t_cap <= t_max)
+				if (t_cap >= range.min && t_cap <= range.max)
 				{
 					t_vector3 hit_point = ray_at(&ray, t_cap);
 					t_vector3 to_center = vector3_subtract(hit_point, bottom_center);

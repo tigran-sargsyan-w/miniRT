@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:47:10 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/02 23:40:31 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/05 17:00:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@
 typedef struct s_object			t_object;
 typedef struct s_object_node	t_object_node;
 
+typedef struct s_range
+{
+	double	min;
+	double	max;
+}				t_range;
+
 typedef int						(*t_intersect_func)(const t_object *object,
-									t_ray ray, double t_min, double t_max,
+									t_ray ray, t_range range,
 									t_hit *hit_result);
 typedef void					(*t_translate_func)(t_object *object,
 									t_vector3 delta);

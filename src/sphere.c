@@ -1,90 +1,113 @@
-#include <math.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sphere.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/04 12:00:05 by tsargsya          #+#    #+#             */
+/*   Updated: 2025/12/05 19:48:45 by tsargsya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "object.h"
 #include "sphere.h"
 #include "vector.h"
+#include <math.h>
 #include <stdio.h>
-#include "transform.h"
-#include "object.h"
 
-static int	intersect_sphere(const t_object *obj, t_ray ray, double t_min, double t_max, t_hit *out)
+void	sphere_translate(t_object *obj, t_vector3 delta);
+void	sphere_rotate(t_object *obj, double rx, double ry, double rz);
+void	sphere_scale_uniform(t_object *obj, double factor);
+void	sphere_scale_height(t_object *obj, double factor);
+
+static double	calc_discriminant(t_ray ray, t_vector3 center, double radius)
 {
-	// base formula: P = O + tD
-	// out->hitPoint = ray.orig + t_hit * ray.dir;
-	// In practice, in C this is usually written using vector helper functions.
-	// out->hitPoint = vector3_add(ray.orig, vector3_scale(ray.dir, t_hit));
-	// or with helper function:
-	// out->hitPoint = ray_at(&ray, t_hit); // return O + t*D
-	
+	t_vector3	oc;
+	double		a;
+	double		half_b;
+	double		c;
+
+	oc = vector3_subtract(ray.orig, center);
+	a = vector3_dot(ray.dir, ray.dir);
+	half_b = vector3_dot(oc, ray.dir);
+	c = vector3_dot(oc, oc) - radius * radius;
+	return (half_b * half_b - a * c);
+}
+
+static double	find_t_hit(t_ray ray, t_vector3 center, double radius,
+		t_range range)
+{
+	t_vector3	oc;
+	double		a;
+	double		half_b;
+	double		sqrt_disc;
+	double		t;
+
+	oc = vector3_subtract(ray.orig, center);
+	a = vector3_dot(ray.dir, ray.dir);
+	half_b = vector3_dot(oc, ray.dir);
+	sqrt_disc = sqrt(half_b * half_b - a * (vector3_dot(oc, oc)
+				- radius * radius));
+	t = (-half_b - sqrt_disc) / a;
+	if (t < range.min || t > range.max)
+	{
+		t = (-half_b + sqrt_disc) / a;
+		if (t < range.min || t > range.max)
+			return (-1.0);
+	}
+	return (t);
+}
+
+static void	fill_hit_record(t_hit *out, const t_object *obj,
+		t_ray ray, double t)
+{
 	const t_sphere	*sphere;
-	t_vector3		origin_minus_center; // from sphere center to ray origin
-	double			dir_dot_dir;
-	double			half_b; // use half of b (b = 2*half_b)
-	double			c_term;
-	double			disc;
-	double			sqrt_disc;
-	double			t_hit;
 	t_vector3		hit_point;
-	t_vector3		hit_normal;
+	t_vector3		normal;
 	double			radius;
+
+	sphere = (const t_sphere *)obj;
+	radius = sphere->diameter * 0.5;
+	hit_point = ray_at(&ray, t);
+	normal = vector3_divide_scalar(vector3_subtract(hit_point, sphere->center),
+			radius);
+	if (vector3_dot(normal, ray.dir) > 0.0)
+		normal = vector3_negate(normal);
+	out->t = t;
+	out->hitPoint = hit_point;
+	out->normal = normal;
+	out->material = &obj->material;
+	out->object = obj;
+}
+
+static int	intersect_sphere(const t_object *obj, t_ray ray,
+		t_range range, t_hit *out)
+{
+	const t_sphere	*sphere;
+	double			radius;
+	double			disc;
+	double			t;
 
 	if (!obj || !out)
 		return (0);
 	sphere = (const t_sphere *)obj;
 	radius = sphere->diameter * 0.5;
-	origin_minus_center = vector3_subtract(ray.orig, sphere->center);
-	dir_dot_dir = vector3_dot(ray.dir, ray.dir);
-	half_b = vector3_dot(origin_minus_center, ray.dir);
-	c_term = vector3_dot(origin_minus_center, origin_minus_center) - radius * radius;
-	disc = half_b * half_b - dir_dot_dir * c_term;
+	disc = calc_discriminant(ray, sphere->center, radius);
 	if (disc < 0.0)
 		return (0);
-	sqrt_disc = sqrt(disc);
-	// Try the nearer root first
-	t_hit = (-half_b - sqrt_disc) / dir_dot_dir;
-	if (t_hit < t_min || t_hit > t_max)
-	{
-		t_hit = (-half_b + sqrt_disc) / dir_dot_dir;
-		if (t_hit < t_min || t_hit > t_max)
-			return (0);
-	}
-	hit_point = ray_at(&ray, t_hit);
-	hit_normal = vector3_divide_scalar(vector3_subtract(hit_point, sphere->center), radius);
-	// Flip normal to face against the ray for consistent shading
-	if (vector3_dot(hit_normal, ray.dir) > 0.0)
-		hit_normal = vector3_negate(hit_normal);
-	out->t = t_hit;
-	out->hitPoint = hit_point;
-	out->normal = hit_normal;
-	out->material = &obj->material;
-	out->object = obj;
+	t = find_t_hit(ray, sphere->center, radius, range);
+	if (t < 0.0)
+		return (0);
+	fill_hit_record(out, obj, ray, t);
 	return (1);
 }
 
-static void sphere_translate(t_object *obj, t_vector3 delta)
+int	sphere_init(t_sphere *sphere, t_vector3 center,
+		double diameter, t_material material)
 {
-	t_sphere *s = (t_sphere*)obj;
-	s->center = vector3_add(s->center, delta);
-}
+	t_object_funcs	funcs;
 
-static void sphere_rotate(t_object *obj, double rx, double ry, double rz)
-{
-	(void)obj; (void)rx; (void)ry; (void)rz; // no-op for sphere
-}
-
-static void sphere_scale_uniform(t_object *obj, double factor)
-{
-	t_sphere *s = (t_sphere*)obj;
-	double d = s->diameter * factor;
-	if (d > RT_MIN_OBJECT_EXTENT)
-		s->diameter = d;
-}
-
-static void sphere_scale_height(t_object *obj, double factor)
-{
-	(void)obj; (void)factor; // no-op for sphere
-}
-
-int	sphere_init(t_sphere *sphere, t_vector3 center, double diameter, t_material material)
-{
 	if (!sphere)
 	{
 		printf("Error: Invalid sphere pointer\n");
@@ -95,9 +118,12 @@ int	sphere_init(t_sphere *sphere, t_vector3 center, double diameter, t_material 
 		printf("Error: Sphere diameter must be positive\n");
 		return (1);
 	}
- 	object_init(&sphere->base, SPHERE, material,
-		(t_object_funcs){&intersect_sphere, &sphere_translate,
-		&sphere_rotate, &sphere_scale_uniform, &sphere_scale_height});
+	funcs.intersect = &intersect_sphere;
+	funcs.translate = &sphere_translate;
+	funcs.rotate_euler = &sphere_rotate;
+	funcs.scale_uniform = &sphere_scale_uniform;
+	funcs.scale_height = &sphere_scale_height;
+	object_init(&sphere->base, SPHERE, material, funcs);
 	sphere->center = center;
 	sphere->diameter = diameter;
 	return (0);

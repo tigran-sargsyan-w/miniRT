@@ -6,7 +6,7 @@
 #include "object.h"
 
 static int	intersect_plane(const t_object *obj,
-				t_ray ray, double t_min, double t_max, t_hit *out)
+				t_ray ray, t_range range, t_hit *out)
 {
 	// base formula: P = O + tD
 	// out->hitPoint = ray.orig + t_hit * ray.dir;
@@ -31,7 +31,7 @@ static int	intersect_plane(const t_object *obj,
 		return (0);
 	plane_point_minus_origin = vector3_subtract(plane->point, ray.orig);
 	t_hit = vector3_dot(plane_point_minus_origin, plane->normal_unit) / dir_dot_normal;
-	if (t_hit < t_min || t_hit > t_max)
+	if (t_hit < range.min || t_hit > range.max)
 		return (0);
 	hit_point = ray_at(&ray, t_hit);
 	hit_normal = plane->normal_unit;
