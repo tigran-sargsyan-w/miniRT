@@ -21,7 +21,7 @@ MINILIBX_DIR = minilibx/
 #   Source for miniRT
 # -------------------------------
 
-SRCS = app/main.c app/mlx_utils.c\
+SRCS = app/main.c app/mlx_utils.c app/debug_print_scene.c \
 parse/parse.c parse/parse_utils.c parse/parse_utils2.c parse/parse_vec3.c parse/parse_ambient.c \
 parse/parse_camera.c parse/parse_light.c parse/ft_atoi_checked.c parse/parse_color.c \
 parse/parse_sphere.c parse/parse_plane.c parse/parse_cylinder.c parse/parse_cylinder_utils.c parse/validate_range.c \
@@ -33,7 +33,6 @@ objects/sphere.c objects/sphere_transform.c \
 objects/plane.c objects/plane_transform.c \
 objects/cylinder.c objects/cylinder_transform.c objects/cylinder_side.c objects/cylinder_cap.c \
 events/event_handlers.c events/event_keypress.c events/event_mouse.c events/event_transform.c \
-debug_print_scene.c \
 render.c
 
 # -------------------------------
