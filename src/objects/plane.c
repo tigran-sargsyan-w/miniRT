@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 14:19:42 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:15:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	fill_plane_hit(t_hit *out, const t_object *obj,
 	if (vector3_dot(hit_normal, ray.dir) > 0.0)
 		hit_normal = vector3_negate(hit_normal);
 	out->t = t;
-	out->hitPoint = hit_point;
+	out->point = hit_point;
 	out->normal = hit_normal;
 	out->material = &obj->material;
 	out->object = obj;

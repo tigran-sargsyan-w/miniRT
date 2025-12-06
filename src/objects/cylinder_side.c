@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 14:36:34 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:15:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	update_best_hit(t_cyl_hit_ctx *ctx, double t, t_vector3 normal)
 	ctx->has_hit = 1;
 	ctx->best_t = t;
 	ctx->best_hit.t = t;
-	ctx->best_hit.hitPoint = ray_at(&ctx->ray, t);
+	ctx->best_hit.point = ray_at(&ctx->ray, t);
 	ctx->best_hit.normal = normal;
 	ctx->best_hit.material = &ctx->obj->material;
 }

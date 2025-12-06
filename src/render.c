@@ -93,11 +93,11 @@ static int is_in_shadow(const t_scene *scene, const t_hit *hit)
     t_vector3 shadow_origin;
     t_ray     shadow_ray;
 
-    L = vector3_subtract(scene->light.position, hit->hitPoint);
+    L = vector3_subtract(scene->light.position, hit->point);
     dist = vector3_length(L);
     if (!vector3_normalize_safe(L, &L_unit, RT_EPS))
         return (0);
-    shadow_origin = vector3_add(hit->hitPoint,
+    shadow_origin = vector3_add(hit->point,
             vector3_scale(hit->normal, K_SHADOW_BIAS));
     shadow_ray = ray_make(shadow_origin, L_unit);
 	if (scene_occluded(scene, shadow_ray,
@@ -119,7 +119,7 @@ static t_color shade(const t_scene *scene, const t_hit *hit)
     t_color light_color = color_from_rgb8(scene->light.color);
 
     // direction to light
-    t_vector3 L = vector3_subtract(scene->light.position, hit->hitPoint);
+    t_vector3 L = vector3_subtract(scene->light.position, hit->point);
     t_vector3 L_unit;
     if (!vector3_normalize_safe(L, &L_unit, RT_EPS))
         return result;
