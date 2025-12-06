@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 23:02:46 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:20:58 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	on_keypress(int keycode, void *param)
 	int		changed;
 
 	data = (t_data *)param;
-	if (keycode == KeyEscape)
+	if (keycode == KEY_ESCAPE)
 		return (handle_escape(data));
 	if (!data->selected_object)
 		return (0);

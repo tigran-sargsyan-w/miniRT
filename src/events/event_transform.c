@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 23:02:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:27:57 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ static t_vector3	get_translation_delta(int keycode)
 	t_vector3	d;
 
 	d = vector3_zero();
-	if (keycode == KeyA)
+	if (keycode == KEY_A)
 		d.x = -MOVE_STEP;
-	else if (keycode == KeyD)
+	else if (keycode == KEY_D)
 		d.x = MOVE_STEP;
-	else if (keycode == KeyQ)
+	else if (keycode == KEY_Q)
 		d.y = MOVE_STEP;
-	else if (keycode == KeyE)
+	else if (keycode == KEY_E)
 		d.y = -MOVE_STEP;
-	else if (keycode == KeyW)
+	else if (keycode == KEY_W)
 		d.z = MOVE_STEP;
-	else if (keycode == KeyS)
+	else if (keycode == KEY_S)
 		d.z = -MOVE_STEP;
 	return (d);
 }
@@ -59,17 +59,17 @@ static void	get_rotation_angles(int keycode, double *rx, double *ry, double *rz)
 	*rx = 0.0;
 	*ry = 0.0;
 	*rz = 0.0;
-	if (keycode == KeyI)
+	if (keycode == KEY_I)
 		*rx = step;
-	else if (keycode == KeyK)
+	else if (keycode == KEY_K)
 		*rx = -step;
-	else if (keycode == KeyJ)
+	else if (keycode == KEY_J)
 		*ry = step;
-	else if (keycode == KeyL)
+	else if (keycode == KEY_L)
 		*ry = -step;
-	else if (keycode == KeyU)
+	else if (keycode == KEY_U)
 		*rz = step;
-	else if (keycode == KeyO)
+	else if (keycode == KEY_O)
 		*rz = -step;
 }
 
@@ -97,18 +97,18 @@ int	handle_scaling(t_data *data, int keycode)
 
 	obj = data->selected_object;
 	if (obj && obj->scale_uniform
-		&& (keycode == KeyLeft || keycode == KeyRight))
+		&& (keycode == KEY_LEFT || keycode == KEY_RIGHT))
 	{
-		if (keycode == KeyRight)
+		if (keycode == KEY_RIGHT)
 			k = SCALE_STEP;
 		else
 			k = 1.0 / SCALE_STEP;
 		obj->scale_uniform((t_object *)obj, k);
 		return (1);
 	}
-	if (obj && obj->scale_height && (keycode == KeyUp || keycode == KeyDown))
+	if (obj && obj->scale_height && (keycode == KEY_UP || keycode == KEY_DOWN))
 	{
-		if (keycode == KeyUp)
+		if (keycode == KEY_UP)
 			k = SCALE_STEP;
 		else
 			k = 1.0 / SCALE_STEP;
