@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 12:00:05 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/05 20:04:22 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 14:27:52 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 #include <math.h>
 #include <stdio.h>
 
+/**
+ * @brief Calculates discriminant for ray-sphere intersection
+ * Substituting ray into sphere gives quadratic at^2 + bt + c = 0
+ * @param ray - ray to test
+ * @param center - sphere center
+ * @param radius - sphere radius
+ * @return double - discriminant value (negative = no hit)
+ */
 static double	calc_discriminant(t_ray ray, t_vector3 center, double radius)
 {
 	t_vector3	oc;
@@ -30,6 +38,14 @@ static double	calc_discriminant(t_ray ray, t_vector3 center, double radius)
 	return (half_b * half_b - a * c);
 }
 
+/**
+ * @brief Finds valid intersection distance along ray
+ * @param ray - ray to test
+ * @param center - sphere center
+ * @param radius - sphere radius
+ * @param range - valid t range
+ * @return double - hit distance or -1 if no valid hit
+ */
 static double	find_t_hit(t_ray ray, t_vector3 center, double radius,
 		t_range range)
 {
@@ -54,6 +70,13 @@ static double	find_t_hit(t_ray ray, t_vector3 center, double radius,
 	return (t);
 }
 
+/**
+ * @brief Fills hit record with sphere intersection data
+ * @param out - hit record to fill
+ * @param obj - sphere object
+ * @param ray - intersecting ray
+ * @param t - hit distance
+ */
 static void	fill_hit_record(t_hit *out, const t_object *obj,
 		t_ray ray, double t)
 {
@@ -76,6 +99,16 @@ static void	fill_hit_record(t_hit *out, const t_object *obj,
 	out->object = obj;
 }
 
+/**
+ * @brief Ray intersection with sphere
+ * Base formula: P = O + tD
+ * Code equivalent: out->hitPoint = ray.orig + t * ray.dir;
+ * @param obj - sphere object
+ * @param ray - ray to test
+ * @param range - valid t range
+ * @param out - stores hit information
+ * @return int - 1 if hit, 0 otherwise
+ */
 static int	intersect_sphere(const t_object *obj, t_ray ray,
 		t_range range, t_hit *out)
 {
@@ -98,6 +131,14 @@ static int	intersect_sphere(const t_object *obj, t_ray ray,
 	return (1);
 }
 
+/**
+ * @brief Initializes sphere with center, diameter and material
+ * @param sphere - sphere structure to initialize
+ * @param center - sphere center position
+ * @param diameter - sphere diameter
+ * @param material - surface material
+ * @return int - 0 on success, 1 on failure
+ */
 int	sphere_init(t_sphere *sphere, t_vector3 center,
 		double diameter, t_material material)
 {
