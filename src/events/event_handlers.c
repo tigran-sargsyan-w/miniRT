@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 15:52:19 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 22:48:50 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ static int	on_destroy(void *param)
 	exit(0);
 	return (0);
 }
-
-int	on_keypress(int keycode, void *param);
-int	on_mouse(int button, int x, int y, void *param);
 
 void	install_event_handlers(t_data *data)
 {
