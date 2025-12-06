@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:47:10 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 23:47:11 by dsemenov         ###   ########lyon.fr   */
+/*   Updated: 2025/12/05 17:00:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,56 +19,62 @@
 typedef struct s_object			t_object;
 typedef struct s_object_node	t_object_node;
 
-// Intersection interface: return 1 if there is a hit in [t_min,t_max].
-typedef int (*t_intersect_func)(const t_object *object,
-								t_ray ray,
-								double t_min,
-								double t_max,
-								t_hit *hit_result);
+typedef struct s_range
+{
+	double	min;
+	double	max;
+}				t_range;
 
-// Transform interfaces
-typedef void (*t_translate_func)(t_object *object, t_vector3 delta);
-typedef void (*t_rotate_euler_func)(t_object *object, double rx, double ry, double rz);
-typedef void (*t_scale_func)(t_object *object, double factor);
-typedef void (*t_scale_height_func)(t_object *object, double factor);
+typedef int						(*t_intersect_func)(const t_object *object,
+									t_ray ray, t_range range,
+									t_hit *hit_result);
+typedef void					(*t_translate_func)(t_object *object,
+									t_vector3 delta);
+typedef void					(*t_rotate_euler_func)(t_object *object,
+									double rx, double ry, double rz);
+typedef void					(*t_scale_func)(t_object *object,
+									double factor);
+typedef void					(*t_scale_height_func)(t_object *object,
+									double factor);
+
+typedef struct s_object_funcs
+{
+	t_intersect_func		intersect;
+	t_translate_func		translate;
+	t_rotate_euler_func		rotate_euler;
+	t_scale_func			scale_uniform;
+	t_scale_height_func		scale_height;
+}	t_object_funcs;
 
 typedef enum e_object_type
 {
-    AMBIENT,
-    CAMERA,
-    LIGHT,
-    SPHERE,
-    PLANE,
-    CYLINDER,
+	AMBIENT,
+	CAMERA,
+	LIGHT,
+	SPHERE,
+	PLANE,
+	CYLINDER,
 	COMMENT
-}   t_object_type;
+}	t_object_type;
 
-// Base class (first field in "derived" structs)
 struct						s_object
 {
-	t_object_type					type;
-	t_intersect_func			intersect_func;
-	t_material					material;
-	// Optional transform hooks (can be NULL for unsupported operations)
-	t_translate_func			translate;
-	t_rotate_euler_func			rotate_euler;
-	t_scale_func				scale_uniform;
-	t_scale_height_func			scale_height; // e.g., cylinder height
+	t_object_type			type;
+	t_material				material;
+	t_intersect_func		intersect_func;
+	t_translate_func		translate;
+	t_rotate_euler_func		rotate_euler;
+	t_scale_func			scale_uniform;
+	t_scale_height_func		scale_height;
 };
 
-// Linked list node for objects
 struct						s_object_node
 {
-	const t_object *object;
-	struct s_object_node			*next;
+	const t_object			*object;
+	struct s_object_node	*next;
 };
 
 void						object_init(t_object *object, t_object_type type,
-							t_material material,
-							t_intersect_func intersect_func,
-							t_translate_func translate,
-							t_rotate_euler_func rotate_euler,
-							t_scale_func scale_uniform,
-							t_scale_height_func scale_height);
+								t_material material, t_object_funcs funcs);
 
 #endif

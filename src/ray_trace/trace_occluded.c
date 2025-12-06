@@ -26,7 +26,7 @@ static int	check_occlusion(const t_object *obj, t_ray ray, t_range range)
 
 	if (!obj->intersect_func)
 		return (0);
-	return (obj->intersect_func(obj, ray, range.min, range.max, &temp_hit));
+	return (obj->intersect_func(obj, ray, range, &temp_hit));
 }
 
 /**

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:40:32 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 22:42:48 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/05 20:04:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,9 @@ typedef struct s_sphere
 
 int				sphere_init(t_sphere *sphere, t_vector3 center, double diameter,
 					t_material material);
+void			sphere_translate(t_object *obj, t_vector3 delta);
+void			sphere_rotate(t_object *obj, double rx, double ry, double rz);
+void			sphere_scale_uniform(t_object *obj, double factor);
+void			sphere_scale_height(t_object *obj, double factor);
 
 #endif

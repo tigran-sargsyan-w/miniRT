@@ -27,11 +27,12 @@ parse/parse_sphere.c parse/parse_plane.c parse/parse_cylinder.c parse/parse_cyli
 vector/vector.c vector/vector_arith.c vector/vector_arith2.c vector/vector_norms.c vector/vector_products.c vector/vector_utils.c vector/vector_predefined.c \
 color/color.c color/color_ops.c color/color_utils.c \
 ray_trace/ray.c ray_trace/trace.c ray_trace/trace_occluded.c \
-camera.c \
+scene_utils/camera.c scene_utils/material.c scene_utils/object.c scene_utils/transform.c \
+objects/sphere.c objects/sphere_transform.c \
+objects/plane.c objects/plane_transform.c \
+objects/cylinder.c objects/cylinder_transform.c objects/cylinder_side.c objects/cylinder_cap.c \
 debug_print_scene.c mlx_utils.c \
-material.c \
-sphere.c object.c plane.c cylinder.c \
-render.c transform.c
+render.c
 
 # -------------------------------
 #   Object & Dependency Files

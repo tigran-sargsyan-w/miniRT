@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cylinder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:46:44 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/02 18:23:23 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/06 01:38:01 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,20 +97,14 @@ int	parse_cylinder(char *line, t_scene *scene)
 	if (split_cylinder_line(line, &tab))
 		return (1);
 	if (parse_cylinder_components(tab, tmp_center, tmp_ori, tmp_color))
-	{
-		ft_free_tab(tab);
-		return (1);
-	}
+		return (ft_free_tab(tab), 1);
 	fill_cylinder_values(&cy, tmp_center, tmp_ori, tmp_color);
 	if (parse_cylinder_diameter(tab, &cy.diameter)
 		|| parse_cylinder_height(tab, &cy.height))
 		return (1);
-	if (cylinder_init(&cy, cy.center, cy.orientation, cy.diameter, cy.height,
-			material_from_rgb8(cy.color)) || push_cylinder(scene, &cy))
-	{
-		ft_free_tab(tab);
-		return (1);
-	}
+	if (cylinder_init(&cy, material_from_rgb8(cy.color))
+		|| push_cylinder(scene, &cy))
+		return (ft_free_tab(tab), 1);
 	ft_free_tab(tab);
 	return (0);
 }
