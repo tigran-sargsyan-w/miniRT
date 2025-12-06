@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:46:45 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 23:46:46 by dsemenov         ###   ########lyon.fr   */
+/*   Updated: 2025/12/06 00:51:08 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,17 @@ typedef struct s_cylinder
 {
 	t_object	base;
 	t_vector3	center;
-	// Raw orientation as provided in scene (not normalized)
 	t_vector3	orientation;
-	// Normalized axis direction for intersection/shading
 	t_vector3	axis_unit;
 	double		diameter;
 	double		height;
 	t_color8	color;
 }	t_cylinder;
 
-int	cylinder_init(t_cylinder *cylinder, t_vector3 center, t_vector3 orientation,
-			double diameter, double height, t_material material);
+int		cylinder_init(t_cylinder *cyl, t_material material);
+void	cylinder_translate(t_object *obj, t_vector3 delta);
+void	cylinder_rotate(t_object *obj, double rx, double ry, double rz);
+void	cylinder_scale_uniform(t_object *obj, double factor);
+void	cylinder_scale_height(t_object *obj, double factor);
 
 #endif

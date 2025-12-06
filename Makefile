@@ -30,8 +30,8 @@ ray_trace/ray.c ray_trace/trace.c ray_trace/trace_occluded.c \
 scene_utils/camera.c scene_utils/material.c scene_utils/object.c scene_utils/transform.c \
 objects/sphere.c objects/sphere_transform.c \
 objects/plane.c objects/plane_transform.c \
+objects/cylinder.c objects/cylinder_transform.c objects/cylinder_side.c objects/cylinder_cap.c \
 debug_print_scene.c mlx_utils.c \
-cylinder.c \
 render.c
 
 # -------------------------------
