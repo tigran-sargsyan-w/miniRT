@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/05 22:46:11 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 14:19:42 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 #include "vector.h"
 #include <math.h>
 
+/**
+ * @brief Fills hit record for plane intersection
+ * @param out - hit record to fill
+ * @param obj - plane object
+ * @param ray - intersecting ray
+ * @param t - hit distance
+ */
 static void	fill_plane_hit(t_hit *out, const t_object *obj,
 		t_ray ray, double t)
 {
@@ -35,6 +42,16 @@ static void	fill_plane_hit(t_hit *out, const t_object *obj,
 	out->object = obj;
 }
 
+/**
+ * @brief Ray intersection with infinite plane
+ * Base formula: P = O + tD
+ * Code equivalent: out->hitPoint = ray.orig + t * ray.dir;
+ * @param obj - plane object
+ * @param ray - ray to test
+ * @param range - valid t range
+ * @param out - stores hit information
+ * @return int - 1 if hit, 0 otherwise
+ */
 static int	intersect_plane(const t_object *obj, t_ray ray,
 		t_range range, t_hit *out)
 {
@@ -57,6 +74,14 @@ static int	intersect_plane(const t_object *obj, t_ray ray,
 	return (1);
 }
 
+/**
+ * @brief Initializes plane with point, normal and material
+ * @param plane - plane structure to initialize
+ * @param point - point on the plane
+ * @param normal - plane normal direction
+ * @param material - surface material
+ * @return int - 0 on success, 1 on failure
+ */
 int	plane_init(t_plane *plane, t_vector3 point,
 		t_vector3 normal, t_material material)
 {
