@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 00:08:57 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 14:33:00 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include "transform.h"
 #include "vector.h"
 
+/**
+ * @brief Translates cylinder by delta vector
+ * @param obj - cylinder object
+ * @param delta - translation offset
+ */
 void	cylinder_translate(t_object *obj, t_vector3 delta)
 {
 	t_cylinder	*c;
@@ -23,6 +28,13 @@ void	cylinder_translate(t_object *obj, t_vector3 delta)
 	c->center = vector3_add(c->center, delta);
 }
 
+/**
+ * @brief Rotates cylinder orientation by Euler angles
+ * @param obj - cylinder object
+ * @param rx - rotation around X axis (radians)
+ * @param ry - rotation around Y axis (radians)
+ * @param rz - rotation around Z axis (radians)
+ */
 void	cylinder_rotate(t_object *obj, double rx, double ry, double rz)
 {
 	t_cylinder	*c;
@@ -33,6 +45,11 @@ void	cylinder_rotate(t_object *obj, double rx, double ry, double rz)
 		c->axis_unit = vector3_unit_y();
 }
 
+/**
+ * @brief Uniformly scales cylinder diameter
+ * @param obj - cylinder object
+ * @param factor - scale factor
+ */
 void	cylinder_scale_uniform(t_object *obj, double factor)
 {
 	t_cylinder	*c;
@@ -44,6 +61,11 @@ void	cylinder_scale_uniform(t_object *obj, double factor)
 		c->diameter = d;
 }
 
+/**
+ * @brief Scales cylinder height
+ * @param obj - cylinder object
+ * @param factor - scale factor
+ */
 void	cylinder_scale_height(t_object *obj, double factor)
 {
 	t_cylinder	*c;

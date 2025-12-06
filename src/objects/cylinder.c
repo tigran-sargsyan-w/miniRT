@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 00:53:12 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 14:40:32 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 #include <math.h>
 #include <stdio.h>
 
+/**
+ * @brief Calculates quadratic coefficients for cylinder side
+ * Gives quadratic at^2 + bt + c = 0
+ * @param ctx - cylinder hit context
+ * @param coef - output quadratic coefficients (a, b, c)
+ */
 static void	calc_quad_coef(t_cyl_hit_ctx *ctx, t_quad_coef *coef)
 {
 	t_vector3	oc;
@@ -39,6 +45,12 @@ static void	calc_quad_coef(t_cyl_hit_ctx *ctx, t_quad_coef *coef)
 		- (ctx->cyl->diameter * 0.5) * (ctx->cyl->diameter * 0.5);
 }
 
+/**
+ * @brief Checks both roots of quadratic for side hits
+ * t = (-b ± sqrt(disc)) / 2a
+ * @param ctx - cylinder hit context
+ * @param coef - quadratic coefficients
+ */
 static void	check_side_roots(t_cyl_hit_ctx *ctx, t_quad_coef *coef)
 {
 	double	disc;
@@ -58,6 +70,10 @@ static void	check_side_roots(t_cyl_hit_ctx *ctx, t_quad_coef *coef)
 	check_side_hit(ctx, t2);
 }
 
+/**
+ * @brief Checks both top and bottom caps for hits
+ * @param ctx - cylinder hit context
+ */
 static void	check_caps(t_cyl_hit_ctx *ctx)
 {
 	t_vector3	top_center;
@@ -73,6 +89,16 @@ static void	check_caps(t_cyl_hit_ctx *ctx)
 	check_cap_hit(ctx, bottom_center, 0);
 }
 
+/**
+ * @brief Ray intersection with cylinder (sides + caps)
+ * Base formula: P = O + tD
+ * Code equivalent: out->hitPoint = ray.orig + t * ray.dir;
+ * @param obj - cylinder object
+ * @param ray - ray to test
+ * @param range - valid t range
+ * @param out - stores hit information
+ * @return int - 1 if hit, 0 otherwise
+ */
 static int	intersect_cylinder(const t_object *obj, t_ray ray,
 		t_range range, t_hit *out)
 {
@@ -97,6 +123,13 @@ static int	intersect_cylinder(const t_object *obj, t_ray ray,
 	return (1);
 }
 
+/**
+ * @brief Initializes cylinder with geometry and material
+ * Center, orientation, diameter, height must be set before call
+ * @param cyl - cylinder structure to initialize
+ * @param material - surface material
+ * @return int - 0 on success, 1 on failure
+ */
 int	cylinder_init(t_cylinder *cyl, t_material material)
 {
 	t_object_funcs	funcs;
