@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <sys/time.h> // TODO: delete this debug timing
 #include <stdio.h> // TODO: delete this debug timing
-#include "miniRT.h"
+#include "minirt.h"
 #include "object.h"
 #include "vector.h"
 #include "color.h"

@@ -6,11 +6,11 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 22:48:50 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:02:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 #include "event_internal.h"
 #include "mlx_utils.h"
 #include <mlx.h>

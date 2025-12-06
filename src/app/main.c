@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:18:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/26 20:33:02 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:02:30 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "miniRT.h"
+#include "minirt.h"
 #include "mlx_utils.h"
 #include "scene.h"
 #include <fcntl.h>

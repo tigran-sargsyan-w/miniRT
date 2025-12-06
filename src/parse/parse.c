@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:41:28 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 17:51:55 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:03:05 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft.h"
-#include "miniRT.h"
+#include "minirt.h"
 #include "object.h"
 #include "parse.h"
 #include "scene.h"

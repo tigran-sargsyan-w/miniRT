@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   miniRT.h                                           :+:      :+:    :+:   */
+/*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:47:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 23:47:03 by dsemenov         ###   ########lyon.fr   */
+/*   Updated: 2025/12/06 23:07:00 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_RT_H
-# define MINI_RT_H
+#ifndef MINIRT_H
+# define MINIRT_H
+
 # include "scene.h"
 # include "object.h"
-
-#include "mlx_utils.h"
+# include "mlx_utils.h"
 
 typedef struct s_data
 {
@@ -35,13 +35,13 @@ typedef struct s_data
 	int				ray_cache_valid;
 }					t_data;
 
-int	check_args(int argc, char **argv);
-int	check_parse_file(int fd, struct s_scene *scene);
-int	validate_input_range(t_scene *scene);
-void	debug_print_scene(t_scene *scene);
+int					check_args(int argc, char **argv);
+int					check_parse_file(int fd, struct s_scene *scene);
+int					validate_input_range(t_scene *scene);
+void				debug_print_scene(t_scene *scene);
 
-int     render_scene(t_data *data);
-void    install_event_handlers(t_data *data);
-void    free_scene(t_scene *scene);
+int					render_scene(t_data *data);
+void				install_event_handlers(t_data *data);
+void				free_scene(t_scene *scene);
 
 #endif

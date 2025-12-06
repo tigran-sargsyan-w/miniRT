@@ -6,11 +6,11 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 16:14:43 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:02:52 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "minirt.h"
 #include "constants.h"
 #include "event_internal.h"
 #include "camera.h"
