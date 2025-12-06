@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_vec3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 18:02:29 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 18:43:47 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:40:06 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Splits vector string "x,y,z" into 3 components
+ * @param line - input string to split
+ * @param tab - out array of 3 strings
+ * @return int - 0 on success, 1 on error
+ */
 static int	split_vec3_line(char *line, char ***tab)
 {
 	int	n;
@@ -38,6 +44,12 @@ static int	split_vec3_line(char *line, char ***tab)
 	return (0);
 }
 
+/**
+ * @brief Converts 3 component strings to double vector
+ * @param tab - array of 3 numeric strings
+ * @param vec - out array of 3 doubles
+ * @return int - 0 on success, 1 on error
+ */
 static int	parse_vec3_components(char **tab, double vec[3])
 {
 	int		i;
@@ -67,6 +79,12 @@ static int	parse_vec3_components(char **tab, double vec[3])
 	return (0);
 }
 
+/**
+ * @brief High-level parser for 3D vector from "x,y,z" string
+ * @param line - input string with components
+ * @param vec - out array of 3 doubles
+ * @return int - 0 on success, 1 on error
+ */
 int	parse_vec3(char *line, double vec[3])
 {
 	char	**tab;

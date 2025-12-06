@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 18:52:44 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 19:00:08 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:34:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "parse.h"
 #include <stdio.h>
 
+/**
+ * @brief Splits color string "r,g,b" into components
+ * @param line - input string to split
+ * @param tab - out array of 3 strings
+ * @return int - 0 on success, 1 on error
+ */
 static int	color_split_line(char *line, char ***tab)
 {
 	int	i;
@@ -37,6 +43,13 @@ static int	color_split_line(char *line, char ***tab)
 	return (0);
 }
 
+/**
+ * @brief Parses RGB color from "r,g,b" into integer array
+ * Validates range [0,255] for each component
+ * @param line - input color string
+ * @param color - out array of 3 ints (r,g,b)
+ * @return int - 0 on success, 1 on error
+ */
 int	parse_color(char *line, int color[3])
 {
 	char	**tab;

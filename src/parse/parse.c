@@ -3,22 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:41:28 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 17:51:55 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:40:24 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft.h"
-#include "miniRT.h"
+#include "minirt.h"
 #include "object.h"
 #include "parse.h"
 #include "scene.h"
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Validates CLI arguments and .rt filename
+ * @param argc - argument count
+ * @param argv - argument vector
+ * @return int - 0 if OK, 1 on error
+ */
 int	check_args(int argc, char **argv)
 {
 	int	len;
@@ -43,6 +49,13 @@ int	check_args(int argc, char **argv)
 	return (0);
 }
 
+/**
+ * @brief Dispatches a single token/line to proper object parser
+ * @param token - first word of the line (object id)
+ * @param line - rest of the line with parameters
+ * @param scene - scene to fill
+ * @return int - 0 on success, 1 on error
+ */
 static int	handle_token(char *token, char *line, t_scene *scene)
 {
 	int	obj_type;
@@ -63,6 +76,12 @@ static int	handle_token(char *token, char *line, t_scene *scene)
 	return (0);
 }
 
+/**
+ * @brief Parses one trimmed non-empty line from .rt file
+ * @param trimmed - line without surrounding spaces/newlines
+ * @param scene - scene to update
+ * @return int - 0 on success, 1 on error
+ */
 static int	process_line(char *trimmed, t_scene *scene)
 {
 	char	*p;
@@ -81,6 +100,14 @@ static int	process_line(char *trimmed, t_scene *scene)
 	return (0);
 }
 
+/**
+ * @brief Processes current line and reads next with get_next_line
+ * Used inside main parse loop to handle trimming and skipping empties
+ * @param fd - file descriptor for .rt file
+ * @param scene - scene to fill
+ * @param line - in/out current line buffer
+ * @return int - 0 on success, 1 on error
+ */
 static int	gnl_loop(int fd, t_scene *scene, char **line)
 {
 	char	*trimmed;
@@ -106,6 +133,13 @@ static int	gnl_loop(int fd, t_scene *scene, char **line)
 	return (0);
 }
 
+/**
+ * @brief Top-level parser for .rt scene file
+ * Reads all lines, fills scene and ensures required objects exist
+ * @param fd - open file descriptor for scene
+ * @param scene - scene structure to fill
+ * @return int - 0 on success, 1 on parse or validation error
+ */
 int	check_parse_file(int fd, t_scene *scene)
 {
 	char	*line;

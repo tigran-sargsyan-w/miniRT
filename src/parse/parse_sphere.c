@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_sphere.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:47:15 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 19:34:53 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:39:00 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Appends a new sphere to scene dynamic array
+ * Reallocates and copies existing spheres
+ * @param s - scene to modify
+ * @param sp - sphere to append
+ * @return int - 0 on success, 1 on allocation error
+ */
 static int	sphere_push(t_scene *s, t_sphere *sp)
 {
 	t_sphere	*arr;
@@ -43,6 +50,13 @@ static int	sphere_push(t_scene *s, t_sphere *sp)
 	return (0);
 }
 
+/**
+ * @brief Splits sphere line into center, diameter and color
+ * Expects exactly 3 space-separated tokens
+ * @param line - input line after identifier
+ * @param tab - out array of 3 strings
+ * @return int - 0 on success, 1 on error
+ */
 static int	split_sphere_line(char *line, char ***tab)
 {
 	int	n;
@@ -65,6 +79,13 @@ static int	split_sphere_line(char *line, char ***tab)
 	return (0);
 }
 
+/**
+ * @brief Parses and validates sphere diameter from token
+ * Requires positive value
+ * @param tab - token array (diameter at index 1)
+ * @param diameter - out double diameter
+ * @return int - 0 on success, 1 on error
+ */
 static int	parse_sphere_diameter(char **tab, double *diameter)
 {
 	char	*endptr;
@@ -93,6 +114,12 @@ static int	parse_sphere_diameter(char **tab, double *diameter)
 	return (0);
 }
 
+/**
+ * @brief Parses sphere definition line and adds to scene
+ * @param line - line with center, diameter and color
+ * @param scene - scene whose spheres array is extended
+ * @return int - 0 on success, 1 on error
+ */
 int	parse_sphere(char *line, t_scene *scene)
 {
 	char		**tab;

@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hit.h                                              :+:      :+:    :+:   */
+/*   event_internal.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 23:46:49 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/06 23:16:37 by tsargsya         ###   ########.fr       */
+/*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
+/*   Updated: 2025/12/06 23:02:11 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HIT_H
-# define HIT_H
+#ifndef EVENT_INTERNAL_H
+# define EVENT_INTERNAL_H
 
-# include "vector.h"
-# include "material.h"
+# include "minirt.h"
 
-// Forward declaration to avoid circular include with object.h
-struct	s_object;
-
-typedef struct s_hit
-{
-	double					t;
-	t_vector3				point;
-	t_vector3				normal;
-	const t_material		*material;
-	const struct s_object	*object;
-}							t_hit;
+int		handle_escape(t_data *data);
+int		handle_translation(t_data *data, int keycode);
+int		handle_rotation(t_data *data, int keycode);
+int		handle_scaling(t_data *data, int keycode);
+void	render_and_display(t_data *data);
+int		on_keypress(int keycode, void *param);
+int		on_mouse(int button, int x, int y, void *param);
 
 #endif

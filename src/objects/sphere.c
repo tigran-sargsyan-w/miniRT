@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 12:00:05 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 14:27:52 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:15:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void	fill_hit_record(t_hit *out, const t_object *obj,
 	if (vector3_dot(normal, ray.dir) > 0.0)
 		normal = vector3_negate(normal);
 	out->t = t;
-	out->hitPoint = hit_point;
+	out->point = hit_point;
 	out->normal = normal;
 	out->material = &obj->material;
 	out->object = obj;

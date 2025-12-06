@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_ambient.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:30:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 22:43:45 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:29:53 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "parse.h"
 #include <stdio.h>
 
+/**
+ * @brief Parses ambient light ratio from string
+ * @param str - input numeric string
+ * @param ratio - out double ratio
+ * @return int - 0 on success, 1 on error
+ */
 int	parse_ratio(char *str, double *ratio)
 {
 	char	*endptr;
@@ -34,6 +40,13 @@ int	parse_ratio(char *str, double *ratio)
 	return (0);
 }
 
+/**
+ * @brief Splits ambient line into ratio and color parts
+ * Expects exactly 2 space-separated tokens
+ * @param line - input line after identifier
+ * @param tab - out array with ratio and color strings
+ * @return int - 0 on success, 1 on error
+ */
 static int	split_ambient_line(char *line, char ***tab)
 {
 	int	n;
@@ -56,6 +69,12 @@ static int	split_ambient_line(char *line, char ***tab)
 	return (0);
 }
 
+/**
+ * @brief Parses ambient light definition line into scene
+ * @param line - line containing ratio and color
+ * @param scene - scene whose ambient field is filled
+ * @return int - 0 on success, 1 on error
+ */
 int	parse_ambient(char *line, t_scene *scene)
 {
 	char	**tab;

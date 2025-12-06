@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:39:44 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/02 22:45:40 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 22:53:23 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ struct						s_light
 {
 	t_vector3				position;
 	t_color8				color;
-	double intensity; // 0..∞
+	double					intensity;
 };
 
 // Linked list node for lights

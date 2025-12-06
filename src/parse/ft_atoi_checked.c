@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi_checked.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:46:52 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 17:46:52 by dsemenov         ###   ########lyon.fr   */
+/*   Updated: 2025/12/07 00:41:54 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <limits.h>
 
+/**
+ * @brief Skips leading whitespace and processes optional sign
+ * Advances nptr to first non-space, non-sign character
+ * @param nptr - input string pointer
+ * @param sign - out sign multiplier (+1 or -1)
+ * @return const char* - advanced string pointer
+ */
 static const char	*skip_spaces_and_sign(const char *nptr, int *sign)
 {
 	while ((*nptr >= 9 && *nptr <= 13) || *nptr == ' ')
@@ -28,6 +35,13 @@ static const char	*skip_spaces_and_sign(const char *nptr, int *sign)
 	return (nptr);
 }
 
+/**
+ * @brief Converts string to int with overflow and format checks
+ * Validates entire string is numeric and within int range
+ * @param nptr - input numeric string
+ * @param num - out converted integer
+ * @return int - 0 on success, 1 on error (invalid format or overflow)
+ */
 int	ft_atoi_checked(const char *nptr, int *num)
 {
 	long	res;
