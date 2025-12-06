@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 16:32:11 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/06 16:44:35 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ static t_vector3	get_translation_delta(int keycode)
 	t_vector3	d;
 
 	d = vector3_zero();
-	if (keycode == KeyA || keycode == KeyLeft)
+	if (keycode == KeyA)
 		d.x = -MOVE_STEP;
-	else if (keycode == KeyD || keycode == KeyRight)
+	else if (keycode == KeyD)
 		d.x = MOVE_STEP;
 	else if (keycode == KeyQ)
 		d.y = MOVE_STEP;
 	else if (keycode == KeyE)
 		d.y = -MOVE_STEP;
-	else if (keycode == KeyW || keycode == KeyUp)
+	else if (keycode == KeyW)
 		d.z = MOVE_STEP;
-	else if (keycode == KeyS || keycode == KeyDown)
+	else if (keycode == KeyS)
 		d.z = -MOVE_STEP;
 	return (d);
 }
@@ -97,18 +97,18 @@ int	handle_scaling(t_data *data, int keycode)
 
 	obj = data->selected_object;
 	if (obj && obj->scale_uniform
-		&& (keycode == KeyPageUp || keycode == KeyPageDown))
+		&& (keycode == KeyLeft || keycode == KeyRight))
 	{
-		if (keycode == KeyPageUp)
+		if (keycode == KeyRight)
 			k = SCALE_STEP;
 		else
 			k = 1.0 / SCALE_STEP;
 		obj->scale_uniform((t_object *)obj, k);
 		return (1);
 	}
-	if (obj && obj->scale_height && (keycode == 93 || keycode == 91))
+	if (obj && obj->scale_height && (keycode == KeyUp || keycode == KeyDown))
 	{
-		if (keycode == 93)
+		if (keycode == KeyUp)
 			k = SCALE_STEP;
 		else
 			k = 1.0 / SCALE_STEP;
