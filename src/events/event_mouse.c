@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 23:02:52 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:14:32 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@
 #include <mlx.h>
 #include <stddef.h>
 
+/**
+ * @brief Validates mouse click position and scene state
+ * @param data - application state with scene and camera flag
+ * @param x - mouse X coordinate in window
+ * @param y - mouse Y coordinate in window
+ * @return int - 1 if click is inside image and camera exists, else 0
+ */
 static int	is_valid_click(t_data *data, int x, int y)
 {
 	if (!data || !data->scene.has_camera)
@@ -30,6 +37,13 @@ static int	is_valid_click(t_data *data, int x, int y)
 	return (1);
 }
 
+/**
+ * @brief Handles left mouse click selection
+ * Casts a ray through pixel and selects hit object if any
+ * @param data - application state with scene and camera
+ * @param x - mouse X coordinate in window
+ * @param y - mouse Y coordinate in window
+ */
 static void	handle_left_click(t_data *data, int x, int y)
 {
 	t_ray		ray;
@@ -49,6 +63,15 @@ static void	handle_left_click(t_data *data, int x, int y)
 	render_and_display(data);
 }
 
+/**
+ * @brief Main mouse callback for MLX
+ * Currently uses left click to select objects under cursor
+ * @param button - mouse button code
+ * @param x - mouse X coordinate in window
+ * @param y - mouse Y coordinate in window
+ * @param param - user param from MLX (cast to t_data *)
+ * @return int - always 0 (MLX hook convention)
+ */
 int	on_mouse(int button, int x, int y, void *param)
 {
 	t_data	*data;

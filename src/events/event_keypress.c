@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 23:20:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:14:19 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@
 #include <mlx.h>
 #include <stdlib.h>
 
+/**
+ * @brief Handles Escape key behavior
+ * If object selected: just deselect and rerender, else quit program
+ * @param data - application state with scene and MLX
+ * @return int - always 0 (MLX hook convention)
+ */
 int	handle_escape(t_data *data)
 {
 	if (data->selected_object)
@@ -37,6 +43,13 @@ int	handle_escape(t_data *data)
 	return (0);
 }
 
+/**
+ * @brief Main keypress callback for MLX
+ * Routes key events to object transform handlers
+ * @param keycode - pressed key code
+ * @param param - user param from MLX (cast to t_data *)
+ * @return int - always 0 (MLX hook convention)
+ */
 int	on_keypress(int keycode, void *param)
 {
 	t_data	*data;

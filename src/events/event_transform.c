@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 23:27:57 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:15:29 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include "vector.h"
 #include <math.h>
 
+/**
+ * @brief Maps translation keys to movement delta vector
+ * Useful for WASD/QE style object movement
+ * @param keycode - pressed key code
+ * @return t_vector3 - translation delta in world space
+ */
 static t_vector3	get_translation_delta(int keycode)
 {
 	t_vector3	d;
@@ -36,6 +42,12 @@ static t_vector3	get_translation_delta(int keycode)
 	return (d);
 }
 
+/**
+ * @brief Applies keyboard-based translation to selected object
+ * @param data - application state with selected_object
+ * @param keycode - pressed key code
+ * @return int - 1 if object moved, 0 otherwise
+ */
 int	handle_translation(t_data *data, int keycode)
 {
 	const t_object	*obj;
@@ -51,6 +63,13 @@ int	handle_translation(t_data *data, int keycode)
 	return (1);
 }
 
+/**
+ * @brief Maps rotation keys to Euler angle deltas
+ * @param keycode - pressed key code
+ * @param rx - out X-axis rotation in radians
+ * @param ry - out Y-axis rotation in radians
+ * @param rz - out Z-axis rotation in radians
+ */
 static void	get_rotation_angles(int keycode, double *rx, double *ry, double *rz)
 {
 	double	step;
@@ -73,6 +92,13 @@ static void	get_rotation_angles(int keycode, double *rx, double *ry, double *rz)
 		*rz = -step;
 }
 
+/**
+ * @brief Applies keyboard-based rotation to selected object
+ * Rotates in small Euler steps around X/Y/Z axes
+ * @param data - application state with selected_object
+ * @param keycode - pressed key code
+ * @return int - 1 if object rotated, 0 otherwise
+ */
 int	handle_rotation(t_data *data, int keycode)
 {
 	const t_object	*obj;
@@ -90,6 +116,13 @@ int	handle_rotation(t_data *data, int keycode)
 	return (1);
 }
 
+/**
+ * @brief Applies keyboard-based scaling to selected object
+ * Arrow keys scale uniformly or change object height
+ * @param data - application state with selected_object
+ * @param keycode - pressed key code
+ * @return int - 1 if object scaled, 0 otherwise
+ */
 int	handle_scaling(t_data *data, int keycode)
 {
 	const t_object	*obj;
