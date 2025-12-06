@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 12:00:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 16:10:21 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:20:50 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include <mlx.h>
 #include <stdlib.h>
 
+/**
+ * @brief Cleans up all MLX-related resources
+ * Useful when exiting the program or on fatal error
+ * @param mlx_data - MLX handles and image to destroy
+ */
 void	mlx_destroy_all(t_mlx_data *mlx_data)
 {
 	if (mlx_data->img.img_ptr)
@@ -28,6 +33,13 @@ void	mlx_destroy_all(t_mlx_data *mlx_data)
 	}
 }
 
+/**
+ * @brief Initializes MLX, window and image buffer
+ * Call once at startup before rendering
+ * @param mlx_data - output MLX state to initialize
+ * @param name - window title string
+ * @return int - 0 on success, 1 on failure
+ */
 int	mlx_init_system(t_mlx_data *mlx_data, char *name)
 {
 	ft_bzero(mlx_data, sizeof(t_mlx_data));
@@ -46,6 +58,14 @@ int	mlx_init_system(t_mlx_data *mlx_data, char *name)
 	return (0);
 }
 
+/**
+ * @brief Writes a pixel color into MLX image buffer
+ * Very useful in render loop for drawing each pixel
+ * @param image_data - target image buffer
+ * @param x - x pixel coordinate
+ * @param y - y pixel coordinate
+ * @param color - packed integer color value
+ */
 void	my_mlx_pixel_put(t_img_data *image_data, int x, int y, int color)
 {
 	char	*dst;

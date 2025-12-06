@@ -6,13 +6,18 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 21:52:55 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/06 22:40:05 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:20:42 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scene.h"
 #include <stdio.h>
 
+/**
+ * @brief Prints main scene components (ambient, camera, light)
+ * Handy for quick console debug of scene header info
+ * @param s - scene to inspect
+ */
 void	print_scene_objects(t_scene *s)
 {
 	if (s->has_ambient)
@@ -33,6 +38,10 @@ void	print_scene_objects(t_scene *s)
 			s->light.intensity);
 }
 
+/**
+ * @brief Prints all spheres in scene with basic properties
+ * @param scene - scene containing spheres array
+ */
 void	print_spheres(t_scene *scene)
 {
 	int			i;
@@ -53,6 +62,10 @@ void	print_spheres(t_scene *scene)
 	}
 }
 
+/**
+ * @brief Prints all planes in scene with position and normal
+ * @param scene - scene containing planes array
+ */
 void	print_planes(t_scene *scene)
 {
 	int			i;
@@ -73,6 +86,10 @@ void	print_planes(t_scene *scene)
 	}
 }
 
+/**
+ * @brief Prints all cylinders in scene with transform and color
+ * @param scene - scene containing cylinders array
+ */
 void	print_cylinders(t_scene *scene)
 {
 	int			i;
@@ -95,6 +112,11 @@ void	print_cylinders(t_scene *scene)
 	}
 }
 
+/**
+ * @brief High-level helper to dump entire scene to stdout
+ * Calls individual print_* functions for each object type
+ * @param scene - scene to debug print
+ */
 void	debug_print_scene(t_scene *scene)
 {
 	printf("Scene Debug Info:\n");

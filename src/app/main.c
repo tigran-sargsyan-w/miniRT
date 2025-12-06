@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:18:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/06 23:02:30 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:21:32 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/**
+ * @brief Frees all dynamic arrays inside scene
+ * Useful when cleaning up after parse or on exit
+ * @param scene - scene to clear
+ */
 void	free_scene(t_scene *scene)
 {
 	free(scene->spheres);
@@ -33,6 +38,12 @@ void	free_scene(t_scene *scene)
 	scene->cylinder_count = 0;
 }
 
+/**
+ * @brief Opens and parses .rt scene file, then validates ranges
+ * @param arg - path to scene file
+ * @param scene - output scene structure to fill
+ * @return int - 0 on success, 1 on error
+ */
 static int	handle_parse_file(char *arg, t_scene *scene)
 {
 	int	fd;
@@ -58,6 +69,13 @@ static int	handle_parse_file(char *arg, t_scene *scene)
 	return (0);
 }
 
+/**
+ * @brief Program entry point for MiniRT
+ * Sets up scene, MLX window, renders first frame and starts loop
+ * @param argc - argument count
+ * @param argv - argument vector
+ * @return int - 0 on success, 1 on error
+ */
 int	main(int argc, char **argv)
 {
 	t_data	data;
