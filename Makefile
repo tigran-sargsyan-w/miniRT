@@ -32,6 +32,7 @@ scene_utils/camera.c scene_utils/material.c scene_utils/object.c scene_utils/tra
 objects/sphere.c objects/sphere_transform.c \
 objects/plane.c objects/plane_transform.c \
 objects/cylinder.c objects/cylinder_transform.c objects/cylinder_side.c objects/cylinder_cap.c \
+events/event_handlers.c events/event_keypress.c events/event_mouse.c events/event_transform.c \
 debug_print_scene.c mlx_utils.c \
 render.c
 
