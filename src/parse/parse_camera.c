@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_camera.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:37:08 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 22:46:21 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:31:49 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "parse.h"
 #include <stdio.h>
 
+/**
+ * @brief Splits camera line into position, orientation and FOV
+ * Expects exactly 3 space-separated tokens
+ * @param line - input line after identifier
+ * @param tab - out array of 3 strings
+ * @return int - 0 on success, 1 on error
+ */
 static int	split_camera_line(char *line, char ***tab)
 {
 	int	n;
@@ -36,6 +43,12 @@ static int	split_camera_line(char *line, char ***tab)
 	return (0);
 }
 
+/**
+ * @brief Parses camera definition line and fills scene camera
+ * @param line - line with position, orientation and FOV
+ * @param scene - scene whose camera is filled
+ * @return int - 0 on success, 1 on error
+ */
 int	parse_camera(char *line, t_scene *scene)
 {
 	char	**tab;

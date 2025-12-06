@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_plane.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:47:10 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/11/28 22:46:31 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:38:28 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Appends a new plane to scene dynamic array
+ * @param s - scene to modify
+ * @param pl - plane to append
+ * @return int - 0 on success, 1 on allocation error
+ */
 static int	push_plane(t_scene *s, t_plane *pl)
 {
 	t_plane	*arr;
@@ -41,6 +47,13 @@ static int	push_plane(t_scene *s, t_plane *pl)
 	return (0);
 }
 
+/**
+ * @brief Splits plane line into point, normal and color
+ * Expects exactly 3 space-separated tokens
+ * @param line - input line after identifier
+ * @param tab - out array of 3 strings
+ * @return int - 0 on success, 1 on error
+ */
 static int	split_plane_line(char *line, char ***tab)
 {
 	int	n;
@@ -63,6 +76,14 @@ static int	split_plane_line(char *line, char ***tab)
 	return (0);
 }
 
+/**
+ * @brief Parses point, normal and color components for plane
+ * @param tab - token array (point, normal, color)
+ * @param point - out point components
+ * @param normal - out normal components
+ * @param color - out RGB color components
+ * @return int - 0 on success, 1 on error
+ */
 static int	parse_plane_components(char **tab, double point[3],
 		double normal[3], int color[3])
 {
@@ -75,6 +96,12 @@ static int	parse_plane_components(char **tab, double point[3],
 	return (0);
 }
 
+/**
+ * @brief Parses plane definition line and adds to scene
+ * @param line - line with point, normal and color
+ * @param scene - scene whose planes array is extended
+ * @return int - 0 on success, 1 on error
+ */
 int	parse_plane(char *line, t_scene *scene)
 {
 	char	**tab;

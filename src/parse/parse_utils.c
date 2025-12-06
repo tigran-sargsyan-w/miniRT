@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:55:56 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 19:28:02 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:39:25 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Extracts next token from string using delimiters
+ * Advances input pointer past returned token
+ * @param str - pointer to current string cursor
+ * @param delim - set of delimiter characters
+ * @return char* - newly allocated token or NULL if none
+ */
 char	*get_token(char **str, const char *delim)
 {
 	char	*start;
@@ -42,6 +49,10 @@ char	*get_token(char **str, const char *delim)
 	return (token);
 }
 
+/**
+ * @brief Frees NULL-terminated array of strings
+ * @param tab - array to free (created by ft_split, etc.)
+ */
 void	ft_free_tab(char **tab)
 {
 	int	i;
@@ -58,6 +69,12 @@ void	ft_free_tab(char **tab)
 	free(tab);
 }
 
+/**
+ * @brief Maps object identifier token to internal enum
+ * Recognizes A, C, L, sp, pl, cy and comments
+ * @param token - first word from scene line
+ * @return int - object type enum or -1 if unknown
+ */
 int	identify_object(const char *token)
 {
 	if (ft_strcmp(token, "A") == 0)

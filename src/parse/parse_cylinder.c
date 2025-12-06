@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:46:44 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/06 01:38:01 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:36:36 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Appends a new cylinder to scene dynamic array
+ * @param s - scene to modify
+ * @param cy - cylinder to append
+ * @return int - 0 on success, 1 on allocation error
+ */
 static int	push_cylinder(t_scene *s, t_cylinder *cy)
 {
 	t_cylinder	*arr;
@@ -43,6 +49,13 @@ static int	push_cylinder(t_scene *s, t_cylinder *cy)
 	return (0);
 }
 
+/**
+ * @brief Splits cylinder line into center, orientation, dims and color
+ * Expects exactly 5 space-separated tokens
+ * @param line - input line after identifier
+ * @param tab - out array of strings
+ * @return int - 0 on success, 1 on error
+ */
 static int	split_cylinder_line(char *line, char ***tab)
 {
 	int	n;
@@ -65,6 +78,14 @@ static int	split_cylinder_line(char *line, char ***tab)
 	return (0);
 }
 
+/**
+ * @brief Parses center, orientation and color for cylinder
+ * @param tab - token array (center, orientation, ..., color)
+ * @param tmp_center - out center components
+ * @param tmp_ori - out orientation components
+ * @param tmp_color - out RGB color components
+ * @return int - 0 on success, 1 on error
+ */
 static int	parse_cylinder_components(char **tab, double *tmp_center,
 		double *tmp_ori, int *tmp_color)
 {
@@ -77,6 +98,13 @@ static int	parse_cylinder_components(char **tab, double *tmp_center,
 	return (0);
 }
 
+/**
+ * @brief Fills cylinder struct fields from parsed temp arrays
+ * @param cy - cylinder to initialize
+ * @param tmp_center - parsed center components
+ * @param tmp_ori - parsed orientation components
+ * @param tmp_color - parsed RGB components
+ */
 void	fill_cylinder_values(t_cylinder *cy, double *tmp_center,
 		double *tmp_ori, int *tmp_color)
 {
@@ -86,6 +114,12 @@ void	fill_cylinder_values(t_cylinder *cy, double *tmp_center,
 			(uint8_t)tmp_color[2]);
 }
 
+/**
+ * @brief Parses cylinder definition line and adds to scene
+ * @param line - line with center, orientation, diameter, height, color
+ * @param scene - scene whose cylinders array is extended
+ * @return int - 0 on success, 1 on error
+ */
 int	parse_cylinder(char *line, t_scene *scene)
 {
 	char		**tab;

@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   validate_range.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 17:47:19 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 18:56:27 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 00:41:11 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scene.h"
 #include <stdio.h>
 
+/**
+ * @brief Validates camera orientation components and non-zero length
+ * Range check: each component in [-1, 1], vector not zero
+ * @param scene - scene with camera orientation to validate
+ * @return int - 0 if valid, 1 on error
+ */
 int	validate_camera_orientation_range(t_scene *scene)
 {
 	t_vector3	ori;
@@ -33,6 +39,12 @@ int	validate_camera_orientation_range(t_scene *scene)
 	return (0);
 }
 
+/**
+ * @brief Validates orientation vectors of all cylinders in scene
+ * Range check: each component in [-1, 1]
+ * @param scene - scene with cylinders to validate
+ * @return int - 0 if all valid, 1 on error
+ */
 int	validate_cylinder_orientation_range(t_scene *scene)
 {
 	int			i;
@@ -54,6 +66,12 @@ int	validate_cylinder_orientation_range(t_scene *scene)
 	return (0);
 }
 
+/**
+ * @brief Validates numeric ranges for key scene parameters
+ * Checks ambient/light intensity, camera FOV and orientations
+ * @param scene - scene to validate
+ * @return int - 0 if all values in range, 1 on error
+ */
 int	validate_input_range(t_scene *scene)
 {
 	if (scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
