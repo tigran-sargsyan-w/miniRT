@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:39:44 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/06 22:53:23 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:50:53 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "vector.h"
 
 typedef struct s_light		t_light;
-typedef struct s_light_node	t_light_node;
 
 struct						s_light
 {
@@ -24,12 +23,5 @@ struct						s_light
 	t_color8				color;
 	double					intensity;
 };
-
-// Linked list node for lights
-typedef struct s_light_node
-{
-	t_light					*light;
-	struct s_light_node		*next;
-}							t_light_node;
 
 #endif
