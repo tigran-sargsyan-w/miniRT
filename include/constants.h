@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:46:42 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/07 17:58:11 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:00:45 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define K_TMAX_PRIMARY 1e6
 # define K_SKY_BLEND_BIAS 0.5
 # define K_SHADOW_BIAS 1e-4
+# define OUTLINE_COLOR 0x00FFFF00
 
 # define KEY_ESCAPE 65307
 

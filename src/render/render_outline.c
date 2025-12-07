@@ -6,13 +6,12 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 16:52:28 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:00:56 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-#define OUTLINE_COLOR 0x00FFFF00
+#include "constants.h"
 
 static int	is_edge_left_right(t_data *data, int x, int y)
 {
