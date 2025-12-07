@@ -6,12 +6,13 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:40:12 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/05 20:31:58 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:52:45 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLANE_H
 # define PLANE_H
+
 # include "object.h"
 
 typedef struct s_plane

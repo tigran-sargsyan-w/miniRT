@@ -6,12 +6,13 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:40:32 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/05 20:04:18 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:54:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SPHERE_H
 # define SPHERE_H
+
 # include "color.h"
 # include "material.h"
 # include "object.h"
