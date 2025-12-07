@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 16:42:29 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 17:18:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@
 #include "camera.h"
 #include "constants.h"
 #include "trace.h"
-
-t_color	shade(const t_scene *scene, const t_hit *hit);
-int		color_to_int(t_color c);
-t_color	get_sky_color(t_ray ray);
+#include "render.h"
 
 static void	render_pixel(t_data *data, t_camera *cam, int x, int y)
 {

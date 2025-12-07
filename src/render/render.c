@@ -6,22 +6,16 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 16:52:35 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 17:18:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <sys/time.h>
-#include <stdio.h>
 #include "minirt.h"
 #include "camera.h"
 #include "constants.h"
-
-int		cam_basis_equal(const t_camera *cam, const t_data *data);
-int		rebuild_ray_cache(t_data *data, const t_camera *cam);
-void	render_all_pixels_ext(t_data *data, t_camera *cam);
-void	draw_outline(t_data *data);
-void	debug_render_time(struct timeval start_time);
+#include "render.h"
 
 static int	init_camera(t_data *data, t_camera *cam)
 {

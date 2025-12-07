@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 16:35:33 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 17:18:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include "color.h"
 #include "vector.h"
 #include "constants.h"
-
-int	is_in_shadow(const t_scene *scene, const t_hit *hit);
+#include "render.h"
 
 static t_color	calc_ambient(const t_scene *scene, t_color base)
 {

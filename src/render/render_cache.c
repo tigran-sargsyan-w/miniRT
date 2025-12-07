@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 16:09:50 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 17:18:31 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 #include "minirt.h"
 #include "camera.h"
 #include "constants.h"
-
-int		alloc_cache(t_data *data);
-void	calc_ray_dir(const t_camera *cam, int x, int y, t_vector3 *out);
-void	save_cache_state(t_data *data, const t_camera *cam);
+#include "render.h"
 
 static int	check_cam_vecs(const t_camera *cam, const t_data *data)
 {
