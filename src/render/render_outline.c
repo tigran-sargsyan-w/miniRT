@@ -6,13 +6,20 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 18:00:56 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:33:02 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "constants.h"
 
+/**
+ * @brief Checks whether pixel has left/right neighbor from different object
+ * @param data - application state with objbuf and selected_object
+ * @param x - pixel X coordinate
+ * @param y - pixel Y coordinate
+ * @return int - 1 if edge on left/right, 0 otherwise
+ */
 static int	is_edge_left_right(t_data *data, int x, int y)
 {
 	if (x <= 0)
@@ -26,6 +33,13 @@ static int	is_edge_left_right(t_data *data, int x, int y)
 	return (0);
 }
 
+/**
+ * @brief Checks whether pixel has top/bottom neighbor from different object
+ * @param data - application state with objbuf and selected_object
+ * @param x - pixel X coordinate
+ * @param y - pixel Y coordinate
+ * @return int - 1 if edge on top/bottom, 0 otherwise
+ */
 static int	is_edge_top_bottom(t_data *data, int x, int y)
 {
 	if (y <= 0)
@@ -39,6 +53,13 @@ static int	is_edge_top_bottom(t_data *data, int x, int y)
 	return (0);
 }
 
+/**
+ * @brief Combined edge test horizontally and vertically
+ * @param data - application state
+ * @param x - pixel X coordinate
+ * @param y - pixel Y coordinate
+ * @return int - 1 if any neighboring pixel differs
+ */
 static int	is_edge(t_data *data, int x, int y)
 {
 	if (is_edge_left_right(data, x, y))
@@ -48,6 +69,11 @@ static int	is_edge(t_data *data, int x, int y)
 	return (0);
 }
 
+/**
+ * @brief Draws outline for a single scanline (row)
+ * @param data - application state with objbuf and MLX image
+ * @param y - scanline index
+ */
 static void	draw_outline_row(t_data *data, int y)
 {
 	int				x;
@@ -63,6 +89,11 @@ static void	draw_outline_row(t_data *data, int y)
 	}
 }
 
+/**
+ * @brief Draws object outline over rendered image for selected object
+ * Iterates all rows and marks edge pixels with outline color
+ * @param data - application state
+ */
 void	draw_outline(t_data *data)
 {
 	int	y;

@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 16:08:35 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:30:52 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include "camera.h"
 #include "constants.h"
 
+/**
+ * @brief Allocates ray direction cache array if not already allocated
+ * @param data - application state which will hold ray_dir_cache
+ * @return int - 0 on success, 1 on allocation failure
+ */
 int	alloc_cache(t_data *data)
 {
 	size_t	count;
@@ -28,6 +33,14 @@ int	alloc_cache(t_data *data)
 	return (0);
 }
 
+/**
+ * @brief Computes a unit ray direction for pixel (x,y) from camera params
+ * Uses center-of-pixel sampling (x+0.5, y+0.5)
+ * @param cam - camera providing forward/right/up and half sizes
+ * @param x - pixel X coordinate
+ * @param y - pixel Y coordinate
+ * @param out - out normalized direction vector
+ */
 void	calc_ray_dir(const t_camera *cam, int x, int y, t_vector3 *out)
 {
 	double		u;
@@ -46,6 +59,12 @@ void	calc_ray_dir(const t_camera *cam, int x, int y, t_vector3 *out)
 		*out = cam->forward;
 }
 
+/**
+ * @brief Saves camera basis and sizes into data cache metadata
+ * Marks `ray_cache_valid` as true
+ * @param data - application state to update
+ * @param cam - camera whose state to save
+ */
 void	save_cache_state(t_data *data, const t_camera *cam)
 {
 	data->ray_cache_w = WIDTH;

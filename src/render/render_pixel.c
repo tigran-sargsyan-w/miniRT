@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 17:18:31 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:33:22 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@
 #include "trace.h"
 #include "render.h"
 
+/**
+ * @brief Renders single pixel at (x,y) by casting cached ray and shading
+ * out-> Writes pixel color to MLX image and updates object buffer if selected
+ * @param data - application state with scene, caches and MLX
+ * @param cam - camera used for ray directions
+ * @param x - pixel X coordinate
+ * @param y - pixel Y coordinate
+ */
 static void	render_pixel(t_data *data, t_camera *cam, int x, int y)
 {
 	t_ray	ray;
@@ -46,6 +54,12 @@ static void	render_pixel(t_data *data, t_camera *cam, int x, int y)
 	my_mlx_pixel_put(&data->mlx.img, x, y, packed);
 }
 
+/**
+ * @brief Renders all pixels using an external (cached) camera
+ * Iterates over the full image and calls render_pixel for each pixel
+ * @param data - application state
+ * @param cam - prepared camera with basis and half sizes
+ */
 void	render_all_pixels_ext(t_data *data, t_camera *cam)
 {
 	int	x;

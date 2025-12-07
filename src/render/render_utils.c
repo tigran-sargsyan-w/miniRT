@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 16:40:39 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:34:03 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 #include "ray.h"
 #include "constants.h"
 
+/**
+ * @brief Packs floating-point color into 0xRRGGBB integer (sRGB 8-bit)
+ * @param c - linear color in [0,1] range
+ * @return int - packed 0xRRGGBB integer
+ */
 int	color_to_int(t_color c)
 {
 	t_color8	srgb;
@@ -24,6 +29,12 @@ int	color_to_int(t_color c)
 	return ((srgb.r << 16) | (srgb.g << 8) | srgb.b);
 }
 
+/**
+ * @brief Returns background sky color for miss rays
+ * Simple vertical blend between two colors based on ray Y
+ * @param ray - ray used to compute sky gradient
+ * @return t_color - blended sky color
+ */
 t_color	get_sky_color(t_ray ray)
 {
 	double		tb;
@@ -36,6 +47,10 @@ t_color	get_sky_color(t_ray ray)
 	return (color_lerp(sky_bottom, sky_top, tb));
 }
 
+/**
+ * @brief Prints render duration in milliseconds to stdout
+ * @param start_time - timeval captured before render started
+ */
 void	debug_render_time(struct timeval start_time)
 {
 	struct timeval	end_time;

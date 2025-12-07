@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 17:18:31 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:33:40 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include "constants.h"
 #include "render.h"
 
+/**
+ * @brief Initializes temporary camera struct from scene camera
+ * Copies computed basis into scene camera after init
+ * @param data - application state holding scene camera params
+ * @param cam - output camera initialized for rendering
+ * @return int - 0 on success, 1 on failure
+ */
 static int	init_camera(t_data *data, t_camera *cam)
 {
 	t_cam_params	params;
@@ -39,6 +46,11 @@ static int	init_camera(t_data *data, t_camera *cam)
 	return (0);
 }
 
+/**
+ * @brief Allocates object pointer buffer used for outline detection
+ * @param data - application state which will hold objbuf
+ * @return int - 0 on success, 1 on allocation failure
+ */
 static int	alloc_objbuf(t_data *data)
 {
 	if (data->objbuf)
@@ -49,6 +61,12 @@ static int	alloc_objbuf(t_data *data)
 	return (0);
 }
 
+/**
+ * @brief Top-level render entry: prepare camera, caches and draw image
+ * Rebuilds ray cache when camera basis changed and draws outlines if needed
+ * @param data - application state holding scene, caches and MLX
+ * @return int - 0 on success, 1 on error
+ */
 int	render_scene(t_data *data)
 {
 	t_camera		cam;

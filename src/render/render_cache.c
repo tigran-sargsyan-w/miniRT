@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 17:18:31 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:31:32 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include "constants.h"
 #include "render.h"
 
+/**
+ * @brief Compares camera basis vectors with cached values
+ * @param cam - current camera
+ * @param data - application state holding cached camera vectors
+ * @return int - 1 if vectors are equal within EPS, 0 otherwise
+ */
 static int	check_cam_vecs(const t_camera *cam, const t_data *data)
 {
 	t_vector3	diff;
@@ -32,6 +38,13 @@ static int	check_cam_vecs(const t_camera *cam, const t_data *data)
 	return (1);
 }
 
+/**
+ * @brief Checks whether cached ray directions are valid for current camera
+ * Compares width/height, basis vectors and half sizes
+ * @param cam - current camera
+ * @param data - application state holding cache metadata
+ * @return int - 1 if cache is valid, 0 otherwise
+ */
 int	cam_basis_equal(const t_camera *cam, const t_data *data)
 {
 	if (!data->ray_cache_valid)
@@ -47,6 +60,11 @@ int	cam_basis_equal(const t_camera *cam, const t_data *data)
 	return (1);
 }
 
+/**
+ * @brief Fills ray direction cache by computing direction for each pixel
+ * @param data - application state with ray_dir_cache allocated
+ * @param cam - camera used to calculate directions
+ */
 static void	fill_cache(t_data *data, const t_camera *cam)
 {
 	int	x;
@@ -65,6 +83,13 @@ static void	fill_cache(t_data *data, const t_camera *cam)
 	}
 }
 
+/**
+ * @brief Allocates and rebuilds cached ray directions for current camera
+ * Also saves cache state for future equality checks
+ * @param data - application state
+ * @param cam - camera to build cache for
+ * @return int - 0 on success, 1 on failure
+ */
 int	rebuild_ray_cache(t_data *data, const t_camera *cam)
 {
 	if (alloc_cache(data))

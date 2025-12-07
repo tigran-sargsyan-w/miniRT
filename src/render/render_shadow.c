@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/07 16:29:46 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:34:10 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include "constants.h"
 #include "trace.h"
 
+/**
+ * @brief Checks whether hit point is occluded from light (in shadow)
+ * Casts a shadow ray towards light and tests occlusion within distance
+ * @param scene - scene containing objects and light
+ * @param hit - hit record with point and normal
+ * @return int - 1 if in shadow, 0 otherwise
+ */
 int	is_in_shadow(const t_scene *scene, const t_hit *hit)
 {
 	t_vector3	l;
