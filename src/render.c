@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/07 13:12:17 by tsargsya          #+#    #+#             */
+/*   Updated: 2025/12/07 13:13:37 by tsargsya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <math.h>
 #include <stdlib.h>
-#include <sys/time.h> // TODO: delete this debug timing
-#include <stdio.h> // TODO: delete this debug timing
+#include <sys/time.h>
+#include <stdio.h>
 #include "minirt.h"
 #include "object.h"
 #include "vector.h"
@@ -141,13 +153,22 @@ static t_color shade(const t_scene *scene, const t_hit *hit)
     return result;
 }
 
+static void	debug_render_time(struct timeval start_time)
+{
+	struct timeval	end_time;
+	double			render_ms;
+
+	gettimeofday(&end_time, NULL);
+	render_ms = (end_time.tv_sec - start_time.tv_sec) * 1000.0
+		+ (end_time.tv_usec - start_time.tv_usec) / 1000.0;
+	printf("Render time: %.2f ms\n", render_ms);
+}
+
 int render_scene(t_data *data)
 {
     int x,y;
     t_camera cam;
-    struct timeval start_time; // TODO: delete this debug timing
-    struct timeval end_time; // TODO: delete this debug timing
-    double render_ms; // TODO: delete this debug timing
+    struct timeval start_time;
 
     if (!data)
         return 1;
@@ -176,7 +197,7 @@ int render_scene(t_data *data)
     }
 
     // Start timing just before the heavy per-pixel loop
-    gettimeofday(&start_time, NULL); // TODO: delete this debug timing
+    gettimeofday(&start_time, NULL);
 
     // Ensure ray direction cache is valid for this camera basis
     if (!cam_basis_equal(&cam, data))
@@ -243,9 +264,6 @@ int render_scene(t_data *data)
     }
 
     // Stop timing after rendering and outline pass
-    gettimeofday(&end_time, NULL); // TODO: delete this debug timing
-    render_ms = (end_time.tv_sec - start_time.tv_sec) * 1000.0 // TODO: delete this debug timing
-        + (end_time.tv_usec - start_time.tv_usec) / 1000.0; // TODO: delete this debug timing
-    printf("Render time: %.2f ms\n", render_ms); // TODO: delete this debug timing
+    debug_render_time(start_time);
     return 0;
 }
