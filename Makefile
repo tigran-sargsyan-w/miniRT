@@ -33,7 +33,7 @@ objects/sphere.c objects/sphere_transform.c \
 objects/plane.c objects/plane_transform.c \
 objects/cylinder.c objects/cylinder_transform.c objects/cylinder_side.c objects/cylinder_cap.c \
 events/event_handlers.c events/event_keypress.c events/event_mouse.c events/event_transform.c \
-render.c
+render/render.c render/render_cache.c render/render_cache_utils.c render/render_shadow.c render/render_shade.c render/render_pixel.c render/render_utils.c render/render_outline.c \
 
 # -------------------------------
 #   Object & Dependency Files
