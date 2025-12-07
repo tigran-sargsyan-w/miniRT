@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:47:46 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/02 16:54:18 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 20:36:48 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ typedef struct s_vector3
 	double	z;
 }			t_vector3;
 
-// predefined vectors
+// Predefined vectors
 t_vector3	vector3_zero(void);
 t_vector3	vector3_one(void);
 t_vector3	vector3_unit_x(void);
 t_vector3	vector3_unit_y(void);
 t_vector3	vector3_unit_z(void);
 
-// vector creation and checking
+// Vector creation and checking
 t_vector3	vector3_create(double x, double y, double z);
 int			vector3_is_finite(t_vector3 v);
 int			vector3_equal_eps(t_vector3 a, t_vector3 b, double eps);

@@ -6,18 +6,18 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:47:10 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/05 17:00:28 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:52:29 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OBJECT_H
 # define OBJECT_H
+
 # include "hit.h"
 # include "ray.h"
 # include "vector.h"
 
 typedef struct s_object			t_object;
-typedef struct s_object_node	t_object_node;
 
 typedef struct s_range
 {
@@ -66,12 +66,6 @@ struct						s_object
 	t_rotate_euler_func		rotate_euler;
 	t_scale_func			scale_uniform;
 	t_scale_height_func		scale_height;
-};
-
-struct						s_object_node
-{
-	const t_object			*object;
-	struct s_object_node	*next;
 };
 
 void						object_init(t_object *object, t_object_type type,

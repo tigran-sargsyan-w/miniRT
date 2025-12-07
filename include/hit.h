@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:46:49 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/06 23:16:37 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:50:21 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "vector.h"
 # include "material.h"
 
-// Forward declaration to avoid circular include with object.h
 struct	s_object;
 
 typedef struct s_hit

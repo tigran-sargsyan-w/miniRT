@@ -6,12 +6,13 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:39:27 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/03 00:30:38 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:48:33 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_H
 # define CAMERA_H
+
 # include "ray.h"
 # include "vector.h"
 

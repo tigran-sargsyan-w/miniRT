@@ -6,12 +6,13 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 18:53:00 by tsargsya          #+#    #+#             */
-/*   Updated: 2025/12/02 18:53:03 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:49:21 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLOR_H
 # define COLOR_H
+
 # include <stdint.h>
 
 // sRGB color 0..255

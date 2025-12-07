@@ -6,7 +6,7 @@
 /*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:47:03 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/06 23:07:00 by tsargsya         ###   ########.fr       */
+/*   Updated: 2025/12/07 18:51:37 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ typedef struct s_data
 	t_mlx_data		mlx;
 	const t_object	*selected_object;
 	const t_object	**objbuf;
-	// Cached primary ray directions for current camera basis
-	t_vector3		*ray_dir_cache; // size WIDTH*HEIGHT
+	t_vector3		*ray_dir_cache;
 	int				ray_cache_w;
 	int				ray_cache_h;
 	t_vector3		cam_fwd_cache;

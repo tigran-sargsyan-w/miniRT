@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   material.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:46:58 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 23:46:59 by dsemenov         ###   ########lyon.fr   */
+/*   Updated: 2025/12/07 18:51:18 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@
 
 typedef struct s_material
 {
-	t_color	base_color; /* linear 0..1 */
+	t_color	base_color;
 }	t_material;
 
-// construct material from sRGB 0..255 color
 t_material	material_from_rgb8(t_color8 rgb);
 #endif
