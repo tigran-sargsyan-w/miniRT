@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsemenov <dsemenov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsargsya <tsargsya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:40:08 by dsemenov          #+#    #+#             */
-/*   Updated: 2025/12/01 22:42:37 by dsemenov         ###   ########.fr       */
+/*   Updated: 2025/12/07 19:21:44 by tsargsya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,5 @@ int		parse_cylinder_height(char **tab, double *height);
 int		validate_input_range(t_scene *scene);
 void	ft_free_tab(char **tab);
 int		ft_atoi_checked(const char *nptr, int *num);
-char	*get_token(char **str, const char *delim);
 
 #endif
