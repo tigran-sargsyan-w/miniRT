@@ -15,9 +15,9 @@
 ### Showcase #1 — Base objects
 
 <p align="center">
-  <img src="https://i.ibb.co/6RJ4zPFg/image.png" alt="Plane" width="300" />
-  <img src="https://i.ibb.co/X9BrW30/image.png" alt="Sphere" width="300" />
-  <img src="https://i.ibb.co/qYz4hnrg/image.png" alt="Cylinder" width="300" />
+  <img src="https://i.ibb.co/6RJ4zPFg/image.png" alt="Plane" width="250" />
+  <img src="https://i.ibb.co/X9BrW30/image.png" alt="Sphere" width="250" />
+  <img src="https://i.ibb.co/qYz4hnrg/image.png" alt="Cylinder" width="250" />
 </p>
 
 ### Showcase #2 — _scene name / short description_
