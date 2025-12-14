@@ -12,10 +12,6 @@
 
 ## Gallery (render results)
 
-Add your best renders here to showcase the program’s features and visual quality.
-
-> Tip: store images inside `docs/gallery/` and link them below.
-
 ### Showcase #1 — _scene name / short description_
 <!-- TODO: add image -->
 <!-- Example: ![showcase-1](docs/gallery/showcase-1.png) -->
