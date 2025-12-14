@@ -23,14 +23,16 @@
 ### Showcase #2 — Multiple objects
 
 <p align="center">
-  <img src="https://i.ibb.co/sdXkYrhF/Screenshot-2025-12-14-201412.png" alt="Plane" width="350" />
-  <img src="https://i.ibb.co/LsDyHj1/Screenshot-2025-12-14-201429.png" alt="Sphere" width="350" />
-  <!-- <img src="https://i.ibb.co/qYz4hnrg/image.png" alt="Sphere" width="350" /> -->
+  <img src="https://i.ibb.co/sdXkYrhF/Screenshot-2025-12-14-201412.png" alt="Cylinders" width="350" />
+  <img src="https://i.ibb.co/LsDyHj1/Screenshot-2025-12-14-201429.png" alt="Spheres" width="350" />
 </p>
 
 ### Showcase #3 — _scene name / short description_
-<!-- TODO: add image -->
-<!-- ![showcase-3](docs/gallery/showcase-3.png) -->
+
+<!-- <p align="center">
+  <img src="https://i.ibb.co/sdXkYrhF/Screenshot-2025-12-14-201412.png" alt="Plane" width="350" />
+  <img src="https://i.ibb.co/LsDyHj1/Screenshot-2025-12-14-201429.png" alt="Sphere" width="350" />
+</p> -->
 
 ---
 
