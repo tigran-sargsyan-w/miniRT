@@ -278,9 +278,9 @@ In the **Status** column you can mark `✅` / `❌` or add a short note.
 | # | Scenario | What to do / expected behavior | Status |
 | -- | ------- | ------------------------------ | ------ |
 | 16 | Failure in `init_mlx` | After `parse_scene`, force `init_mlx` to fail. Must run global cleanup with no leaks. | ✅ |
-| 17 | Window creation failure | `mlx` initialized but window creation fails. All resources freed. | ❌ |
-| 18 | Image/buffer creation failure | Window exists but `mlx_new_image` (or equivalent) fails. Cleanup and exit. | ❌ |
-| 19 | Hooks/events setup failure | Window+image OK, but hooks setup fails. Must free scene/window/image. | ❌ |
+| 17 | Window creation failure | `mlx` initialized but window creation fails. All resources freed. | ✅ |
+| 18 | Image/buffer creation failure | Window exists but `mlx_new_image` (or equivalent) fails. Cleanup and exit. | ✅ |
+| 19 | Hooks/events setup failure | Window+image OK, but hooks setup fails. Must free scene/window/image. | ✅ |
 
 ---
 
@@ -301,29 +301,3 @@ In the **Status** column you can mark `✅` / `❌` or add a short note.
 | -- | ------- | ------------------------------ | ------ |
 | 24 | Long session | Run under Valgrind, keep window open for minutes, select and transform objects, then exit. Loop leaks should appear here. | ✅ |
 | 25 | Stress test | Rapidly select objects and apply many transforms, then exit. Should catch rare leak branches. | ✅ |
-
----
-
-## License
-
-Educational project (42). If you want, I can add a `LICENSE` file (MIT/Apache-2.0/etc.).
-
----
-
-## Where to store gallery images
-
-Recommended structure:
-
-```text
-docs/
-  gallery/
-    showcase-1.png
-    showcase-2.png
-    showcase-3.png
-```
-
-Insert into README:
-
-```markdown
-![showcase-1](docs/gallery/showcase-1.png)
-```
