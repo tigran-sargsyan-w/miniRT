@@ -24,7 +24,8 @@
 
 <p align="center">
   <img src="https://i.ibb.co/sdXkYrhF/Screenshot-2025-12-14-201412.png" alt="Plane" width="350" />
-  <img src="https://i.ibb.co/20SKQqtJ/Screenshot-2025-12-14-201429.png" alt="Sphere" width="350" />
+  <!-- <img src="https://i.ibb.co/20SKQqtJ/Screenshot-2025-12-14-201429.png" alt="Sphere" width="350" /> -->
+  <img src="https://i.ibb.co/qYz4hnrg/image.png" alt="Sphere" width="350" />
 </p>
 
 ### Showcase #3 — _scene name / short description_
