@@ -4,89 +4,95 @@
 🏫 **School**: 42 – miniRT  
 🏅 **Score**: 100/100  
 
-`miniRT` — учебный **ray tracer** (проект школы 42): парсер сцен `.rt`, трассировка лучей (сферы/плоскости/цилиндры), освещение и тени, вывод результата в окно через **MiniLibX (X11/Linux)**.
+`miniRT` is an educational **ray tracer** (42 school project): it parses `.rt` scenes, ray-traces basic primitives (sphere/plane/cylinder), computes lighting & shadows, and displays the result using **MiniLibX (X11/Linux)**.
 
-> Репозиторий: https://github.com/tigran-sargsyan-w/miniRT
+> Repository: https://github.com/tigran-sargsyan-w/miniRT
 
 ---
 
-## Галерея (результаты рендера)
+## Gallery (render results)
 
-Сюда добавляй лучшие рендеры, чтобы сразу показать работоспособность и «мощность» проекта.
+Add your best renders here to showcase the program’s features and visual quality.
 
-> Рекомендация: складывай картинки в `docs/gallery/` и вставляй их ниже.
+> Tip: store images inside `docs/gallery/` and link them below.
 
-### Showcase #1 — _название сцены/описание_
+### Showcase #1 — _scene name / short description_
 <!-- TODO: add image -->
-<!-- Пример: ![showcase-1](docs/gallery/showcase-1.png) -->
+<!-- Example: ![showcase-1](docs/gallery/showcase-1.png) -->
 
-### Showcase #2 — _название сцены/описание_
+### Showcase #2 — _scene name / short description_
 <!-- TODO: add image -->
 <!-- ![showcase-2](docs/gallery/showcase-2.png) -->
 
-### Showcase #3 — _название сцены/описание_
+### Showcase #3 — _scene name / short description_
 <!-- TODO: add image -->
 <!-- ![showcase-3](docs/gallery/showcase-3.png) -->
 
 ---
 
-## Возможности
+## Features
 
-- Парсинг сцены из файла формата `.rt`
-- Объекты:
-  - `sp` — sphere (сфера)
-  - `pl` — plane (плоскость)
-  - `cy` — cylinder (цилиндр, включая крышки)
-- Источники света:
-  - `A` — ambient (окружающее освещение)
-  - `L` — point light (точечный свет)
-- `C` — camera (позиция/направление/FOV)
-- Тени (shadow rays / occlusion)
-- Вывод через MiniLibX (окно, изображение/буфер)
-- **Feature: Runtime Transform (Translate / Rotate / Scale)** — интерактивные трансформации объектов во время работы программы
-- **Feature: OOP-like design in C (interface / polymorphism via function pointers)** — единый “интерфейс” для объектов, реализация в конкретных shape-файлах
-
----
-
-## Управление (Runtime Transform)
-
-### Выбор объекта
-- **ЛКМ (Left Mouse Click)** — выбрать объект
-- `ESC` — снять выделение (cancel selection)
-- Закрытие окна кнопкой `[X]` — выход
-- `ESC` — выход из программы (если объект не выделен / либо по твоей логике)
-
-### Translate (перемещение) — `WASDQE`
-- `W / S` — вперёд / назад
-- `A / D` — влево / вправо
-- `Q / E` — вниз / вверх
-
-### Rotate (вращение) — `J I L K U O`
-- `J / L` — rotate Y (yaw)
-- `I / K` — rotate X (pitch)
-- `U / O` — rotate Z (roll)
-
-### Scale (масштабирование)
-- `← / →` — **uniform scale** (равномерно увеличить / уменьшить)
-- `↑ / ↓` — **height scale** (масштабирование по высоте)
+- Parse scene from `.rt` file
+- Primitives:
+  - `sp` — sphere
+  - `pl` — plane
+  - `cy` — cylinder (including caps)
+- Lights:
+  - `A` — ambient light
+  - `L` — point light
+- `C` — camera (position / direction / FOV)
+- Shadows (shadow rays / occlusion)
+- Rendering via MiniLibX (window + image buffer)
+- **Feature: Runtime Transform (Translate / Rotate / Scale)** — interactively transform objects while the program is running
+- **Feature: OOP-like design in C (interface / polymorphism via function pointers)** — a unified object “interface” implemented by each primitive
 
 ---
 
-## Архитектура: “интерфейс” и полиморфизм в C
+## Controls (Runtime Transform)
 
-В проекте используется OOP-подобный подход: есть **общая абстракция объекта** (`t_object`) и **набор “виртуальных методов”** (функции через указатели).  
-Конкретные фигуры (sphere/plane/cylinder) “реализуют интерфейс”, подставляя свои функции пересечения и трансформаций.
+### Object selection
+- **LMB (Left Mouse Click)** — select an object
+- `ESC` — cancel selection (unselect)
+- Window close button `[X]` — quit
+- `ESC` — quit (when nothing is selected / depending on your logic)
 
-### 1) Интерфейс (function pointers)
+### Translate — `WASDQE`
+- `W / S` — forward / backward
+- `A / D` — left / right
+- `Q / E` — down / up
 
-Файл: `include/object.h`  
-Суть: `t_object` содержит указатели на функции:
+### Rotate — `J I L K U O`
+- `J / L` — rotate around **Y** (yaw)
+- `I / K` — rotate around **X** (pitch)
+- `U / O` — rotate around **Z** (roll)
 
-- `intersect_func` — пересечение луча с объектом
-- `translate` — перемещение
-- `rotate_euler` — вращение по Euler (rx, ry, rz)
-- `scale_uniform` — равномерный scale
-- `scale_height` — scale по высоте
+### Scale
+- `← / →` — **uniform scale** (scale up / down)
+- `↑ / ↓` — **height scale** (scale height)
+
+> Note: height scale is especially useful for cylinders, but can be applied to any object depending on the implementation.
+
+---
+
+## Architecture: “Interface” & Polymorphism in C
+
+This project uses an OOP-like approach in pure C:
+
+- `t_object` is the **base abstraction**
+- each primitive “implements” the same operations (intersection + transforms)
+- the implementation is plugged in using **function pointers** (like a vtable)
+
+### 1) The “interface” (function pointers)
+
+File: `include/object.h`
+
+`struct s_object` contains pointers to operations:
+
+- `intersect_func` — ray/object intersection
+- `translate` — move
+- `rotate_euler` — Euler rotation (rx, ry, rz)
+- `scale_uniform` — uniform scale
+- `scale_height` — height scale
 
 ```c
 typedef int  (*t_intersect_func)(const t_object *object, t_ray ray,
@@ -109,10 +115,11 @@ typedef struct s_object
 } t_object;
 ```
 
-### 2) Абстракция: инициализация базового объекта
+### 2) Abstraction: base object initializer
 
-Файл: `src/scene_utils/object.c`  
-Единый конструктор `object_init()` “привязывает” реализацию (набор функций) к объекту:
+File: `src/scene_utils/object.c`
+
+A single `object_init()` binds a concrete implementation (set of functions) to the object:
 
 ```c
 void object_init(t_object *object, t_object_type type,
@@ -128,9 +135,9 @@ void object_init(t_object *object, t_object_type type,
 }
 ```
 
-### 3) Реализация: конкретные фигуры “подключают” свои методы
+### 3) Concrete implementations: primitives “implement the interface”
 
-Пример: `src/objects/plane.c` (аналогично `sphere.c`, `cylinder.c`)
+Example: `src/objects/plane.c` (similar in `sphere.c`, `cylinder.c`)
 
 ```c
 funcs.intersect = &intersect_plane;
@@ -142,28 +149,28 @@ funcs.scale_height = &plane_scale_height;
 object_init(&plane->base, PLANE, material, funcs);
 ```
 
-Таким образом, дальнейшая логика (рендер/тени/выбор/трансформации) может работать с объектами **через единый интерфейс** `t_object*`, не зная конкретный тип (SPHERE/PLANE/CYLINDER).
+This lets the renderer & event system work with `t_object*` **without knowing the concrete shape type**.
 
 ---
 
-## Быстрый старт
+## Quick Start
 
-### 1) Клонирование
+### 1) Clone
 
 ```bash
 git clone --recursive https://github.com/tigran-sargsyan-w/miniRT.git
 cd miniRT
 ```
 
-Если уже клонировали без `--recursive`:
+If you already cloned without `--recursive`:
 
 ```bash
 git submodule update --init --recursive
 ```
 
-### 2) Зависимости (Linux)
+### 2) Dependencies (Linux)
 
-MiniLibX на Linux использует X11. Обычно нужны пакеты:
+MiniLibX on Linux requires X11. Typical packages:
 
 - Debian/Ubuntu:
   ```bash
@@ -174,13 +181,13 @@ MiniLibX на Linux использует X11. Обычно нужны пакет
   sudo pacman -S --needed base-devel libx11 libxext zlib libbsd
   ```
 
-### 3) Сборка
+### 3) Build
 
 ```bash
 make
 ```
 
-Очистка:
+Clean:
 ```bash
 make clean
 make fclean
@@ -189,17 +196,17 @@ make re
 
 ---
 
-## Запуск
+## Run
 
 ```bash
 ./miniRT scenes/colored_room_with_sphere.rt
 ```
 
-Сцены: [`scenes/`](https://github.com/tigran-sargsyan-w/miniRT/tree/main/scenes)
+Scenes: [`scenes/`](https://github.com/tigran-sargsyan-w/miniRT/tree/main/scenes)
 
 ---
 
-## Формат сцены `.rt` (кратко)
+## `.rt` scene format (brief)
 
 ```text
 A 0.15 255,255,255
@@ -212,7 +219,7 @@ sp 0,5,35  10      220,220,220
 
 ---
 
-## Проверка утечек (Valgrind)
+## Leak check (Valgrind)
 
 ```bash
 valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
@@ -223,88 +230,89 @@ valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
 
 # miniRT — Leak Check Scenarios
 
-Используй эту таблицу как чек-лист. В колонке **Статус** можешь ставить `✅` / `❌` или добавлять короткий комментарий.
+Use this checklist to systematically test memory leak paths.  
+In the **Status** column you can mark `✅` / `❌` or add a short note.
 
 ---
 
-## Категория 1 — Аргументы командной строки
+## Category 1 — Command line arguments
 
-| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
-| - | -------- | --------------------------------- | ------ |
-| 1 | Нет аргументов | Запустить `./miniRT` без аргументов. Программа выводит сообщение об ошибке/usage и корректно завершает работу (no leaks). |   ✅   |
-| 2 | Слишком много аргументов | Запустить `./miniRT scene1.rt scene2.rt`. Программа выводит ошибку и корректно завершается без утечек. |   ✅   |
-| 3 | Неверное расширение файла | Запустить `./miniRT scene.txt`. Ошибка формата, корректное завершение. |   ✅   |
-| 4 | Путь указывает на директорию | Запустить `./miniRT scenes/` (где `scenes/` — папка). Ошибка открытия файла, корректный выход без утечек. |   ✅   |
-
----
-
-## Категория 2 — Ошибки работы с файлом
-
-| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
-| - | -------- | --------------------------------- | ------ |
-| 5 | Файл не существует | `./miniRT scenes/not_found.rt`. Ошибка `open`, программа ничего не парсит и полностью освобождает всё, что успела создать. |   ✅   |
-| 6 | Нет прав на чтение | `chmod 000 scenes/no_read.rt` → `./miniRT scenes/no_read.rt`. Ошибка доступа, корректный выход без утечек. |   ✅   |
-| 7 | Пустой файл | `./miniRT scenes/empty.rt`. Файл без содержимого. Ошибка (нет обязательных элементов), все ресурсы очищены. |   ✅   |
-| 8 | Файл с пробелами/переносами/комментами | `./miniRT scenes/spaces_only.rt` (только пустые строки, пробелы, `#`-комментарии). Ошибка валидности сцены, без утечек. |   ✅   |
+| # | Scenario | What to do / expected behavior | Status |
+| - | -------- | ------------------------------ | ------ |
+| 1 | No arguments | Run `./miniRT` with no args. Should print error/usage and exit cleanly (no leaks). | ✅ |
+| 2 | Too many arguments | Run `./miniRT scene1.rt scene2.rt`. Should print error and exit cleanly. | ✅ |
+| 3 | Invalid file extension | Run `./miniRT scene.txt`. Should detect invalid format and exit cleanly. | ✅ |
+| 4 | Path is a directory | Run `./miniRT scenes/` (where `scenes/` is a folder). Should fail to open as file and exit cleanly. | ✅ |
 
 ---
 
-## Категория 3 — Ошибки парсера
+## Category 2 — File I/O errors
 
-| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
-| -- | ------- | --------------------------------- | ------ |
-| 9 | Ошибка в первой строке | `err_first_line.rt`: первая строка имеет неверный идентификатор/формат. Парсер должен остановиться и всё освободить. | ✅ |
-| 10 | Ошибка в середине файла | `err_middle_object.rt`: валидные `A/C/L`, затем битая строка. На ошибке фридится вся сцена. | ✅ |
-| 11 | Ошибка в последней строке | `err_last_line.rt`: много валидного + ошибка в конце. Должно очищаться всё. | ✅ |
-| 12 | Отсутствует камера | `err_no_camera.rt`: нет `C`. После парсинга/валидации — ошибка и очистка. | ✅ |
-| 13 | Несколько камер (если запрещено) | `err_multi_camera.rt`: две и более `C`. Ошибка конфигурации и полная очистка. | ✅ |
-| 14 | Некорректные числа | `err_bad_number.rt`: неверные координаты/цвет/нормали. Ошибка и чистый выход. | ✅ |
-| 15 | Неизвестный идентификатор | `err_unknown_id.rt`: неизвестный тип (например `XX`). Ошибка и освобождение всего. | ✅ |
+| # | Scenario | What to do / expected behavior | Status |
+| - | -------- | ------------------------------ | ------ |
+| 5 | File does not exist | `./miniRT scenes/not_found.rt`. Should report `open` error and free everything. | ✅ |
+| 6 | No read permission | `chmod 000 scenes/no_read.rt` → `./miniRT scenes/no_read.rt`. Should report access error and exit cleanly. | ✅ |
+| 7 | Empty file | `./miniRT scenes/empty.rt`. Should fail validation (missing required elements) and free resources. | ✅ |
+| 8 | Only spaces/newlines/comments | `./miniRT scenes/spaces_only.rt` (blank lines/spaces/`#` only). Scene invalid, exit cleanly. | ✅ |
 
 ---
 
-## Категория 4 — Инициализация графики (mlx / окно / image)
+## Category 3 — Parser errors
 
-> Для этих тестов удобно временно сделать debug-режим и “форсировать” неудачные возвраты функций после успешного парсинга.
-
-| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
-| -- | ------- | --------------------------------- | ------ |
-| 16 | Сбой на `init_mlx` | После `parse_scene` заставить `init_mlx` вернуть ошибку. Должен быть global cleanup без утечек. | ✅ |
-| 17 | Сбой при создании окна | `mlx` инициализирован, но окно не создаётся. Все ресурсы освобождены. | ❌ |
-| 18 | Сбой при создании image/buffer | Окно создано, но `mlx_new_image` (или аналог) падает. cleanup/выход без утечек. | ❌ |
-| 19 | Сбой при настройке hooks/events | Окно и image готовы, но при установке событий ошибка. Освобождение scene/window/image. | ❌ |
-
----
-
-## Категория 5 — Нормальный запуск и все пути выхода
-
-| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
-| -- | ------- | --------------------------------- | ------ |
-| 20 | Старта → ничего не делать → ESC | Открыть окно, нажать ESC. Должен выполниться cleanup. | ✅ |
-| 21 | Старта → закрыть окно [X] | Закрыть окно кнопкой [X]. cleanup должен быть тем же, что и на ESC. | ✅ |
-| 22 | Выбор/изменение объекта → ESC | Выбрать объект, покрутить/подвигать/поменять scale, затем ESC/выход — без утечек. | ✅ |
-| 23 | Выбор/изменение объекта → [X] | То же самое, но выйти через [X]. | ✅ |
+| # | Scenario | What to do / expected behavior | Status |
+| -- | ------- | ------------------------------ | ------ |
+| 9 | Error in the first line | `err_first_line.rt`: invalid identifier/format. Parser must stop and free everything. | ✅ |
+| 10 | Error in the middle | `err_middle_object.rt`: valid start, then broken line. Must free the whole scene. | ✅ |
+| 11 | Error in the last line | `err_last_line.rt`: many valid objects + invalid last line. Must free everything. | ✅ |
+| 12 | Missing camera | `err_no_camera.rt`: no `C`. Validation fails and everything is freed. | ✅ |
+| 13 | Multiple cameras (if forbidden) | `err_multi_camera.rt`: 2+ `C` lines. Config error and full cleanup. | ✅ |
+| 14 | Bad numeric values | `err_bad_number.rt`: invalid coords/color/normal (e.g. `abc`, overflow). Clean exit. | ✅ |
+| 15 | Unknown identifier | `err_unknown_id.rt`: unknown type (e.g. `XX`). Error + full cleanup. | ✅ |
 
 ---
 
-## Категория 6 — Длительная работа и “drip” утечки
+## Category 4 — Graphics initialization (mlx / window / image)
 
-| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
-| -- | ------- | --------------------------------- | ------ |
-| 24 | Долгая сессия | Запустить под Valgrind, держать окно несколько минут, выбирать объекты, двигать/крутить/скейлить. Затем выйти (ESC или [X]). Утечки в цикле должны проявиться. | ✅ |
-| 25 | Стресс-тест быстрыми действиями | Быстро выбирать объекты мышью и совершать много трансформаций + выход. Найти редкие ветки утечек. | ✅ |
+> For these tests it’s convenient to temporarily inject forced failures in a debug build after a successful parse.
 
----
-
-## Лицензия
-
-Учебный проект (42). Если хочешь — добавлю `LICENSE` (MIT/Apache-2.0 и т.д.).
+| # | Scenario | What to do / expected behavior | Status |
+| -- | ------- | ------------------------------ | ------ |
+| 16 | Failure in `init_mlx` | After `parse_scene`, force `init_mlx` to fail. Must run global cleanup with no leaks. | ✅ |
+| 17 | Window creation failure | `mlx` initialized but window creation fails. All resources freed. | ❌ |
+| 18 | Image/buffer creation failure | Window exists but `mlx_new_image` (or equivalent) fails. Cleanup and exit. | ❌ |
+| 19 | Hooks/events setup failure | Window+image OK, but hooks setup fails. Must free scene/window/image. | ❌ |
 
 ---
 
-## Где хранить скриншоты/рендеры (для галереи)
+## Category 5 — Normal run & all exit paths
 
-Рекомендуемая структура:
+| # | Scenario | What to do / expected behavior | Status |
+| -- | ------- | ------------------------------ | ------ |
+| 20 | Start → do nothing → ESC | Open window, press ESC. Cleanup must run. | ✅ |
+| 21 | Start → close via [X] | Close the window using [X]. Cleanup must match ESC path. | ✅ |
+| 22 | Select/transform object → ESC | Select object, translate/rotate/scale, then exit. No leaks. | ✅ |
+| 23 | Select/transform object → [X] | Same as 22 but exit via [X]. No leaks. | ✅ |
+
+---
+
+## Category 6 — Long run & “drip” leaks
+
+| # | Scenario | What to do / expected behavior | Status |
+| -- | ------- | ------------------------------ | ------ |
+| 24 | Long session | Run under Valgrind, keep window open for minutes, select and transform objects, then exit. Loop leaks should appear here. | ✅ |
+| 25 | Stress test | Rapidly select objects and apply many transforms, then exit. Should catch rare leak branches. | ✅ |
+
+---
+
+## License
+
+Educational project (42). If you want, I can add a `LICENSE` file (MIT/Apache-2.0/etc.).
+
+---
+
+## Where to store gallery images
+
+Recommended structure:
 
 ```text
 docs/
@@ -314,7 +322,7 @@ docs/
     showcase-3.png
 ```
 
-Вставка в README:
+Insert into README:
 
 ```markdown
 ![showcase-1](docs/gallery/showcase-1.png)
