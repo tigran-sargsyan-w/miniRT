@@ -1,154 +1,249 @@
 # miniRT
-This project is an introduction to the beautiful world of Raytracing. Once completed you will be able to render simple Computer-Generated-Images and you will never be afraid of implementing mathematical formulas again.
 
-For leaks-check:
+✅ **Status**: Completed  
+🏫 **School**: 42 – miniRT  
+🏅 **Score**: 100/100  
 
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./miniRT scenes/valgrind_check.rt
+`miniRT` — учебный **ray tracer** (проект школы 42): парсер сцен `.rt`, трассировка лучей (сферы/плоскости/цилиндры), освещение и тени, вывод результата в окно через **MiniLibX (X11/Linux)**.
+
+> Репозиторий: https://github.com/tigran-sargsyan-w/miniRT
+
+---
+
+## Галерея (результаты рендера)
+
+Сюда добавляй лучшие рендеры, чтобы сразу показать работоспособность и «мощность» проекта.
+
+> Рекомендация: складывай картинки в `docs/gallery/` и вставляй их ниже.
+
+### Showcase #1 — _название сцены/описание_
+<!-- TODO: add image -->
+<!-- Пример: ![showcase-1](docs/gallery/showcase-1.png) -->
+
+### Showcase #2 — _название сцены/описание_
+<!-- TODO: add image -->
+<!-- ![showcase-2](docs/gallery/showcase-2.png) -->
+
+### Showcase #3 — _название сцены/описание_
+<!-- TODO: add image -->
+<!-- ![showcase-3](docs/gallery/showcase-3.png) -->
+
+---
+
+## Возможности
+
+- Парсинг сцены из файла формата `.rt`
+- Объекты:
+  - `sp` — sphere (сфера)
+  - `pl` — plane (плоскость)
+  - `cy` — cylinder (цилиндр, включая крышки)
+- Источники света:
+  - `A` — ambient (окружающее освещение)
+  - `L` — point light (точечный свет)
+- `C` — camera (позиция/направление/FOV)
+- Тени (shadow rays / occlusion)
+- Вывод через MiniLibX (окно, изображение/буфер)
+- **Feature: Runtime Transform (Translate / Rotate / Scale)** — интерактивные трансформации объектов во время работы программы
+
+---
+
+## Управление (Runtime Transform)
+
+### Выбор объекта
+- **ЛКМ (Left Mouse Click)** — выбрать объект
+- `ESC` — снять выделение (cancel selection)
+- `ESC` (повторно) — выход из программы *(если у тебя так реализовано; если нет — можно удалить эту строчку)*
+- Закрытие окна кнопкой `[X]` — выход
+
+### Translate (перемещение)
+- `W / S` — вперёд / назад
+- `A / D` — влево / вправо
+- `Q / E` — вниз / вверх
+
+### Rotate (вращение)
+Используются клавиши **J I L K U O**:
+- `J / L` — вращение вокруг оси **Y** (yaw - влево/вправо)
+- `I / K` — вращение вокруг оси **X** (pitch - вверх/вниз)
+- `U / O` — вращение вокруг оси **Z** (roll - вокруг направления взгляда)
+
+### Scale (масштабирование)
+- `← / →` — **uniform scale** (равномерно увеличить / уменьшить)
+- `↑ / ↓` — **height scale** (масштабирование по высоте)
+
+> Примечание: scale по высоте особенно релевантен для цилиндров, но может применяться к любым объектам в зависимости от реализации.
+
+---
+
+## Быстрый старт
+
+### 1) Клонирование
+
+```bash
+git clone --recursive https://github.com/tigran-sargsyan-w/miniRT.git
+cd miniRT
+```
+
+Если уже клонировали без `--recursive`:
+
+```bash
+git submodule update --init --recursive
+```
+
+### 2) Зависимости (Linux)
+
+MiniLibX на Linux использует X11. Обычно нужны пакеты:
+
+- Debian/Ubuntu:
+  ```bash
+  sudo apt-get install -y build-essential libx11-dev libxext-dev zlib1g-dev libbsd-dev
+  ```
+- Arch:
+  ```bash
+  sudo pacman -S --needed base-devel libx11 libxext zlib libbsd
+  ```
+
+### 3) Сборка
+
+```bash
+make
+```
+
+Очистка:
+```bash
+make clean
+make fclean
+make re
+```
+
+---
+
+## Запуск
+
+```bash
+./miniRT scenes/colored_room_with_sphere.rt
+```
+
+Сцены: [`scenes/`](https://github.com/tigran-sargsyan-w/miniRT/tree/main/scenes)
+
+---
+
+## Формат сцены `.rt` (кратко)
+
+```text
+A 0.15 255,255,255
+C 0,8,-30 0,0,1 65
+L -5,18,-5 0.8 255,255,255
+
+pl 0,0,0   0,1,0   0,0,255
+sp 0,5,35  10      220,220,220
+```
+
+---
+
+## Проверка утечек (Valgrind)
+
+```bash
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
+  ./miniRT scenes/valgrind_check.rt
+```
+
+---
 
 # miniRT — Leak Check Scenarios
 
-Используй эту таблицу как чек-лист. В колонке **Статус** можешь ставить `✅` / `❌` или комментарий.
+Используй эту таблицу как чек-лист. В колонке **Статус** можешь ставить `✅` / `❌` или добавлять короткий комментарий.
 
 ---
 
 ## Категория 1 — Аргументы командной строки
 
-| # | Сценарий                     | Что сделать / ожидаемое поведение                                                                              | Статус |
-| - | ---------------------------- | -------------------------------------------------------------------------------------------------------------- | ------ |
-| 1 | Нет аргументов               | Запустить `./miniRT` без аргументов. Программа выводит сообщение об ошибке/usage и корректно завершает работу. |   ✅   |
-| 2 | Слишком много аргументов     | Запустить `./miniRT scene1.rt scene2.rt`. Программа выводит ошибку и корректно завершается без утечек.         |   ✅   |
-| 3 | Неверное расширение файла    | Запустить `./miniRT scene.txt`. Ошибка формата, корректное завершение.                                         |   ✅   |
-| 4 | Путь указывает на директорию | Запустить `./miniRT scenes/` (где `scenes/` — папка). Ошибка открытия файла, корректный выход без утечек.      |   ✅   |
+| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
+| - | -------- | --------------------------------- | ------ |
+| 1 | Нет аргументов | Запустить `./miniRT` без аргументов. Программа выводит сообщение об ошибке/usage и корректно завершает работу (no leaks). |   ✅   |
+| 2 | Слишком много аргументов | Запустить `./miniRT scene1.rt scene2.rt`. Программа выводит ошибку и корректно завершается без утечек. |   ✅   |
+| 3 | Неверное расширение файла | Запустить `./miniRT scene.txt`. Ошибка формата, корректное завершение. |   ✅   |
+| 4 | Путь указывает на директорию | Запустить `./miniRT scenes/` (где `scenes/` — папка). Ошибка открытия файла, корректный выход без утечек. |   ✅   |
 
 ---
 
 ## Категория 2 — Ошибки работы с файлом
 
-| # | Сценарий                               | Что сделать / ожидаемое поведение                                                                                          | Статус |
-| - | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 5 | Файл не существует                     | `./miniRT scenes/not_found.rt`. Ошибка `open`, программа ничего не парсит и полностью освобождает всё, что успела создать. |   ✅   |
-| 6 | Нет прав на чтение                     | `chmod 000 scenes/no_read.rt` → `./miniRT scenes/no_read.rt`. Ошибка доступа, корректный выход без утечек.                 |   ✅   |
-| 7 | Пустой файл                            | `./miniRT scenes/empty.rt`. Файл без содержимого. Ошибка (нет обязательных элементов), все ресурсы очищены.                |   ✅   |
-| 8 | Файл с пробелами/переносами/комментами | `./miniRT scenes/spaces_only.rt` (только пустые строки, пробелы, `#`-комментарии). Ошибка валидности сцены, без утечек.    |   ✅   |
+| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
+| - | -------- | --------------------------------- | ------ |
+| 5 | Файл не существует | `./miniRT scenes/not_found.rt`. Ошибка `open`, программа ничего не парсит и полностью освобождает всё, что успела создать. |   ✅   |
+| 6 | Нет прав на чтение | `chmod 000 scenes/no_read.rt` → `./miniRT scenes/no_read.rt`. Ошибка доступа, корректный выход без утечек. |   ✅   |
+| 7 | Пустой файл | `./miniRT scenes/empty.rt`. Файл без содержимого. Ошибка (нет обязательных элементов), все ресурсы очищены. |   ✅   |
+| 8 | Файл с пробелами/переносами/комментами | `./miniRT scenes/spaces_only.rt` (только пустые строки, пробелы, `#`-комментарии). Ошибка валидности сцены, без утечек. |   ✅   |
 
 ---
 
 ## Категория 3 — Ошибки парсера
 
-| #  | Сценарий                         | Что сделать / ожидаемое поведение                                                                                                | Статус |
-| -- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 9  | Ошибка в первой строке           | `err_first_line.rt`: первая строка содержит неправильный идентификатор/формат. Программа сразу падает в ошибку и чистит всё.     |   ✅   |
-| 10 | Ошибка в середине файла          | `err_middle_object.rt`: сначала валидные `A/C/L` и несколько объектов, затем битая строка. При ошибке очищается вся сцена.       |   ✅   |
-| 11 | Ошибка в последней строке        | `err_last_line.rt`: много валидных объектов + ошибка в самом конце. Полная сцена очищается при выходе по ошибке.                 |   ✅   |
-| 12 | Отсутствует камера               | `err_no_camera.rt`: в файле есть свет/объекты, но нет `C`. После парсинга проверка валидности сцены падает с ошибкой без утечек. |   ✅   |
-| 13 | Несколько камер (если запрещено) | `err_multi_camera.rt`: две или больше строк `C`. Проверка конфигурации ловит ошибку и всё освобождает.                           |   ✅   |
-| 14 | Некорректные числовые значения   | `err_bad_number.rt`: неверные координаты/цвет/нормаль (`abc`, слишком большие значения, и т.п.). Ошибка парсинга без утечек.     |   ✅   |
-| 15 | Неизвестный идентификатор        | `err_unknown_id.rt`: строка с неизвестным типом (`XX` и т.п.). Парсер выдаёт ошибку и очищает уже созданные объекты.             |   ✅   |
+| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
+| -- | ------- | --------------------------------- | ------ |
+| 9 | Ошибка в первой строке | `err_first_line.rt`: первая строка имеет неверный идентификатор/формат. Парсер должен остановиться и всё освободить. | ✅ |
+| 10 | Ошибка в середине файла | `err_middle_object.rt`: валидные `A/C/L`, затем битая строка. На ошибке фридится вся сцена. | ✅ |
+| 11 | Ошибка в последней строке | `err_last_line.rt`: много валидного + ошибка в конце. Должно очищаться всё. | ✅ |
+| 12 | Отсутствует камера | `err_no_camera.rt`: нет `C`. После парсинга/валидации — ошибка и очистка. | ✅ |
+| 13 | Несколько камер (если запрещено) | `err_multi_camera.rt`: две и более `C`. Ошибка конфигурации и полная очистка. | ✅ |
+| 14 | Некорректные числа | `err_bad_number.rt`: неверные координаты/цвет/нормали. Ошибка и чистый выход. | ✅ |
+| 15 | Неизвестный идентификатор | `err_unknown_id.rt`: неизвестный тип (например `XX`). Ошибка и освобождение всего. | ✅ |
 
 ---
 
-## Категория 4 — Инициализация графики (mlx / окна / изображения)
+## Категория 4 — Инициализация графики (mlx / окно / image)
 
-> Для этих тестов удобно временно вставлять искусственные ошибки в код (в отладочной сборке), чтобы возвращать `ERROR` на нужных шагах после успешного парсинга.
+> Для этих тестов удобно временно сделать debug-режим и “форсировать” неудачные возвраты функций после успешного парсинга.
 
-| #  | Сценарий                             | Что сделать / ожидаемое поведение                                                                                                        | Статус |
-| -- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 16 | Сбой на `init_mlx`                   | После успешного `parse_scene` искусственно вернуть ошибку в `init_mlx`. Программа должна вызвать общий cleanup и завершиться без утечек. |   ✅   |
-| 17 | Сбой при создании окна               | `mlx` инициализировался, но создание окна возвращает ошибку. Всё уже созданное (`mlx`, сцена и т.п.) освобождается.                      |   ❌   |
-| 18 | Сбой при создании изображения/буфера | Окно создано, но `mlx_new_image` (или аналог) «проваливается». Программа делает cleanup и выходит без утечек.                            |   ❌   |
-| 19 | Сбой при инициализации хуков/событий | Окно и изображение готовы, но ошибка/искусственный `ERROR` на этапе установки событий. Очистить сцену, окно, изображение.                |   ❌   |
+| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
+| -- | ------- | --------------------------------- | ------ |
+| 16 | Сбой на `init_mlx` | После `parse_scene` заставить `init_mlx` вернуть ошибку. Должен быть global cleanup без утечек. | ✅ |
+| 17 | Сбой при создании окна | `mlx` инициализирован, но окно не создаётся. Все ресурсы освобождены. | ❌ |
+| 18 | Сбой при создании image/buffer | Окно создано, но `mlx_new_image` (или аналог) падает. cleanup/выход без утечек. | ❌ |
+| 19 | Сбой при настройке hooks/events | Окно и image готовы, но при установке событий ошибка. Освобождение scene/window/image. | ❌ |
 
 ---
 
 ## Категория 5 — Нормальный запуск и все пути выхода
 
-| #  | Сценарий                                      | Что сделать / ожидаемое поведение                                                                                               | Статус |
-| -- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 20 | Запуск → ничего не делать → выход по ESC      | Открыть окно, не трогать сцену, нажать ESC. Должен отработать общий `cleanup`, утечек нет.                                      |   ✅   |
-| 21 | Запуск → ничего не делать → закрыть крестиком | Открыть окно и закрыть его через [X]. Обработчик `destroy` вызывает тот же `cleanup`, утечек нет.                               |   ✅   |
-| 22 | Выбор/изменение объекта → ESC                 | Если есть выбор объекта/редактирование параметров: выбрать несколько объектов, изменить их, выйти по ESC без утечек.            |   ✅   |
-| 23 | Выбор/изменение объекта → закрыть крестиком   | Аналогично, но выход через [X].                                                                                                 |   ✅   |
+| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
+| -- | ------- | --------------------------------- | ------ |
+| 20 | Старта → ничего не делать → ESC | Открыть окно, нажать ESC. Должен выполниться cleanup. | ✅ |
+| 21 | Старта → закрыть окно [X] | Закрыть окно кнопкой [X]. cleanup должен быть тем же, что и на ESC. | ✅ |
+| 22 | Выбор/изменение объекта → ESC | Выбрать объект, покрутить/подвигать/поменять scale, затем ESC/выход — без утечек. | ✅ |
+| 23 | Выбор/изменение объекта → [X] | То же самое, но выйти через [X]. | ✅ |
 
 ---
 
-## Категория 6 — Длительная работа и "капельные" утечки
+## Категория 6 — Длительная работа и “drip” утечки
 
-| #  | Сценарий                     | Что сделать / ожидаемое поведение                                                                                                                            | Статус |
-| -- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ |
-| 24 | Длительная работа            | Запустить под Valgrind, несколько минут крутить камеру/двигаться. Потом выйти (ESC или [X]). Если в цикле есть `malloc` без `free`, Valgrind покажет утечки. |   ✅   |
-| 25 | Стресс-тест быстрых действий | Быстро переключать камеры, выбирать объекты, открывать/закрывать меню и т.д., затем выйти. Проверка редких веток кода на утечки.                             |   ✅   |
-
----
-
-# miniRT — Leak Check Scenarios
-
-Use this checklist to systematically test your program for memory leaks. In the **Status** column you can put `✅` / `❌` or add a short comment.
+| # | Сценарий | Что сделать / ожидаемое поведение | Статус |
+| -- | ------- | --------------------------------- | ------ |
+| 24 | Долгая сессия | Запустить под Valgrind, держать окно несколько минут, выбирать объекты, двигать/крутить/скейлить. Затем выйти (ESC или [X]). Утечки в цикле должны проявиться. | ✅ |
+| 25 | Стресс-тест быстрыми действиями | Быстро выбирать объекты мышью и совершать много трансформаций + выход. Найти редкие ветки утечек. | ✅ |
 
 ---
 
-## Category 1 — Command Line Arguments
+## Лицензия
 
-| # | Scenario               | What to do / expected behavior                                                                                          | Status |
-| - | ---------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------ |
-| 1 | No arguments           | Run `./miniRT` with no arguments. Program should print usage/error message and exit cleanly (no leaks).                 |        |
-| 2 | Too many arguments     | Run `./miniRT scene1.rt scene2.rt`. Program should print an error and exit cleanly.                                     |        |
-| 3 | Invalid file extension | Run `./miniRT scene.txt`. Program should detect invalid extension/format and exit without leaks.                        |        |
-| 4 | Path is a directory    | Run `./miniRT scenes/` where `scenes/` is a directory. Program should fail to open it as a file and exit without leaks. |        |
+Учебный проект (42). Если хочешь — добавлю `LICENSE` (MIT/Apache-2.0 и т.д.).
 
 ---
 
-## Category 2 — File I/O Errors
+## Где хранить скриншоты/рендеры (для галереи)
 
-| # | Scenario                      | What to do / expected behavior                                                                                                  | Status |
-| - | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 5 | File does not exist           | Run `./miniRT scenes/not_found.rt`. Program should report `open` error and exit, freeing anything it may have allocated.        |        |
-| 6 | No read permission            | `chmod 000 scenes/no_read.rt` then run `./miniRT scenes/no_read.rt`. Program should report access error and exit cleanly.       |        |
-| 7 | Empty file                    | Run `./miniRT scenes/empty.rt` where the file is empty. Program should detect missing required elements and exit without leaks. |        |
-| 8 | Only spaces/newlines/comments | Run `./miniRT scenes/spaces_only.rt` with blank lines, spaces and `#` comments only. Scene is invalid, program exits cleanly.   |        |
+Рекомендуемая структура:
 
----
+```text
+docs/
+  gallery/
+    showcase-1.png
+    showcase-2.png
+    showcase-3.png
+```
 
-## Category 3 — Parser Errors
+Вставка в README:
 
-| #  | Scenario                          | What to do / expected behavior                                                                                                      | Status |
-| -- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 9  | Error in the first line           | `err_first_line.rt`: first line has invalid identifier/format. Program should detect it, stop parsing and free everything.          |        |
-| 10 | Error in the middle of the file   | `err_middle_object.rt`: valid `A/C/L` and some objects, then a broken line. On error, full scene (all already added data) is freed. |        |
-| 11 | Error in the last line            | `err_last_line.rt`: many valid objects, last line is invalid. Program must free the fully built scene on error.                     |        |
-| 12 | Missing camera                    | `err_no_camera.rt`: file contains lights/objects but no `C`. After parsing, validation fails and everything is freed.               |        |
-| 13 | Multiple cameras (if not allowed) | `err_multi_camera.rt`: two or more `C` lines. Configuration check fails, program frees all scene data and exits.                    |        |
-| 14 | Invalid numeric values            | `err_bad_number.rt`: invalid coordinates/color/normal (e.g. `abc`, overflowed values, etc.). Parser reports error, no leaks.        |        |
-| 15 | Unknown identifier                | `err_unknown_id.rt`: a line with an unknown type (`XX` or similar). Parser reports error and frees all previously created objects.  |        |
-
----
-
-## Category 4 — Graphics Initialization (mlx / window / image)
-
-> For these tests it's convenient to temporarily inject artificial failures in your code (debug build) so functions return an error at specific steps *after* successful parsing.
-
-| #  | Scenario                                   | What to do / expected behavior                                                                                                 | Status |
-| -- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------ |
-| 16 | Failure in `init_mlx`                      | After a successful `parse_scene`, force `init_mlx` to fail. Program should call global cleanup and exit without leaks.         |        |
-| 17 | Failure creating the window                | `mlx` is initialized, but window creation fails (forced). All created resources (`mlx`, scene, etc.) must be freed.            |        |
-| 18 | Failure creating image/buffer              | Window is created, but `mlx_new_image` (or equivalent) fails. Program performs cleanup and exits leak-free.                    |        |
-| 19 | Failure during hooks/events initialization | Window and image are ready, but an error/forced failure occurs while setting up events. Scene, window and image must be freed. |        |
-
----
-
-## Category 5 — Normal Run and All Exit Paths
-
-| #  | Scenario                                  | What to do / expected behavior                                                                                             | Status |
-| -- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 20 | Start → do nothing → exit via ESC         | Open the window, do nothing, press ESC. Global cleanup is executed, no leaks reported.                                     |        |
-| 21 | Start → do nothing → close via window [X] | Open the window and close it with the [X] button. The destroy handler calls the same cleanup, no leaks.                    |        |
-| 22 | Select/modify object → ESC                | If you have object selection/editing: select multiple objects, change their params, then ESC. Program exits without leaks. |        |
-| 23 | Select/modify object → close via [X]      | Same as 24 but exit via [X].                                                                                               |        |
-
----
-
-## Category 6 — Long-Running and "Drip" Leaks
-
-| #  | Scenario                      | What to do / expected behavior                                                                                                                                                                | Status |
-| -- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 24 | Long-running session          | Run under Valgrind, keep the program open for several minutes, moving the camera/character. Then exit (ESC or [X]). Any `malloc` in the loop without a matching `free` will show up as leaks. |        |
-| 25 | Stress test with fast actions | Rapidly switch cameras, select objects, open/close menus, etc., then exit. Checks rare code branches for leaks.                                                                               |        |
+```markdown
+![showcase-1](docs/gallery/showcase-1.png)
+```
