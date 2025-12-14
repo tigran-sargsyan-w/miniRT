@@ -27,12 +27,12 @@
   <img src="https://i.ibb.co/LsDyHj1/Screenshot-2025-12-14-201429.png" alt="Spheres" width="350" />
 </p>
 
-### Showcase #3 — _scene name / short description_
+### Showcase #3 — Selection 
 
-<!-- <p align="center">
-  <img src="https://i.ibb.co/sdXkYrhF/Screenshot-2025-12-14-201412.png" alt="Plane" width="350" />
-  <img src="https://i.ibb.co/LsDyHj1/Screenshot-2025-12-14-201429.png" alt="Sphere" width="350" />
-</p> -->
+<p align="center">
+  <img src="https://i.ibb.co/k2b3kCxm/Screenshot-2025-12-14-201258.png" alt="Unselected" width="350" />
+  <img src="https://i.ibb.co/fd8GxZ5J/Screenshot-2025-12-14-201309.png" alt="Selected" width="350" />
+</p>
 
 ---
 
