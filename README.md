@@ -44,6 +44,7 @@
 - Тени (shadow rays / occlusion)
 - Вывод через MiniLibX (окно, изображение/буфер)
 - **Feature: Runtime Transform (Translate / Rotate / Scale)** — интерактивные трансформации объектов во время работы программы
+- **Feature: OOP-like design in C (interface / polymorphism via function pointers)** — единый “интерфейс” для объектов, реализация в конкретных shape-файлах
 
 ---
 
@@ -52,25 +53,96 @@
 ### Выбор объекта
 - **ЛКМ (Left Mouse Click)** — выбрать объект
 - `ESC` — снять выделение (cancel selection)
-- `ESC` (повторно) — выход из программы *(если у тебя так реализовано; если нет — можно удалить эту строчку)*
 - Закрытие окна кнопкой `[X]` — выход
+- `ESC` — выход из программы (если объект не выделен / либо по твоей логике)
 
-### Translate (перемещение)
+### Translate (перемещение) — `WASDQE`
 - `W / S` — вперёд / назад
 - `A / D` — влево / вправо
 - `Q / E` — вниз / вверх
 
-### Rotate (вращение)
-Используются клавиши **J I L K U O**:
-- `J / L` — вращение вокруг оси **Y** (yaw - влево/вправо)
-- `I / K` — вращение вокруг оси **X** (pitch - вверх/вниз)
-- `U / O` — вращение вокруг оси **Z** (roll - вокруг направления взгляда)
+### Rotate (вращение) — `J I L K U O`
+- `J / L` — rotate Y (yaw)
+- `I / K` — rotate X (pitch)
+- `U / O` — rotate Z (roll)
 
 ### Scale (масштабирование)
 - `← / →` — **uniform scale** (равномерно увеличить / уменьшить)
 - `↑ / ↓` — **height scale** (масштабирование по высоте)
 
-> Примечание: scale по высоте особенно релевантен для цилиндров, но может применяться к любым объектам в зависимости от реализации.
+---
+
+## Архитектура: “интерфейс” и полиморфизм в C
+
+В проекте используется OOP-подобный подход: есть **общая абстракция объекта** (`t_object`) и **набор “виртуальных методов”** (функции через указатели).  
+Конкретные фигуры (sphere/plane/cylinder) “реализуют интерфейс”, подставляя свои функции пересечения и трансформаций.
+
+### 1) Интерфейс (function pointers)
+
+Файл: `include/object.h`  
+Суть: `t_object` содержит указатели на функции:
+
+- `intersect_func` — пересечение луча с объектом
+- `translate` — перемещение
+- `rotate_euler` — вращение по Euler (rx, ry, rz)
+- `scale_uniform` — равномерный scale
+- `scale_height` — scale по высоте
+
+```c
+typedef int  (*t_intersect_func)(const t_object *object, t_ray ray,
+                                 t_range range, t_hit *hit_result);
+typedef void (*t_translate_func)(t_object *object, t_vector3 delta);
+typedef void (*t_rotate_euler_func)(t_object *object, double rx, double ry, double rz);
+typedef void (*t_scale_func)(t_object *object, double factor);
+typedef void (*t_scale_height_func)(t_object *object, double factor);
+
+typedef struct s_object
+{
+    t_object_type         type;
+    t_material            material;
+
+    t_intersect_func      intersect_func;
+    t_translate_func      translate;
+    t_rotate_euler_func   rotate_euler;
+    t_scale_func          scale_uniform;
+    t_scale_height_func   scale_height;
+} t_object;
+```
+
+### 2) Абстракция: инициализация базового объекта
+
+Файл: `src/scene_utils/object.c`  
+Единый конструктор `object_init()` “привязывает” реализацию (набор функций) к объекту:
+
+```c
+void object_init(t_object *object, t_object_type type,
+                 t_material material, t_object_funcs funcs)
+{
+    object->type = type;
+    object->material = material;
+    object->intersect_func = funcs.intersect;
+    object->translate = funcs.translate;
+    object->rotate_euler = funcs.rotate_euler;
+    object->scale_uniform = funcs.scale_uniform;
+    object->scale_height = funcs.scale_height;
+}
+```
+
+### 3) Реализация: конкретные фигуры “подключают” свои методы
+
+Пример: `src/objects/plane.c` (аналогично `sphere.c`, `cylinder.c`)
+
+```c
+funcs.intersect = &intersect_plane;
+funcs.translate = &plane_translate;
+funcs.rotate_euler = &plane_rotate;
+funcs.scale_uniform = &plane_scale_uniform;
+funcs.scale_height = &plane_scale_height;
+
+object_init(&plane->base, PLANE, material, funcs);
+```
+
+Таким образом, дальнейшая логика (рендер/тени/выбор/трансформации) может работать с объектами **через единый интерфейс** `t_object*`, не зная конкретный тип (SPHERE/PLANE/CYLINDER).
 
 ---
 
